@@ -1,0 +1,147 @@
+---
+format:
+  pdf:
+    documentclass: scrarticle
+    # tables: true
+    extra-dependencies:
+      - float
+title: Lista 01 - Planejamento e Análise de Experimentos (MAE0316)
+date: last-modified
+date-format: long
+lang: pt
+geometry:
+    - left=3cm
+    - top=3cm
+    - bottom=2cm
+    - right=2cm
+author: 
+    - name: Caio M. de Almeida - 15444560
+    - name: Eduardo Yukio G. Ishihara - 15449012
+    - name: Gustavo S. Garone - 15458155
+    - name: Ian B. Loures - 15459667
+    - name: João Victor G. de Sousa - 15463912
+execute:
+  echo: false
+fig-align: center
+fig-cap-location: top
+bibliography: references.bib
+csl: associacao-brasileira-de-normas-tecnicas.csl
+engine: julia
+---
+
+```{julia}
+#| output: false
+# using Pkg; Pkg.add(["GLM", "Plots", "Distributions", "DataFrames", "PrettyTables", "LaTeXStrings", "CSV"])
+```
+
+`\vspace{-0.5cm}\noindent\rule{\textwidth}{1pt}`{=latex}
+
+Nesta lista, usaremos "$.$" como separador decimal.
+
+# Exercício 1
+
+## Item a
+
+Analisamos um estudo de coorte sobre os efeitos da "COVID longa" ou Síndrome
+pós-COVID-19 no trabalho de @rocha_sindrome_2024. O estudo utilizou o método de
+coorte ambidirecional com indivíduos de três hosítais de Cuiabá. Observações
+foram colhidas do prontuário desses pacientes e posteriormente $6$ e $12$ meses
+após alta hospitalar por telefone. Foram perguntados fatores socioeconômicos dos
+indivíduos, além de sintomas comuns da "COVID longa", como fadiga e problemas de
+memória.
+
+Na análise de dados, foram consideradas pelos pesquisadores comorbidades como
+hipertensão, diabete, obesidade e doenças cardíacas. Para os sintomas,
+classificaram como musculares, neuropsiquiátricos, dermatológicos,
+cardiovasculares e pulmonares.
+
+Acreditamos que o estudo tenha uma base metodológica, no geral, sólida, mas que a
+dependência na descrição por telefone dos entrevistados pode ter comprometido a
+integridade das conclusões. Isso foi parcialmente reconhecido pelos autores, que
+perceberam que a obesidade era subrepresentada quando comparada com o IMC
+calculado a partir da altura e peso dos entrevistados. Isto é, dos
+entrevistados, quando perguntavam se estavam com sobrepeso, responderam
+positivamente apenas $11$ dos $46$ identificados com obesidade pelo IMC. Os
+autores consideraram isso na análise dos dados, mas não há discussão sobre
+outras imprecisões.
+
+## Item b
+
+Pode ser que haja diferença entre as conclusões dos estudos. No primeiro estudo,
+fatores como viés de seleção (por exemplo, selecionar pacientes que optaram pelo
+estudo, pois utilizam a medicina convencional, e paciente que optaram por não
+usar o remédio, pois utilizam exclusivamente a medicina alternativa) e menor
+aleatorização. No segundo estudo, ao selecionar previamente o grupo, e então
+efetuar um ensaio randomizado, espera-se que o processo de amostragem aleatória
+faça com que os dois grupos, na média, tenham indivíduos semelhantes. Logo, a
+amostragem aleatória forneceria resultados mais robustos e conclusões mais
+acuradas ao atenuar fatores intrínsecos das unidades amostrais dentre os grupos,
+como a gravidade da doença, estilos de vida ou fatores biológicos.
+
+## Item c
+
+Um resultado possível, que não considera vieses dos investigadores ou
+resultados, é que, no primeiro estudo, o remédio já estava sendo aplicado em
+pacientes nos estágios avançados da doença como medida emergencial, enquanto no
+segundo estudo o remédio foi aplicado tanto em pacientes com doença avançada
+quanto leve ou moderada. Logo, uma taxa de cura menor no primeiro estudo poderia
+ser explicada pela ineficiência do medicamento de conter a doença no estágio
+avançado, enquanto funciona bem no geral, como aponta o segundo estudo.
+
+
+# Exercício 2
+
+É apresentado um estudo prospectivo, aleatorizado, experimental (analítico) e
+controlado por grupo controle, sobre a aplicação de determinado tratamento -
+oxigenação específica - em ratos com diabete (população objetivo). Como
+hipótese, buscaram discobrir se existe efeito do oxigênio hiperbárico na
+cicratização de feridas cirúrgicas. Como fator extrínsico explicativo consta a
+exposição ou não - caracterizando dois níveis para esse fator - das unidades
+experimentais (ratos com diabete induzida) ao tratamento com oxigênio
+hiperbárico, uma exposição com intervenção. Um possível fator intrínseco é a
+própria variação biológica dos ratos, que pode acelerar ou retardar a
+cicatrização. A repetição foi realizada com diversos ratos por grupo (que
+receberam ou não o tratamento). Variações externas como níveis glicêmicos
+inadequados no sangue foram tratadas ao desconsiderar $6$ desses ratos.
+Variações acidentais tentaram ser minimzadas por preocauções dos pesquisadores.
+Por se tratar de um estudo experimental, não podemos descrever unidades
+observacionais, nem se encaixa como longitudinal ou transversal.
+
+
+# Exercício 3
+
+## Item a
+
+O contraste $p=1$ pode ser usado para testar se o efeito da dose zero difere do
+efeito da dose um, enquanto o contraste $p=2$ pode ser usado para comparar o
+efieto da dose dois conjuntamente com as doses um e dois. Ambos os constrastes
+seriam nesse exemplo usados para encontrar a dose limiar de efeito.
+
+## Item b
+
+Assumindo tamanho amostral igual para as doses, os constrastes são ortogonais:
+
+$$
+\begin{aligned}
+(-1) \cdot (-1) + 1 \cdot (-1) + 0 \cdot 2 &= 0 \\
+(-1) \cdot (-1) + 1 \cdot (-1) + 0 \cdot (-1) + 0 \cdot 3 &= 0 \\
+(-1) \cdot (-1) + (-1) \cdot (-1) + 2 \cdot (-1) + 0 \cdot 3 &= 0
+\end{aligned}
+$$
+
+## Item c
+
+A hipótese $\mathcal{H}_2$ é a mais apropriada para testar a dose limiar uma vez
+que busca a primeira dose $j$ a possuir uma média significativamente maior que
+as anteriores, que são iguais, assumindo doses crescentes. Caso não exista,
+caímos na hipótese de não efeito $\mathcal{H}_0$. Não sugeririamos outra hiótese
+para este problema.
+
+## Item d
+
+# Exercício 4
+
+# Referências
+
+:::{.refs}
+:::
