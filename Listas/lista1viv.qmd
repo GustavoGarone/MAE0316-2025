@@ -5,6 +5,9 @@ format:
     # tables: true
     extra-dependencies:
       - float
+    # include-in-header:
+    #   - text: |
+    #       \usepackage{multirow}
 title: Lista 01 - Planejamento e Análise de Experimentos (MAE0316)
 date: last-modified
 date-format: long
@@ -95,18 +98,19 @@ avançado, enquanto funciona bem no geral, como aponta o segundo estudo.
 controlado por grupo controle, sobre a aplicação de determinado tratamento -
 oxigenação específica - em ratos com diabete (população objetivo). Como
 hipótese, buscaram discobrir se existe efeito do oxigênio hiperbárico na
-cicratização de feridas cirúrgicas. Como fator extrínsico explicativo consta a
-exposição ou não - caracterizando dois níveis para esse fator - das unidades
-experimentais (ratos com diabete induzida) ao tratamento com oxigênio
-hiperbárico, uma exposição com intervenção. Um possível fator intrínseco é a
-própria variação biológica dos ratos, que pode acelerar ou retardar a
-cicatrização. A repetição foi realizada com diversos ratos por grupo (que
-receberam ou não o tratamento). Variações externas como níveis glicêmicos
-inadequados no sangue foram tratadas ao desconsiderar $6$ desses ratos.
-Variações acidentais tentaram ser minimzadas por preocauções dos pesquisadores.
-Por se tratar de um estudo experimental, não podemos descrever unidades
-observacionais, nem se encaixa como longitudinal ou transversal.
-
+cicratização de feridas cirúrgicas nesta população. Como fator extrínsico
+explicativo consta a exposição ou não - caracterizando dois níveis para esse
+fator - das unidades experimentais (ratos com diabete induzida) ao tratamento
+com oxigênio hiperbárico, uma exposição com intervenção. Uma possível fonte de
+variação intrínseca externa é a própria variação biológica dos ratos, que pode
+acelerar ou retardar a cicatrização. A repetição foi realizada com diversos
+ratos por grupo (que receberam ou não o tratamento). Variações externas como
+níveis glicêmicos inadequados no sangue foram tratadas ao desconsiderar $6$
+desses ratos. Variações acidentais tentaram ser minimzadas por preocauções dos
+pesquisadores. Por se tratar de um estudo experimental, não podemos descrever
+unidades observacionais, nem se encaixa como longitudinal ou transversal.
+A unidade observacional são as amostras de tecido coletadas. Fontes de
+mascaramento, como o viés dos pesquisadores, foram relatadas como minimizadas.
 
 # Exercício 3
 
@@ -138,6 +142,49 @@ caímos na hipótese de não efeito $\mathcal{H}_0$. Não sugeririamos outra hi�
 para este problema.
 
 ## Item d
+
+Construímos a tabela de contrastes de Helmert:
+
+\begin{table}[]
+\centering
+\caption{Contrastes usados}
+\begin{tabular}{c|ccccc}
+             & \multicolumn{5}{l}{Coeficiente (q)} \\
+Contraste(p) & 0     & 1     & 2     & 3     & 4   \\
+             \cline{1-6}
+             & -1    & 1     & 0     & 0     & 0   \\
+             & -1    & -1    & 2     & 0     & 0   \\
+             & -1    & -1    & -1    & 3     & 0   \\
+             & -1    & -1    & -1    & -1    & 4  
+\end{tabular}
+\end{table}
+
+
+Para uma hipótese $\mathcal{H}: L$ temos o estimador:
+
+$$
+\hat{L} = \sum^a_{i}c_i \bar{Y}_i
+$$
+em que $c_i$ são os elementos do contraste e
+$$
+\mathrm{Var}(\hat{L}) = \mathrm{MSE} \sum^a_{i=1} \frac{c_i^2}{n_i}
+$$
+
+Disso, construímos a estatística do teste
+$$
+T = \frac{\hat{L} - L}{\sqrt{\hat{\mathrm{Var}}(\hat{L})}}
+\stackrel{\mathcal{H}_0}{\sim} t_{N-a}
+$$
+
+Estamos testando, em todas as hipóteses, $L = 0$. Logo, para cada contraste, temos a
+estatística $T_j$:
+
+$$
+\begin{aligned}
+L_0 = -6.2 + 6.14 = -0.06 \Rightarrow
+\end{aligned}
+$$
+
 
 # Exercício 4
 
