@@ -47,14 +47,14 @@ Nesta lista, usaremos "$.$" como separador decimal.
 
 Analisamos um estudo de coorte sobre os efeitos da "COVID longa" ou Síndrome
 pós-COVID-19 no trabalho de @rocha_sindrome_2024. O estudo utilizou o método de
-coorte ambidirecional com indivíduos de três hosítais de Cuiabá. Observações
+coorte ambidirecional com indivíduos de três hospitais de Cuiabá. Observações
 foram colhidas do prontuário desses pacientes e posteriormente $6$ e $12$ meses
 após alta hospitalar por telefone. Foram perguntados fatores socioeconômicos dos
 indivíduos, além de sintomas comuns da "COVID longa", como fadiga e problemas de
 memória.
 
 Na análise de dados, foram consideradas pelos pesquisadores comorbidades como
-hipertensão, diabete, obesidade e doenças cardíacas. Para os sintomas,
+hipertensão, diabetes, obesidade e doenças cardíacas. Para os sintomas,
 classificaram como musculares, neuropsiquiátricos, dermatológicos,
 cardiovasculares e pulmonares.
 
@@ -97,14 +97,15 @@ avançado, enquanto funciona bem no geral, como aponta o segundo estudo.
 É apresentado um estudo prospectivo, aleatorizado, experimental (analítico) e
 controlado por grupo controle, sobre a aplicação de determinado tratamento -
 oxigenação específica - em ratos com diabete (população objetivo). Como
-hipótese, buscaram discobrir se existe efeito do oxigênio hiperbárico na
-cicratização de feridas cirúrgicas nesta população. Como fator extrínsico
-explicativo consta a exposição ou não - caracterizando dois níveis para esse
+hipótese, buscaram descobrir se existe efeito do oxigênio hiperbárico na
+cicatrização de feridas cirúrgicas nesta população. Como fator extrínseco
+explicativo e premeditado consta a exposição ou não - caracterizando dois níveis para esse
 fator - das unidades experimentais (ratos com diabete induzida) ao tratamento
 com oxigênio hiperbárico, uma exposição com intervenção. Uma possível fonte de
-variação intrínseca externa é a própria variação biológica dos ratos, que pode
+variação intrínseca (externa) é a própria variação biológica dos ratos, que pode
 acelerar ou retardar a cicatrização. A repetição foi realizada com diversos
-ratos por grupo (que receberam ou não o tratamento). Variações externas como
+ratos por grupo (que receberam ou não o tratamento), cujo número pode ser 
+aumentado a fim de gerar mais repetições. Variações externas como
 níveis glicêmicos inadequados no sangue foram tratadas ao desconsiderar $6$
 desses ratos. Variações acidentais tentaram ser minimzadas por preocauções dos
 pesquisadores. Por se tratar de um estudo experimental, não podemos descrever
@@ -192,3 +193,4 @@ $$
 
 :::{.refs}
 :::
+
