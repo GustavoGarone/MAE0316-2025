@@ -1,0 +1,297 @@
+---
+format: pdf
+execute:
+    echo: false
+---
+
+```{r}
+#| output: false
+library(tidyr)
+library(dplyr)
+library(broom)
+library(ggplot2)
+library(car)
+# library(car)
+if (!require("pacman")) install.packages("pacman")
+```
+
+```{r}
+pacman::p_load(dplyr)
+# Carregar os dados
+base_url <- "https://raw.githubusercontent.com/vincentarelbundock/Rdatasets/"
+file_path <- "ba3186b8413f4d40d8f38120c32bcd31797e8d5e/csv/Stat2Data/FruitFlies.csv"
+dat <- read.csv(paste0(base_url, file_path)) |>
+  select(ID, Longevity, everything(), -rownames) |>
+  mutate(
+    Treatment =
+      factor(Treatment,
+        levels = c(
+          "none",
+          "1 pregnant", "1 virgin", "8 pregnant", "8 virgin"
+        )
+      ),
+    Type = factor(
+      case_when(
+        Type == 0 ~ "prenha",
+        Type == 1 ~ "virgem",
+        Type == 9 ~ "nenhuma",
+        TRUE ~ NA_character_
+      ),
+      levels = c("nenhuma", "prenha", "virgem")
+    )
+  )
+```
+
+```{r}
+#| output: false
+dat$Partners <- as.factor(dat$Partners)
+head(dat)
+```
+
+# Banco sem tratamento "none"
+
+```{r}
+dat2 <- subset(dat, Treatment != "none")
+```
+
+## Itens a, b e c.
+
+Abaixo, um sumário da ANOVA para o modelo simples (I) (considerando apenas o
+tratamento)
+
+```{r}
+modeloSimples <- lm(data = dat2, Longevity ~ Treatment)
+modeloInteracao <- lm(data = dat2, Longevity ~ Type * Partners)
+aovSimples <- aov(modeloSimples)
+summary(aovSimples)
+```
+e seus coeficientes:
+```{r}
+coef(aovSimples)
+```
+
+Agora, para o modelo com interação (II)
+
+```{r}
+aovInteracao <- aov(modeloInteracao)
+summary(aovInteracao)
+```
+
+e seus coeficientes:
+```{r}
+coef(aovInteracao)
+```
+
+Notamos semelhanças no resultado do teste de hipótese (evidências de efeito do
+tratamento), nos valores de alguns coeficientes e na soma de quadrados dos resíduos.
+Notamos que o modelo com interação apresenta individualmente os resultados para
+os fatores, ao invés de agrupar tudo como tratamento, o que pode ser
+benéfico na análise.
+
+Da tabela ANOVA com modelo com interações, concluímos que os parceiros, os
+tipos, e a interação entre parceiro e tipo são estatisticamente significantes
+para o modelo a $\alpha = 5\%$ de significância.
+
+## Item d
+
+Esperamos que os resíduos sigam distribuição normal. Verificamos pelo QQ-Plot:
+
+```{r}
+residuos <- resid(modeloInteracao)
+qqnorm(residuos,
+  xlab = "Quantis teóricos",
+  ylab = "Quantis Observados",
+  main = "Gráfico QQ",
+)
+qqline(residuos)
+```
+
+e comparação dos resíduos vs. ajustados
+
+```{r}
+plot(
+  aovInteracao$fitted.values, aovInteracao$residuals,
+  xlab = "Valores preditos",
+  ylab = "Resíduos",
+  main = "Resíduos vs Valores preditos"
+)
+abline(h = 0, col = "red", lwd = 2)
+```
+
+```{r}
+plot(
+  data = dat2,
+  residuos ~ Type,
+  xlab = "Tipo",
+  ylab = "Resíduos",
+  main = "Comparação dos resíduos por tipo"
+)
+plot(
+  data = dat2,
+  residuos ~ Partners,
+  xlab = "Parceiros",
+  ylab = "Resíduos",
+  main = "Comparação dos resíduos por parceiros"
+)
+```
+
+Apesar de apresentar algumas divergências, os resíduos parecem seguir
+normalidade por quantis. Verificaremos com alguns testes:
+
+Para o teste de Shapiro-Wald:
+```{r}
+shapiro.test(residuos)
+```
+
+Para o teste de Levene:
+
+```{r}
+leveneTest(modeloInteracao)
+```
+
+Para o teste de Bartlett
+```{r}
+bartlett.test(dat = dat2, Longevity ~ Type)
+bartlett.test(dat = dat2, Longevity ~ Partners)
+bartlett.test(dat = dat2, Longevity ~ interaction(Type, Partners))
+```
+
+Concluímos que o modelo pode ser aplicado pois não há evidências para rejeitar
+a hipótese de que os resíduos seguem distribuição normal. Conferimos um sumário
+do modelo:
+
+```{r}
+summary(modeloInteracao)
+```
+
+Encontramos um $R^2$ baixo, mas isto é esperado para um modelo com mais de um
+fator.
+
+## Item e
+
+Temos um modelo cela de referência:
+
+$$
+L_{ijk} = \tau_{i} + \beta_{j} + (\tau\beta)_{ij} + \epsilon_{ijk}
+$$
+
+Esse modelo descreve a longevidade como combinação do efeito do tipo $\tau$, dos
+parceiros $\beta$ e sua interação $\tau\beta$. Como concluímos que todos os
+parâmetros são estatisticamente significantes nesse modelo, podemos dizer que
+tanto o número de parceiros como seu tipo afetam a longevidade das moscas.
+Também, como observamos na análise da interação dos fatores, há evidências para
+afirmar que existe efeito sobre a longevidade da mosca quando fica com números
+diferentes de parceiros do mesmo tipo. Por exemplo, quando fica com várias
+parceiras virgens. Como a interação é significativa, notamos também que se trata
+de um modelo não aditivo.
+
+## Item f
+
+Faremos a ANOVA para o modelo de dois fatores, mas sem interação
+
+```{r}
+modeloDoisFatores <- lm(data = dat2, Longevity ~ Type + Partners)
+aovDoisFatores <- aov(modeloDoisFatores)
+summary(aovDoisFatores)
+```
+e seus coeficientes:
+```{r}
+coef(aovDoisFatores)
+```
+Notamos semelhanças no resultado do teste de hipótese (evidências de efeito do
+tratamento), nos valores de alguns coeficientes e na soma de quadrados dos resíduos.
+Notamos que o modelo com interação apresenta individualmente os resultados para
+os fatores, ao invés de agrupar tudo como tratamento, o que pode ser
+benéfico na análise.
+
+Da tabela ANOVA com modelo com interações, concluímos que os parceiros, os
+tipos, e a interação entre parceiro e tipo são estatisticamente significantes
+para o modelo a $\alpha = 5\%$ de significância.
+
+<!-- TODO: continuar item f adiante -->
+
+## Item g
+
+Esperamos que os resíduos sigam distribuição normal. Verificamos pelo QQ-Plot:
+
+```{r}
+residuos <- resid(modeloDoisFatores)
+qqnorm(residuos,
+  xlab = "Quantis teóricos",
+  ylab = "Quantis Observados",
+  main = "Gráfico QQ",
+)
+qqline(residuos)
+```
+
+e comparação dos resíduos vs. ajustados
+
+```{r}
+plot(
+  aovDoisFatores$fitted.values, aovDoisFatores$residuals,
+  xlab = "Valores preditos",
+  ylab = "Resíduos",
+  main = "Resíduos vs Valores preditos"
+)
+abline(h = 0, col = "red", lwd = 2)
+```
+
+```{r}
+plot(
+  data = dat2,
+  residuos ~ Type,
+  xlab = "Tipo",
+  ylab = "Resíduos",
+  main = "Comparação dos resíduos por tipo"
+)
+plot(
+  data = dat2,
+  residuos ~ Partners,
+  xlab = "Parceiros",
+  ylab = "Resíduos",
+  main = "Comparação dos resíduos por parceiros"
+)
+```
+
+Apesar de apresentar algumas divergências, os resíduos parecem seguir
+normalidade por quantis. Verificaremos com alguns testes:
+
+Para o teste de Shapiro-Wald:
+```{r}
+shapiro.test(residuos)
+```
+
+Para o teste de Bartlett
+```{r}
+bartlett.test(dat = dat2, Longevity ~ Type)
+bartlett.test(dat = dat2, Longevity ~ Partners)
+```
+
+Concluímos que o modelo pode ser aplicado pois não há evidências para rejeitar
+a hipótese de que os resíduos seguem distribuição normal. Conferimos um sumário
+do modelo:
+
+```{r}
+summary(modeloDoisFatores)
+```
+
+Encontramos um $R^2$ baixo, mas isto é esperado para um modelo com mais de um
+fator.
+
+## Item e
+
+Temos um modelo cela de referência:
+
+$$
+L_{ijk} = \tau_{i} + \beta_{j} + (\tau\beta)_{ij} + \epsilon_{ijk}
+$$
+
+Esse modelo descreve a longevidade como combinação do efeito do tipo $\tau$, dos
+parceiros $\beta$ e sua interação $\tau\beta$. Como concluímos que todos os
+parâmetros são estatisticamente significantes nesse modelo, podemos dizer que
+tanto o número de parceiros como seu tipo afetam a longevidade das moscas.
+Também, como observamos na análise da interação dos fatores, há evidências para
+afirmar que existe efeito sobre a longevidade da mosca quando fica com números
+diferentes de parceiros do mesmo tipo. Por exemplo, quando fica com várias
+parceiras virgens. Como a interação é significativa, notamos também que se trata
+de um modelo não aditivo.
