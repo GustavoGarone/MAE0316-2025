@@ -29,13 +29,8 @@ fig-align: center
 fig-cap-location: top
 bibliography: references.bib
 csl: associacao-brasileira-de-normas-tecnicas.csl
-engine: julia
+engine: knitr
 ---
-
-```{julia}
-#| output: false
-# using Pkg; Pkg.add(["GLM", "Plots", "Distributions", "DataFrames", "PrettyTables", "LaTeXStrings", "CSV"])
-```
 
 `\vspace{-0.5cm}\noindent\rule{\textwidth}{1pt}`{=latex}
 
@@ -152,14 +147,14 @@ Construímos a tabela a partir dos dados do enunciado. Usamos os desvios padrõe
 \centering
 \caption{Doses}
 \begin{tabular}{c|ccccc}
-             & \multicolumn{4}{l}{Coeficiente (q)} \\
-Dose  (mg/kg/dia)  &  SSQ   &   GL   & MQE   \\
+             & \multicolumn{5}{l}{Coeficiente (q)} \\
+Dose  (mg/kg/dia)       &  SSQ    &   GL   &       & MQE   \\
              \cline{1-6}
-             & Controle   &  9.4864 & 11    & 0     & 0.8624   \\
-             & 10             & 5.3824 & 11    & 0     & 0.4893   \\
-             & 20            & 7.6729 & 11    & 3     & 0.6975   \\
-            & 30             & 5.3824 & 11    & -1    & 0.4893  \
-	    & 30             & 3.4969 & 11    & -1    & 0.3179  
+             Controle   &  9.4864 &  11    & 0     & 0.8624   \\
+             10         & 5.3824  &  11    & 0     & 0.4893   \\
+             20         & 7.6729  &  11    & 3     & 0.6975   \\
+             30         & 5.3824  &  11    & -1    & 0.4893   \\
+	     30         & 3.4969  &  11    & -1    & 0.3179  
 \end{tabular}
 \end{table}
 
@@ -235,22 +230,30 @@ Temos que, para o grau de significância de $5\%$, o quantil de corte é $1.673$
 
 require(ggplot2)
 require(dplyr)
-data = data.frame(Germinou = c(11, 9, 6, 7, 16, 17, 9, 19, 35, 13, 35, 28, 20, 37, 45, 8, 3, 3, 1, 7, 3, 5, 9, 9, 1, 10, 9, 11, 15, 25), Idade = c(1,1,1,3,3,3,6,6,6,9,9,9,12,12,12), H2O = c(4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8))
+data <- data.frame(Germinou = c(11, 9, 6, 7, 16, 17, 9, 19, 35, 13, 35, 28, 20, 37, 45, 8, 3, 3, 1, 7, 3, 5, 9, 9, 1, 10, 9, 11, 15, 25), Idade = c(1, 1, 1, 3, 3, 3, 6, 6, 6, 9, 9, 9, 12, 12, 12), H2O = c(4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8))
 
 data$Idade <- factor(data$Idade)
 data$H2O <- factor(data$H2O)
 
-perfil <- data %>% group_by(Idade, H2O) %>% summarise(media = mean(Germinou))
+perfil <- data %>%
+  group_by(Idade, H2O) %>%
+  summarise(media = mean(Germinou))
 
-perfis_medios <- ggplot(perfil, aes(x = factor(Idade), y = media, color = factor(H2O), group = H2O)) + geom_line() + geom_point() + theme_minimal() + ylim(c(0, 35)) + labs(title = "Gráfico de Perfis Médios de Germinamento para Idade e H2O", x = "Idade (meses)", y = "Média de Germinamento", color = "H2O (ml)") + theme(plot.title = element_text(hjust = 0.5))
-perfis_medios 
+perfis_medios <- ggplot(perfil, aes(x = factor(Idade), y = media, color = factor(H2O), group = H2O)) +
+  geom_line() +
+  geom_point() +
+  theme_minimal() +
+  ylim(c(0, 35)) +
+  labs(title = "Gráfico de Perfis Médios de Germinamento para Idade e H2O", x = "Idade (meses)", y = "Média de Germinamento", color = "H2O (ml)") +
+  theme(plot.title = element_text(hjust = 0.5))
+perfis_medios
 
 modelo <- aov(Germinou ~ H2O * Idade, data = data)
 summary(modelo)
 ```
 ## Item a
 
-Podemos ver que pode-se supor que não há interação entre idade e H2O, que pode ser inicialmente verificado pelo paralelismo do gráfico de perfis médios e confirmado pela não significância do efeito no modelo.
+Vemos que pode-se supor que não há interação entre idade e H2O, que pode ser inicialmente verificado pelo paralelismo do gráfico de perfis médios e confirmado pela não significância do efeito no modelo.
 
 ## Item b
 
@@ -279,22 +282,31 @@ Excluiremos as interações já que não são significantes. Verificação das s
 #| warning: false
 
 require(ggplot2)
-modelo1 <- aov(Germinou~Idade+H2O, data = data)
+modelo1 <- aov(Germinou ~ Idade + H2O, data = data)
 anova(modelo1)
 
-qq <- ggplot(data = data, aes(sample = residuals(modelo1))) + geom_qq() + geom_qq_line() + theme_minimal() + labs(title = "QQ-Plot dos Resíduos do Modelo sem Interação", x = "Quantis Teóricos", y = "Quantis Observados") + theme(plot.title = element_text(hjust = 0.5))
+qq <- ggplot(data = data, aes(sample = residuals(modelo1))) +
+  geom_qq() +
+  geom_qq_line() +
+  theme_minimal() +
+  labs(title = "QQ-Plot dos Resíduos do Modelo sem Interação", x = "Quantis Teóricos", y = "Quantis Observados") +
+  theme(plot.title = element_text(hjust = 0.5))
 
 qq
 
 shapiro.test(residuals(modelo1))
 
-bartlett.test(Germinou~interaction(Idade, H2O), data = data)
+bartlett.test(Germinou ~ interaction(Idade, H2O), data = data)
 
 resid <- data.frame(Fitted = fitted(modelo1), Residuals = residuals(modelo1))
-res_ajust <- ggplot(resid, aes(x = Fitted, y = Residuals)) + geom_point() + labs(title = "Gráfico Resíduos x Ajustados do Modelo sem Interação", x = "Ajustados", y = "Resíduos") + theme_minimal() + geom_hline(yintercept = 0, linetype = "dashed", color = "red") + theme(plot.title = element_text(hjust = 0.5))
+res_ajust <- ggplot(resid, aes(x = Fitted, y = Residuals)) +
+  geom_point() +
+  labs(title = "Gráfico Resíduos x Ajustados do Modelo sem Interação", x = "Ajustados", y = "Resíduos") +
+  theme_minimal() +
+  geom_hline(yintercept = 0, linetype = "dashed", color = "red") +
+  theme(plot.title = element_text(hjust = 0.5))
 
 res_ajust
-
 ```
 
 Podemos ver pelos testes que os erros são normalmente distribuídos e são homocedásticos.
@@ -305,7 +317,7 @@ Usando o modelo a Duas Vias sem Interação (não significante):
 #| echo: false
 #| warning: false
 
-modelo2 <- lm(Germinou~Idade+H2O, contrasts = list(Idade = contr.sum, H2O = contr.sum), data = data)
+modelo2 <- lm(Germinou ~ Idade + H2O, contrasts = list(Idade = contr.sum, H2O = contr.sum), data = data)
 summary(modelo2)
 anova(modelo2)
 ```
@@ -326,11 +338,7 @@ coefficients(modelo2)
 - $\hat{\gamma}_5$ é o aumento médio do germinamento dado 4ml de água ($\hat{\tau}_1 = 6.26666$)
 - $\hat{\tau}_2 = -6.26666$ é o aumento médio do germinamento dado 8ml de água
 
- 
-
 # Referências
 
 :::{.refs}
 :::
-
-
