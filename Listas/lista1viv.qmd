@@ -119,12 +119,14 @@ mascaramento, como o viés dos pesquisadores, foram relatadas como minimizadas.
 
 O contraste $p=1$ pode ser usado para testar se o efeito da dose zero difere do
 efeito da dose um, enquanto o contraste $p=2$ pode ser usado para comparar o
-efieto da dose dois conjuntamente com as doses um e dois. Ambos os constrastes
-seriam nesse exemplo usados para encontrar a dose limiar de efeito.
+efeito da dose dois com a média das doses zero e dose um. Alternativamente, 
+o contrate $p=2$ é usado para comparar o dobro do efeito da dose dois com a soma
+dos efeitos da dose zero e da dose um. Ambos os contrastes seriam nesse exemplo
+usados para encontrar a dose limiar de efeito.
 
 ## Item b
 
-Assumindo tamanho amostral igual para as doses, os constrastes são ortogonais:
+Assumindo tamanho amostral igual para as doses, os contrastes são ortogonais:
 
 $$
 \begin{aligned}
@@ -136,13 +138,32 @@ $$
 
 ## Item c
 
-A hipótese $\mathcal{H}_2$ é a mais apropriada para testar a dose limiar uma vez
-que busca a primeira dose $j$ a possuir uma média significativamente maior que
-as anteriores, que são iguais, assumindo doses crescentes. Caso não exista,
-caímos na hipótese de não efeito $\mathcal{H}_0$. Não sugeririamos outra hiótese
-para este problema.
+A hipótese $\mathcal{H}_2$ é a mais apropriada para testar a dose limiar uma vez que 
+busca uma dose $j$ tal que essa possui uma média significativamente maior que
+as anteriores ($1,2,\dots,j-1$), que são iguais, assumindo doses crescentes. 
+Caso não exista, caímos na hipótese de não efeito $\mathcal{H}_0$. Não sugeriríamos outra 
+hipótese para este problema.
 
 ## Item d
+
+Construímos a tabela a partir dos dados do enunciado. Usamos os desvios padrões ao quadrado para determinar o MQE dentro de cada dose.
+
+\begin{table}[]
+\centering
+\caption{Doses}
+\begin{tabular}{c|ccccc}
+             & \multicolumn{4}{l}{Coeficiente (q)} \\
+Dose  (mg/kg/dia)  &  SSQ   &   GL   & MQE   \\
+             \cline{1-6}
+             & Controle   &  9.4864 & 11    & 0     & 0.8624   \\
+             & 10             & 5.3824 & 11    & 0     & 0.4893   \\
+             & 20            & 7.6729 & 11    & 3     & 0.6975   \\
+            & 30             & 5.3824 & 11    & -1    & 0.4893  \
+	    & 30             & 3.4969 & 11    & -1    & 0.3179  
+\end{tabular}
+\end{table}
+
+Note, portanto, que $SSE = 104.3504 + 59.2064 + 84.4019 + 59.2064 + 38.4659 = 345.631$ e $GL_{Total} = 5 \times 11 = 55$. Portanto, $MQE = \frac{SSE}{GL_{Toal}} = 6.2842$, que também é o estimador não viesado para $\sigma^2$.
 
 Construímos a tabela de contrastes de Helmert:
 
@@ -160,37 +181,156 @@ Contraste(p) & 0     & 1     & 2     & 3     & 4   \\
 \end{tabular}
 \end{table}
 
-
-Para uma hipótese $\mathcal{H}: L$ temos o estimador:
+Para uma hipótese $\mathcal{H}: L_p$ temos o estimador:
 
 $$
-\hat{L} = \sum^a_{i}c_i \bar{Y}_i
+\hat{L_j} = \sum^a_{i}c_{j,i} \bar{Y}_i
 $$
 em que $c_i$ são os elementos do contraste e
 $$
-\mathrm{Var}(\hat{L}) = \mathrm{MSE} \sum^a_{i=1} \frac{c_i^2}{n_i}
+\mathrm{Var}(\hat{L_j}) = \mathrm{MSE} \sum^a_{i=1} \frac{c_{j,i}^2}{n_i}
 $$
 
 Disso, construímos a estatística do teste
 $$
-T = \frac{\hat{L} - L}{\sqrt{\hat{\mathrm{Var}}(\hat{L})}}
-\stackrel{\mathcal{H}_0}{\sim} t_{N-a}
+T_p = \frac{\hat{L_j} - 0}{\sqrt{\hat{\mathrm{Var}}(\hat{L_j})}}
+\stackrel{\mathcal{H}_0}{\sim} t_{12}
 $$
 
-Estamos testando, em todas as hipóteses, $L = 0$. Logo, para cada contraste, temos a
-estatística $T_j$:
-
+Estamos testando, em todas as hipóteses, $L = 0$. Logo, para cada contraste, temos as seguintes
+estatísticas $\hat{L_j}$:
 $$
-\begin{aligned}
-L_0 = -6.2 + 6.14 = -0.06 \Rightarrow
-\end{aligned}
+\begin{cases}
+\hat{L_1} = -0.060\\
+\hat{L_2} = 0.740\\
+\hat{L_3} = 4.130\\
+\hat{L_4} = 10.930\\
+\end{cases}
 $$
-
+Com as seguintes variâncias:
+$$
+\begin{cases}
+\hat{\mathrm{Var}}(\hat{L_1}) = 1.0474\\
+\hat{\mathrm{Var}}(\hat{L_2}) = 3.142\\
+\hat{\mathrm{Var}}(\hat{L_3}) = 6.284\\
+\hat{\mathrm{Var}}(\hat{L_4}) = 10.474\\
+\end{cases}
+$$
+Então, são as estatísticas dos testes $T_p$:
+$$
+\begin{cases}
+T_1 = -0.059 \\
+T_2 = 0.417\\
+T_3 = 1.647\\
+T_4 = 3.377\\
+\end{cases}
+$$
+Temos que, para o grau de significância de $5\%$, o quantil de corte é $1.673$. Portanto, a $5\%$ de significância, há evidências para rejeitar a hipótese nula apenas para o contraste $4$.
 
 # Exercício 4
+
+```{r}
+#| echo: false
+#| warning: false
+
+require(ggplot2)
+require(dplyr)
+data = data.frame(Germinou = c(11, 9, 6, 7, 16, 17, 9, 19, 35, 13, 35, 28, 20, 37, 45, 8, 3, 3, 1, 7, 3, 5, 9, 9, 1, 10, 9, 11, 15, 25), Idade = c(1,1,1,3,3,3,6,6,6,9,9,9,12,12,12), H2O = c(4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,8,8,8,8,8,8,8,8,8,8,8,8,8,8,8))
+
+data$Idade <- factor(data$Idade)
+data$H2O <- factor(data$H2O)
+
+perfil <- data %>% group_by(Idade, H2O) %>% summarise(media = mean(Germinou))
+
+perfis_medios <- ggplot(perfil, aes(x = factor(Idade), y = media, color = factor(H2O), group = H2O)) + geom_line() + geom_point() + theme_minimal() + ylim(c(0, 35)) + labs(title = "Gráfico de Perfis Médios de Germinamento para Idade e H2O", x = "Idade (meses)", y = "Média de Germinamento", color = "H2O (ml)") + theme(plot.title = element_text(hjust = 0.5))
+perfis_medios 
+
+modelo <- aov(Germinou ~ H2O * Idade, data = data)
+summary(modelo)
+```
+## Item a
+
+Podemos ver que pode-se supor que não há interação entre idade e H2O, que pode ser inicialmente verificado pelo paralelismo do gráfico de perfis médios e confirmado pela não significância do efeito no modelo.
+
+## Item b
+
+O modelo de ANOVA a uma via parece ser o mais indicado para esse caso, pois há apenas um fator (Idade), e conseguiríamos obter os efeitos de cada tratamento pelos $\tau_i$.
+
+## Item c
+
+Iremos considerar que o índice $i$ modela as idades (1-(1), 2-(3), 3-(6), 4-(9), 5-(12)) e o índice $j$ modela a quantidade de H2O (1-(4), 2-(8))
+
+### Modelo de Médias
+
+$$Y_{ijk} = \mu_{ij} + \epsilon_{ijk}$$
+Em que $\mu_{ij}$ será a média do tratamento: $i$-ésimo nível do fator 1 e $j$-ésimo nível do 2.
+
+### Modelo a Duas Vias com Interação
+
+$$Y_{ijk} = \mu + \tau_i + \beta_j + (\tau\beta)_{ij} + \epsilon_{ijk}$$
+Em que $\mu$ é uma constante que representa a média geral, $\tau_i$ é o efeito do $i$-ésimo nível do fator 1, $\beta_i$ é o efeito do $j$-ésimo nível do fator 2 e $(\tau\beta)_{ij}$ é o efeito da interação entre $\tau_i$ e $\beta_j$.
+
+## Item d
+
+Excluiremos as interações já que não são significantes. Verificação das suposições do modelo:
+
+```{r}
+#| echo: false
+#| warning: false
+
+require(ggplot2)
+modelo1 <- aov(Germinou~Idade+H2O, data = data)
+anova(modelo1)
+
+qq <- ggplot(data = data, aes(sample = residuals(modelo1))) + geom_qq() + geom_qq_line() + theme_minimal() + labs(title = "QQ-Plot dos Resíduos do Modelo sem Interação", x = "Quantis Teóricos", y = "Quantis Observados") + theme(plot.title = element_text(hjust = 0.5))
+
+qq
+
+shapiro.test(residuals(modelo1))
+
+bartlett.test(Germinou~interaction(Idade, H2O), data = data)
+
+resid <- data.frame(Fitted = fitted(modelo1), Residuals = residuals(modelo1))
+res_ajust <- ggplot(resid, aes(x = Fitted, y = Residuals)) + geom_point() + labs(title = "Gráfico Resíduos x Ajustados do Modelo sem Interação", x = "Ajustados", y = "Resíduos") + theme_minimal() + geom_hline(yintercept = 0, linetype = "dashed", color = "red") + theme(plot.title = element_text(hjust = 0.5))
+
+res_ajust
+
+```
+
+Podemos ver pelos testes que os erros são normalmente distribuídos e são homocedásticos.
+
+Usando o modelo a Duas Vias sem Interação (não significante):
+
+```{r}
+#| echo: false
+#| warning: false
+
+modelo2 <- lm(Germinou~Idade+H2O, contrasts = list(Idade = contr.sum, H2O = contr.sum), data = data)
+summary(modelo2)
+anova(modelo2)
+```
+
+### (e)
+
+```{r}
+#| echo: false
+#| warning: false
+coefficients(modelo2)
+```
+- $\hat{\gamma}_0$ é a média geral do modelo ($\hat{\mu} = 14.2$)
+- $\hat{\gamma}_1$ é o aumento médio do germinamento dado 1 mês de idade ($\hat{\beta}_1 = -7.53333$)
+- $\hat{\gamma}_2$ é o aumento médio do germinamento dado 3 meses de idade ($\hat{\beta}_2 = -5.7$)
+- $\hat{\gamma}_3$ é o aumento médio do germinamento dado 6 meses de idade ($\hat{\beta}_3 = 0.13333$)
+- $\hat{\gamma}_4$ é o aumento médio do germinamento dado 9 meses de idade ($\hat{\beta}_4 = 1.8$)
+- $\hat{\beta}_5 = -(-7.53333-5.7+0.13333+1.8) = 11.3$ é o aumento médio do germinamento dado 12 meses de idade
+- $\hat{\gamma}_5$ é o aumento médio do germinamento dado 4ml de água ($\hat{\tau}_1 = 6.26666$)
+- $\hat{\tau}_2 = -6.26666$ é o aumento médio do germinamento dado 8ml de água
+
+ 
 
 # Referências
 
 :::{.refs}
 :::
+
 
