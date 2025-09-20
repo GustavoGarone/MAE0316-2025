@@ -144,6 +144,25 @@ para este problema.
 
 ## Item d
 
+Construímos a tabela a partir dos dados do enunciado. Usamos os desvios padrões ao quadrado para determinar o MQE dentro de cada dose.
+
+\begin{table}[]
+\centering
+\caption{Doses}
+\begin{tabular}{c|ccccc}
+             & \multicolumn{4}{l}{Coeficiente (q)} \\
+Dose  (mg/kg/dia)  &  SSQ   &   GL   & MQE   \\
+             \cline{1-6}
+             & Controle   &  9.4864 & 11    & 0     & 0.8624   \\
+             & 10             & 5.3824 & 11    & 0     & 0.4893   \\
+             & 20            & 7.6729 & 11    & 3     & 0.6975   \\
+            & 30             & 5.3824 & 11    & -1    & 0.4893  \
+	    & 30             & 3.4969 & 11    & -1    & 0.3179  
+\end{tabular}
+\end{table}
+
+Note, portanto, que $SSE = 104.3504 + 59.2064 + 84.4019 + 59.2064 + 38.4659 = 345.631$ e $GL_{Total} = 5 \times 11 = 55$. Portanto, $MQE = \frac{SSE}{GL_{Toal}} = 6.2842$, que também é o estimador não viesado para $\sigma^2$.
+
 Construímos a tabela de contrastes de Helmert:
 
 \begin{table}[]
@@ -160,31 +179,51 @@ Contraste(p) & 0     & 1     & 2     & 3     & 4   \\
 \end{tabular}
 \end{table}
 
-
-Para uma hipótese $\mathcal{H}: L$ temos o estimador:
+Para uma hipótese $\mathcal{H}: L_p$ temos o estimador:
 
 $$
-\hat{L} = \sum^a_{i}c_i \bar{Y}_i
+\hat{L_j} = \sum^a_{i}c_{j,i} \bar{Y}_i
 $$
 em que $c_i$ são os elementos do contraste e
 $$
-\mathrm{Var}(\hat{L}) = \mathrm{MSE} \sum^a_{i=1} \frac{c_i^2}{n_i}
+\mathrm{Var}(\hat{L_j}) = \mathrm{MSE} \sum^a_{i=1} \frac{c_{j,i}^2}{n_i}
 $$
 
 Disso, construímos a estatística do teste
 $$
-T = \frac{\hat{L} - L}{\sqrt{\hat{\mathrm{Var}}(\hat{L})}}
-\stackrel{\mathcal{H}_0}{\sim} t_{N-a}
+T_p = \frac{\hat{L_j} - 0}{\sqrt{\hat{\mathrm{Var}}(\hat{L_j})}}
+\stackrel{\mathcal{H}_0}{\sim} t_{12}
 $$
 
-Estamos testando, em todas as hipóteses, $L = 0$. Logo, para cada contraste, temos a
-estatística $T_j$:
-
+Estamos testando, em todas as hipóteses, $L = 0$. Logo, para cada contraste, temos as seguintes
+estatísticas $\hat{L_j}$:
 $$
-\begin{aligned}
-L_0 = -6.2 + 6.14 = -0.06 \Rightarrow
-\end{aligned}
+\begin{cases}
+\hat{L_1} = -0.060\\
+\hat{L_2} = 0.740\\
+\hat{L_3} = 4.130\\
+\hat{L_4} = 10.930\\
+\end{cases}
 $$
+Com as seguintes variâncias:
+$$
+\begin{cases}
+\hat{\mathrm{Var}}(\hat{L_1}) = 1.0474\\
+\hat{\mathrm{Var}}(\hat{L_2}) = 3.142\\
+\hat{\mathrm{Var}}(\hat{L_3}) = 6.284\\
+\hat{\mathrm{Var}}(\hat{L_4}) = 10.474\\
+\end{cases}
+$$
+Então, são as estatísticas dos testes $T_p$:
+$$
+\begin{cases}
+T_1 = -0.059 \\
+T_2 = 0.417\\
+T_3 = 1.647\\
+T_4 = 3.377\\
+\end{cases}
+$$
+Temos que, para o grau de significância de $5\%$, o quantil de corte é $1.782$. Portanto, a $5\%$ de significância, há evidências para rejeitar a hipótese nula apenas para o contraste $4$.
 
 
 # Exercício 4
@@ -193,4 +232,5 @@ $$
 
 :::{.refs}
 :::
+
 
