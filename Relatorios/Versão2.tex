@@ -1,0 +1,90 @@
+\documentclass{article}
+\usepackage[brazilian]{babel}
+\usepackage{graphicx} % Required for inserting images
+\usepackage[autostyle]{csquotes}
+\usepackage{xpatch}
+\usepackage{geometry}
+\geometry{ a4paper, left=30mm, top=30mm, right=20mm, bottom=20mm}
+\usepackage[style=ieee]{biblatex}
+\addbibresource{references.bib}
+
+
+\title{Planejamento de Experimento - Impacto da velocidade de vídeos educativos na memorização}
+\author{
+Caio Mendes de Almeida - 15444560
+\and
+Eduardo Yukio G. Ishihara - 15449012
+\and
+Gustavo S. Garone - 15458155
+\and
+Ian B. Loures - 15459667
+\and
+João Victor G. de Sousa -15463912}
+\date{Outubro 2025}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+    Este projeto descreve um experimento randomizado para avaliar o efeito da velocidade de reprodução (VR) de vídeos educativos e do conteúdo do vídeo (CV) sobre a retenção imediata e tardia de informação em estudantes de graduação da área de exatas. O delineamento combina dois fatores fixos (CV: Matemática vs Biologia; VR: 1x vs 2x) e prevê medidas repetidas (teste imediato e reteste após 1 semana). Apresentam-se aqui os objetivos, justificativa teórica, desenho experimental, cálculo amostral, plano de coleta e procedimentos de análise estatística, além de considerações éticas e orçamento estimado.
+\end{abstract}
+
+\section{Introdução}
+    A educação mediada por vídeos (vídeo-aulas) tornou-se uma prática central no ensino superior. Estudantes comumente recorrem ao aumento na velocidade de reprodução (VR) como estratégia para economizar tempo \cite{murphy_learning_2022}. A literatura sugere efeitos mistos: enquanto aumentos moderados (e.g. até 1.5x) frequentemente não prejudicam a compreensão, velocidades mais altas (e.g. 2x) podem reduzir desempenho em testes imediatos e/ou retardados, possivelmente por aumentar a carga cognitiva ou comprometer a codificação profunda do material \cite{murphy_learning_2022, tharumalingam_increasing_2025, murphy_effect_2023}.
+
+    Além da VR, o conteúdo do vídeo (CV) e o interesse do aprendiz pelo tópico podem modular a atenção e a retenção \cite{mcintyre_liking_2021}. Nosso estudo investiga se a interação entre VR e CV afeta a retenção imediata e tardia em estudantes de exatas, com atenção especial ao fato de que conteúdos mais alinhados ao interesse dos estudantes (conteúdos voltados a ciências exatas) podem mitigar efeitos negativos da aceleração.
+
+
+\section{Objetivo}
+
+    Objetiva-se quantificar o impacto da velocidade de reprodução (VR) (1x ou 2x) e do conteúdo do vídeo (CV) (Matemática ou Biologia) sobre a proporção de acertos em testes aplicados imediatamente após o vídeo e novamente uma semana depois, em estudantes de graduação da área de matemática / probabilidade e estatística. 
+
+
+\section{Metodologia}
+
+    Delineamento experimental inteiramente casualizado e fatorial completo: $2\times 2$ com medidas repetidas no tempo (teste imediato e reteste uma semana depois). As unidades experimentais são participantes individuais, cada participante é alocado a uma única combinação (tratamento) de CV e VR e realiza o teste em dois tempos. Utilizaremos como variável resposta a performance em um teste (PT) (proporção de acertos) aplicado nos estudantes de acordo com o CV, que será calculado contanto o total de acertos e dividindo pelo total de questões para cada estudante. Dois formulários serão utilizados para cada CV.
+
+    Os indivíduos selecionados para o experimento são todos os estudantes matriculados na disciplina MAE0316 - Planejamento e Análise de Experimentos, oferecida no segundo semestre de 2025 no Instituto de Matemática e Estatística da Universidade de São Paulo (IME-USP) que não são autores ou estiveram envolvidos no planejamento deste experimento. Por estarem matriculados na matéria, não será necessário que assinem um termo de consentimento ou um aval do Comitê de Ética em Pesquisa (CEP).
+
+    \subsection{Formulário 1}
+        O primeiro formulário consistirá de três seções: triagem, vídeo e teste.
+    
+        Na primeira seção, será perguntado a idade, sexo, curso do participante e e-mail para identificação e contato durante todo o experimento. Os participantes serão orientados a anotarem o  e-mail inserido. Ademais, será apresentado o tópico do vídeo, escolhido aleatoriamente entre [Matemática - Potência de Ponto] e [Biologia - Transcrição e Tradução]. A segunda seção é composta pelo vídeo e instruções de como assisti-lo (sem realizar anotações, evitando pausas, sem assisti-lo novamente e na velocidade indicada). A terceira seção consiste num teste de múltipla escolha (5 (cinco) alternativas) e 10 (dez) questões em ordem aleatorizada para cada respondente para avaliar a proporção de acertos. Os participantes são informados que um segundo teste será aplicado em uma semana, e é solicitado que não busquem mais informações sobre o assunto no meio tempo.
+
+    
+    \subsection{Formulário 2}
+    
+        O segundo formulário consistirá apenas de duas seções: triagem e teste. Será enviado aos participantes via e-mail uma semana após a aplicação do primeiro.
+
+        Na primeira seção, será perguntando o  e-mail usado no primeiro formulário para identificação das respostas. Também será perguntado se o participante viu algum material sobre o vídeo assistido desde então. A segunda seção consistirá do mesmo teste aplicado no formulário 1, com questões em ordem mais uma vez aleatorizada. O participante será orientado a não buscar manter consistência entre as respostas dos formulários, apenas a marcar o que acredita ser verdade.
+
+    As questões dos testes serão retiradas dos vestibulares de ingressos em universidades públicas estaduais e federais que mantiveram o sistema de ingresso com vestibular próprio (e.g. Universidade Estadual do Rio de Janeiro, Universidade Federal do Rio Grande do Sul, Universidade Federal de Santa Catarina, Universidade Estadual do Ceará) ou produzidas conforme os moldes das questões dos vestibulares supracitados. Cada pergunta possui apenas uma alternativa correta.
+
+    Os vídeos foram selecionados, pois apresentam tempo de duração semelhantes (8 minutos e 32 segundos para o vídeo de matemática e 9 minutos e 58 segundos para o vídeo de biologia) e tiveram avaliações muito positivas nos comentários e no sistema de avaliação nativo da plataforma de vídeos \textit{Youtube}, os \textit{likes}.
+    
+    Serão excluídas as observações dos participantes que relatarem pausa ou consulta externa durante o vídeo, que foram expostos a conteúdos relacionados ao teste no período entre testes ou não completarem o reteste no prazo de 48h.
+
+    Levando-se em consideração que todos os participantes do experimento são voluntários e os softwares usados para aplicar o formulário e a análise de dados (\textit{software estatístico R}) são gratuitos, não se prevê custo associado à realização do experimento. Preliminarmente, será realizada uma análise exploratória e descritiva dos dados, com a construção de “boxplots” das variáveis envolvidas e outros gráficos pertinentes, como o gráfico de perfis de médias, e o cálculo de medidas de dispersão e de tendência central.
+    
+    O modelo ajustado para a avaliação dos efeitos da velocidade de reprodução (VR) e do conteúdo do vídeo (CV) sobre cada um dos tratamentos será o ANOVA (Análise de Variância) com 2 (dois) fatores de efeitos fixos cruzados, cuja variável resposta é performance em um teste (PT), na escala contínua de 0 (zero) a 1 (um). A princípio, considera-se um modelo multiplicativo, isto é, que contém efeito de interação entre os fatores. Após o ajuste do modelo, serão conduzidos testes de diagnóstico do modelo e análise de resíduos para checar se os pressupostos do modelo ANOVA são corroborados, como, por exemplo, teste de Bartlett (para a suposição de homocedasticidade) e teste de Shapiro-Wilk (para a suposição de normalidade dos erros), além de se verificar se há interação significativa entre os fatores, ao nível de significância de $5\%$, com base nos valores dos níveis descritivos. Caso não apresente significância, considerar-se-á um modelo aditivo. Serão, também, aplicados outros testes de médias, como o teste de Tukey. Em suma, testará-se a hipótese definida no princípio, isto é, se existe diferença significativa na memorização sob cada tratamento.
+    
+    A partir da análise dos dados, será elaborado um relatório que contém todos os resultados do experimento, com uma descrição detalhada do passo a passo seguido e da comparação entre o que se esperava e o que se obteve. O relatório será redigido por intermédio da ferramenta RMarkdown.
+    Por fim, os resultados obtidos serão apresentados para os estudantes da classe e cartazes informativos com os resultados do experimento serão produzidos usando a ferramenta \textit{Canva} e espalhados nos prédios do IME-USP. Além disso, intenciona-se publicar o artigo científico, fruto do estudo, em algum periódico ou revista científica.
+
+
+
+\section{Embasamento Teórico}
+
+    Murphy et al.~\cite{murphy_learning_2022} demonstram que velocidades moderadas, como 1.25x e 1.5x, não prejudicam significativamente o desempenho em testes imediatos de compreensão. Entretanto, VR superiores a 1.5x apresentam impacto negativo na retenção de conteúdo, especialmente quando avaliada após um intervalo de tempo. Resultados semelhantes são reportados pela meta-análise conduzida por Tharumalingam et al.~\cite{tharumalingam_increasing_2025}, que indica que velocidades iguais ou superiores a 2x geram quedas consistentes de desempenho, associadas ao aumento da demanda cognitiva.
+    
+    Esses fenômenos podem ser explicados pela Teoria da Carga Cognitiva, proposta por Sweller e colaboradores~\cite{leahy_cognitive_2011}, segundo a qual a aprendizagem é limitada pela capacidade de processamento da memória de trabalho. O aumento excessivo da VR sobrecarrega esse sistema, elevando a carga extrínseca e reduzindo a capacidade do estudante de integrar novas informações ao conhecimento prévio. Estudos clássicos como os de Foulke e Sticht~\cite{foulke_review_1969} já apontavam que a compreensão auditiva diminui conforme a taxa de apresentação da fala aumenta, o que fundamenta teoricamente os prejuízos observados com VR elevadas.
+    
+    Por outro lado, efeitos positivos do aumento moderado da VR também são apontados na literatura. Murphy et al.~\cite{murphy_effect_2023} argumentam que a apresentação levemente acelerada pode reduzir episódios de \textit{mind wandering} (divagação mental), mantendo o engajamento e aumentando a eficiência do estudo. Além da VR, o interesse do participante no conteúdo do vídeo (CV) também tem papel relevante na retenção. McIntyre et al.~\cite{mcintyre_liking_2021} demonstram que tópicos percebidos como atraentes ou relevantes geram maior retenção e desempenho em avaliações posteriores, sugerindo que o fator motivacional influencia diretamente os resultados de aprendizagem.
+    
+    Considerando essas evidências, o presente estudo busca investigar não apenas o efeito isolado da VR, mas também sua interação com o conteúdo dos vídeos. Além disso, a avaliação da retenção será realizada de forma imediata e após uma semana, conforme proposto por Murphy et al.~\cite{murphy_learning_2022}, permitindo analisar tanto retenção de curto quanto de longo prazo.
+    
+
+\section{Bibliografia}
+\printbibliography
+\end{document}
