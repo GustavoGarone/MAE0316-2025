@@ -1,0 +1,68 @@
+\documentclass{article}
+\usepackage[brazilian]{babel}
+\usepackage{graphicx} % Required for inserting images
+\usepackage[autostyle]{csquotes}
+\usepackage{xpatch}
+\usepackage{geometry}
+\geometry{ a4paper, left=30mm, top=30mm, right=20mm, bottom=20mm}
+\usepackage[style=ieee]{biblatex}
+\addbibresource{references.bib}
+
+
+\title{Planejamento de Experimento - Impacto da velocidade de vídeos educativos na memorização}
+\author{
+Caio Mendes de Almeida - 15444560
+\and
+Eduardo Yukio G. Ishihara - 15449012
+\and
+Gustavo S. Garone - 15458155
+\and
+Ian B. Loures - 15459667
+\and
+João Victor G. de Sousa -15463912}
+\date{Outubro 2025}
+
+\begin{document}
+
+\maketitle
+
+\section{Objetivo}
+
+    Objetiva-se medir o impacto da velocidade de reprodução de vídeos (VR) na retenção de informação por estudantes de graduação na área de exatas. Em especial, busca-se avaliar se esse impacto difere com conteúdos diferentes, por exemplo, se vídeos de matemática acatam em maior retenção com alta VR quando comparado com vídeos de biologia com mesma VR nessa população.
+    
+\section{Justificativa}
+
+   A popularização do estudo por mídias diversas na Internet, como vídeos no \textit{YouTube}, forneceu um novo meio aos estudantes de estudarem por conta própria, em suas casas, com horários flexíveis e pessoalizados. Na busca pela otimização desse tempo, aumentar a VR de vídeos se tornou uma técnica popular \cite{murphy_learning_2022}.
+
+   Diante disso, indagações sobre a eficácia dessa estratégia surgiram, resultando em diversas pesquisas na área sobre o assunto. Além da VR \cite{lang_is_2020}\cite{tharumalingam_increasing_2025}, foi analisado a retenção longitudinal \cite{murphy_learning_2022}, com uma repetição de teste uma semana após o vídeo, e o efeito da idade e sua interação com a VR \cite{murphy_effect_2023}.
+
+   Fomos motivados a realizar este presente estudo pela falta de literatura sobre o efeito do conteúdo do vídeo (CV) e sua interação com a VR na retenção de informação por estudantes da graduação na área de exatas. Sabemos que VR até 1.5x não tem impacto negativo significativo na retenção \cite{tharumalingam_increasing_2025}, portanto, ao observar VRs acima de 1.5x com CV diferentes, podemos medir se o efeito negativo é mitigado com CVs interessantes aos participantes.
+
+\section{Metodologia}
+
+    Delineamos um estudo experimental aleatorizado e prospectivo para testar a hipótese de que há diferença significativa no efeito da velocidade de reprodução de vídeos na retenção da informação entre vídeos com conteúdos diferentes para estudantes da graduação na área de matemática / probabilidade e estatística. Estamos interessados em descrever a performance em um teste (PT) (proporção de acertos) em função do conteúdo do vídeo (CV), com dois níveis: matemática e biologia, e velocidade de reprodução (VR), com dois níveis, 1x e 2x.
+
+    Colheremos a idade, curso e sexo para testar necessidade de análise em grupos e redução de variação intrínseca.
+
+    Os dados serão colhidos por meio de dois formulários do \textit{Google Forms}. Parte do conteúdo dos formulários (o vídeo, a velocidade a ser assistida e o questionário pós-vídeo) serão aleatorizadas entre os participantes.
+
+    \subsection{Formulário 1}
+        O primeiro formulário consistirá de três seções: triagem, vídeo e teste.
+    
+        Na primeira seção, será perguntado a idade, sexo, curso do participante e nome/apelido para identificação. Os participantes serão orientados a anotarem o nome/apelido inserido. Ademais, será apresentado o tópico do vídeo, escolhido aleatoriamente entre [] e []. A segunda seção é composto pelo vídeo e instruções de como assisti-lo (sem anotar, evitando pausas, sem assistir novamente, na velocidade indicada). Posteriormente, é aplicado um teste de múltipla escolha (5 alternativas) de 10 questões para avaliar a proporção de acertos. Os participantes são informados que um segundo teste será aplicado em uma semana, e é solicitado que não busquem mais sobre o assunto no meio tempo.
+    
+    \subsection{Formulário 2}
+    
+        O segundo formulário consistirá apenas de duas seções: triagem e teste. Será enviado uma semana após a aplicação do primeiro.
+
+        Na primeira seção, será perguntando o nome/apelido usado no primeiro formulário para identificação das respostas. Será também perguntado se o participante viu algum material sobre o vídeo assistido desde então. A segunda seção consistirá do mesmo teste aplicado no formulário 1, com questões em ordem diferente. O participante será orientado a não buscar manter consistência entre as respostas dos formulários, apenas a marcar o que acredita ser verdade.
+
+\section{Embasamento Teórico}
+
+    Optamos por avaliar o impacto do CV na retenção com base no trabalho de McIntyre et al. \cite{mcintyre_liking_2021}, em que é observado maior retenção em tópicos de interesse dos entrevistados. Optamos por reaplicar o tempo para re-teste em uma semana para manter consistência com o trabalho de Murphy,\cite{murphy_learning_2022}, com diversas publicações revisadas pelos pares na área. Deste trabalho, também obtivemos um tempo médio de vídeo
+
+    O impacto da VR é esperado de acordo com as teorias de Carga Cognitiva de Sweller \cite{leahy_cognitive_2011} e compreensão verbal de Foulke \cite{foulke_review_1969}, que explicam como aumentar a VR pode impactar negativamente, por sobrecarregamento, ou positivamente, promovendo atenção e evitando, nas palavras de Murphy, \textit{Mind Wandering} \cite{murphy_effect_2023}. É esperado um impacto negativo da VR em 2x, uma vez que isso foi observado para VRs acima de 1.5x por Murphy e outros pesquisadores \cite{tharumalingam_increasing_2025}.
+
+\section{Bibliografia}
+\printbibliography
+\end{document}
