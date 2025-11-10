@@ -1,7 +1,16 @@
 ---
 format: pdf
+title: Laboratório 1 - Planejamento e Análise de Experimentos (MAE0316)
+author: 
+    - name: Caio M. de Almeida - 15444560
+    - name: Eduardo Yukio G. Ishihara - 15449012
+    - name: Gustavo S. Garone - 15458155
+    - name: Ian B. Loures - 15459667
+    - name: João Victor G. de Sousa - 15463912
 execute:
-    echo: false
+  echo: false
+fig-align: center
+fig-cap-location: top
 ---
 
 ```{r}
@@ -45,13 +54,20 @@ head(dat)
 
 ## Item a
 
-Categorizaríamos a longevidade (Longevity), tempo em sono (Sleep) e medida do tamanho corporal (Thorax) como quantiativas contínuas, enquanto o tipo (Type), tratamento (Treatment), número de parceiros (Partners), como categóricas.
+Categorizaríamos a longevidade (Longevity), tempo em sono (Sleep) e medida do
+tamanho corporal (Thorax) como quantiativas contínuas, enquanto o tipo (Type),
+tratamento (Treatment), número de parceiros (Partners), como categóricas.
 
-Além das variáveis citadas, também identificamos as variáveis "Partners" (número de parceiras), "Type" (tipo das parceiras), "Thorax" (comprimento do tórax em mm), "Sleep" (percentual do dia desprendido dormindo). Classificamos "Partners" como quantitativa discreta, "Type" e "Treatment" como qualitativa nominal, "Longevity", "Thorax" e "Sleep" como quantitativas contínuas.
+Além das variáveis citadas, também identificamos as variáveis "Partners" (número
+de parceiras), "Type" (tipo das parceiras), "Thorax" (comprimento do tórax em
+mm), "Sleep" (percentual do dia desprendido dormindo). Classificamos "Partners"
+como quantitativa discreta, "Type" e "Treatment" como qualitativa nominal,
+"Longevity", "Thorax" e "Sleep" como quantitativas contínuas.
 
 ## Item b
 
-Esses fatores não se encaixam integralmente como aninhados ou cruzados, mas podemos dizer que apresentam tendência cruzada.
+Esses fatores não se encaixam integralmente como aninhados ou cruzados, mas
+podemos dizer que apresentam tendência cruzada.
 
 ## Item c
 
@@ -71,11 +87,15 @@ boxplot(Longevity ~ Treatment,
 )
 ```
 
-O boxplot aponta ausência de outliers. Também verificamos que todos os dados de cada coluna da tabela são do tipo esperado, isso é, as categorias são as apresentadas no contexto e os valores respeitam os tipos de variáveis explicitados em a).
+O boxplot aponta ausência de outliers. Também verificamos que todos os dados de
+cada coluna da tabela são do tipo esperado, isso é, as categorias são as
+apresentadas no contexto e os valores respeitam os tipos de variáveis
+explicitados em a).
 
 ## Item d
 
-Além do boxplot criado para verificar o tratamento, podemos criar gráficos de dispersão para comparar a longevidade e o tórax (intrínseco):
+Além do boxplot criado para verificar o tratamento, podemos criar gráficos de
+dispersão para comparar a longevidade e o tórax (intrínseco):
 
 ```{r}
 ggplot(dat, aes(
@@ -103,33 +123,18 @@ ggplot(dat, aes(x = Sleep, y = Longevity, color = Treatment)) +
 
 # Exercício 3
 
-ANOVA Longevidade x Tipo
-
-```{r}
-# Inútil, tirar
-summary(aov(data = dat, Longevity ~ Type))
-```
-
-ANOVA Longevidade x Parceiros
-
-```{r}
-# Inútil e desconexo, tirar
-summary(aov(data = dat, Longevity ~ Partners))
-```
-
-ANOVA Longevidade x Tratamento
-
-```{r}
-# Inútil e desconexo, tirar
-summary(aov(data = dat, Longevity ~ Treatment))
-```
-
 ## Item a
 
-Considerando o modelos com apenas um fator de tratamento, mostre a soma de quadrados total, soma de quadrados do tratamento, soma de quadrados do erro, graus de liberdade, e os quadrados médios, e monte uma tabela anova. Considerando um nível de significância de 𝛼 = 0.05, quais são as conclusões?
+Considerando os modelos com apenas um fator de tratamento, mostre a soma de
+quadrados total, soma de quadrados do tratamento, soma de quadrados do erro,
+graus de liberdade, e os quadrados médios, e monte uma tabela anova.
+Considerando um nível de significância de $\alpha = 0.05$, quais são as
+conclusões?
 
 ```{r}
-anova1 <- aov(Longevity ~ Type, data = dat)
+# Construindo modelo e ANOVA
+modelo <- lm(Longevity ~ Type, data = dat)
+anova1 <- aov(modelo, data = dat)
 summary(anova1)
 ```
 
@@ -148,7 +153,11 @@ Total      & 38252 & 124 &      &       &   \\
 \end{tabular}
 \end{table}
 
-A \$5%& de sisgnificância estatística, conclui-se que há evidências para rejeitar a hipótese nula que que o os tratamentos não têm efeito sobre a observação. Ou seja, deixar os machos com fêmeas prenhas, virgens ou sem nenhuma fêmea afeta a longevidade deles. Contudo, não é possível definir qual dos tratamentos é significativamente efetivo sobre a longevidade.
+A $5\%$ de significância estatística, conclui-se que há evidências para rejeitar
+a hipótese nula que os tratamentos não têm efeito sobre a observação. Ou seja,
+deixar os machos com fêmeas prenhas, virgens ou sem nenhuma fêmea afeta a
+longevidade deles. Contudo, não é possível definir qual dos tratamentos é
+significativamente efetivo sobre a longevidade.
 
 ## Item b
 
@@ -170,7 +179,6 @@ plot(residuos)
 
 # Testando homocedasticidade
 
-
 plot(anova1$fitted.values, anova1$residuals,
   xlab = "Valores preditos",
   ylab = "Resíduos",
@@ -185,11 +193,21 @@ leveneTest(Longevity ~ Type, data = dat)
 bartlett.test(Longevity ~ Type, data = dat)
 ```
 
-Pela análise do qq-plot, os resíduos parecem não violar a hipótese de normalidade. Pelo teste de Shapiro–Wilk, a $5%$ de significância estatística, não rejeitamos $H_0$ de que os resíduos vêm de uma distribuição normal. Portanto, podemos seguir para os próximos passos do diagnóstico do modelo.
+Pela análise do qq-plot, os resíduos parecem não violar a hipótese de
+normalidade. Pelo teste de Shapiro–Wilk, a $5\%$ de significância estatística,
+não rejeitamos $H_0$ de que os resíduos vêm de uma distribuição normal.
+Portanto, podemos seguir para os próximos passos do diagnóstico do modelo.
 
-Do plot da evolução dos resíduos com a evolução do tempo, não é possível observar nenhuma tendência de dependência entre as observações, então possivelmente não há autocorrelação.
+Do plot da evolução dos resíduos com a evolução do tempo, não é possível
+observar nenhuma tendência de dependência entre as observações, então
+possivelmente não há autocorrelação.
 
-Do plot de resíduos x valores preditos, nota-se que os resíduos aparentam apresentar uma mesma variância dentro de cada tratamento. Formalmente, realizamos os testes de Levene e de Bartlett, os quais não rejeitaram a hipótese nula de homocedasticidade a $5%$ de significância estatística. Note que, uma vez que não rejeitamos a hipótese de normalidade, o teste de Bertlett é mais indicado para esse conjundo de dados.
+Do plot de resíduos x valores preditos, nota-se que os resíduos aparentam
+apresentar uma mesma variância dentro de cada tratamento. Formalmente,
+realizamos os testes de Levene e de Bartlett, os quais não rejeitaram a hipótese
+nula de homocedasticidade a $5\%$ de significância estatística. Note que, uma
+vez que não rejeitamos a hipótese de normalidade, o teste de Bertlett é mais
+indicado para esse conjunto de dados.
 
 ## Item c
 
@@ -197,5 +215,74 @@ Do plot de resíduos x valores preditos, nota-se que os resíduos aparentam apre
 anova1$coefficients
 ```
 
-No contexto do experimento, a interpretação dos coeficientes estimados indica que a longevidade média dos machos mantidos sem fêmeas é de aproximadamente $63.6$ dias. Para os machos mantidos com fêmeas prenhas, a longevidade é estatisticamente equivalente, apresentando um acréscimo médio muito pequeno (cerca de $0.5$ dias), o que sugere que a presença de fêmeas não receptivas não altera substancialmente o tempo de vida dos machos. Já para os machos mantidos com fêmeas virgens receptivas, a longevidade apresenta uma redução expressiva, em torno de $15.8$ dias a menos em média, revelando que a atividade sexual efetiva tem um efeito negativo marcante sobre a longevidade. Assim, a conclusão é que não é apenas a presença de fêmeas que importa, mas sim a demanda reprodutiva ativa, a qual implica custos fisiológicos que reduzem a sobrevivência dos machos.
+No contexto do experimento, a interpretação dos coeficientes estimados indica
+que a longevidade média dos machos mantidos sem fêmeas é de aproximadamente
+$63.6$ dias. Para os machos mantidos com fêmeas prenhas, a longevidade é
+estatisticamente equivalente, apresentando um acréscimo médio muito pequeno
+(cerca de $0.5$ dias), o que sugere que a presença de fêmeas não receptivas não
+altera substancialmente o tempo de vida dos machos. Já para os machos mantidos
+com fêmeas virgens receptivas, a longevidade apresenta uma redução expressiva,
+em torno de $15.8$ dias a menos em média, revelando que a atividade sexual
+efetiva tem um efeito negativo marcante sobre a longevidade. Assim, a conclusão
+é que não é apenas a presença de fêmeas que importa, mas sim a demanda
+reprodutiva ativa, a qual implica custos fisiológicos que reduzem a
+sobrevivência dos machos.
 
+# Exercício 5
+
+## Item a
+
+As comparações mais interessantes é entre exposição à virgens ou prenhas e a uma
+ou oito parceiras. Dessa forma, ordenamos as comparações mais em ordem
+decrescente de interesse:
+1. Prenha1 x Virgem1
+2. Virgem1 x Virgem8
+3. Prenha1 x Prenha8
+4. Prenha8 x Virgem8
+5. Prenha8 x Virgem1
+6. Prenha1 x Virgem8
+
+Deixamos 5. e 6. nestas posições uma vez que ocorre a mudança de mais de um
+fator de um grupo para o outro, comprometendo a análise.
+
+## Item b
+
+Ao preplanejar as comparações por contrastes, evitamos alguns erros no
+planejamento e análise do experimento. Por exemplo, ao selecionar as comparações
+post-hoc, o analista pode priorizar maiores diferenças, ampliando o erro Tipo I,
+uma vez que, das comparações selecionadas, muitas das diferenças podem ter sido
+causadas por erro.
+
+## Item c
+
+$$
+\begin{bmatrix}
+1 & 0 & -1 & 0 \\
+0 & 0 & 1 & -1 \\
+1 & -1 & 0 & 0 \\
+0 & 1 & 0 & -1 \\
+0 & 1 & -1 & 0 \\
+1 & 0 & 0 & -1
+\end{bmatrix}
+\begin{bmatrix}
+p_1 \\ p_8 \\ v_1 \\ v_8
+\end{bmatrix}
+$$
+
+em que $p_1:$ Prenha1, $p_8:$ Prenha8, $v_1:$ Virgem1 e $v_8:$ Virgem8
+
+Analisando a dimensão da matriz de contrastes, tem-se que os contrastes não são
+ortogonais. Isso seria vantajoso uma vez que os testes são independentes com
+contrastes ortogonais.
+
+## Item d
+
+```{r}
+modeloComposto <- lm(Longevity ~ Partners + Type, data = dat)
+summary(modeloComposto)
+linearHypothesis(modeloComposto, c("Typeprenha=0", "Partners=0", "Typevirgem=0"))
+linearHypothesis(modeloComposto, "Typeprenha=Typevirgem")
+```
+
+Oi gente tem que arrumar aqui em cima mas acho que to chegando em algo ^^
+não sei como faz o partners 1 e 8, só o partners geral????

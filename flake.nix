@@ -19,20 +19,14 @@
           rPackages.broom
           rPackages.kableExtra
           rPackages.languageserver
+          rPackages.patchwork
           rPackages.pacman
           rPackages.car
-          binutils
+          rPackages.lava
           blas
           gcc
           gfortran
           gfortran.cc.lib
-          gnum4
-          lapack
-          libgccjit
-          openblas
-          perl
-          zlib
-          glxinfo
           (python313.withPackages (ppkgs: [
             ppkgs.pynvim
             ppkgs.flake8

@@ -1,0 +1,65 @@
+---
+format:
+  pdf:
+    documentclass: scrarticle
+    # tables: true
+    extra-dependencies:
+      - float
+    # include-in-header:
+    #   - text: |
+    #       \usepackage{multirow}
+title: Lista 03 - Planejamento e Análise de Experimentos (MAE0316)
+date: last-modified
+date-format: long
+lang: pt
+geometry:
+    - left=3cm
+    - top=3cm
+    - bottom=2cm
+    - right=2cm
+author: 
+    - name: Caio M. de Almeida - 15444560
+    - name: Eduardo Yukio G. Ishihara - 15449012
+    - name: Gustavo S. Garone - 15458155
+    - name: Ian B. Loures - 15459667
+    - name: João Victor G. de Sousa - 15463912
+execute:
+  echo: false
+fig-align: center
+fig-cap-location: top
+bibliography: references.bib
+csl: associacao-brasileira-de-normas-tecnicas.csl
+engine: knitr
+---
+
+`\vspace{-0.5cm}\noindent\rule{\textwidth}{1pt}`{=latex}
+
+Nesta lista, usaremos "$.$" como separador decimal.
+
+# Análise do artigo dois
+
+## Qual foi o objetivo principal do estudo do artigo dois?
+
+## Que tipo de estudo é?
+
+## Escreva completamente o modelo com as correspondentes especificações das matrizes $\pmb{X}_i$ e $\pmb{Z}_i$
+
+## Qual é a estrutura da matriz $\pmb{D}$?
+
+## O que implica a suposição que a matriz dos erros seja $\sigma^2 \pmb{I}$?
+
+## As saídas apresentadas no artigo dois são semelhantes às do artigo um?
+
+## Você concorda com as interpretações apresentadas?
+
+## Algumas delas chamaram mais sua atenção?
+
+## Como simularia uma base de dados como a do artigo dois? (Opcional)
+
+# Referências
+
+Ler livro de Pinheiro sobre modelos mistos (para entender a estrutura seriada e
+o $\rho$).
+
+:::{.refs}
+:::

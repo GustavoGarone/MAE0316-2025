@@ -1,0 +1,152 @@
+---
+format:
+  pdf:
+    documentclass: scrarticle
+    # tables: true
+    extra-dependencies:
+      - float
+    # include-in-header:
+    #   - text: |
+    #       \usepackage{multirow}
+title: Lista 02 - Planejamento e Análise de Experimentos (MAE0316)
+date: last-modified
+date-format: long
+lang: pt
+geometry:
+    - left=3cm
+    - top=3cm
+    - bottom=2cm
+    - right=2cm
+author: 
+    - name: Caio M. de Almeida - 15444560
+    - name: Eduardo Yukio G. Ishihara - 15449012
+    - name: Gustavo S. Garone - 15458155
+    - name: Ian B. Loures - 15459667
+    - name: João Victor G. de Sousa - 15463912
+execute:
+  echo: false
+fig-align: center
+fig-cap-location: top
+fig-pos: H
+tbl-pos: H
+bibliography: references.bib
+csl: associacao-brasileira-de-normas-tecnicas.csl
+engine: knitr
+---
+
+`\vspace{-0.5cm}\noindent\rule{\textwidth}{1pt}`{=latex}
+
+Nesta lista, usaremos "$.$" como separador decimal.
+
+# Exercício 3
+
+```{r}
+#| output: false
+# Loading data
+library(tidyr)
+library(knitr)
+library(dplyr)
+library(lava)
+library(ggplot2)
+library(patchwork)
+data(calcium)
+dados <- tibble(calcium)
+```
+
+## AED
+
+Consta-se três variáveis qulitativas: a variável "group", dividido entre "C" para
+suplementados por cálcio e "P" para placebo; a variável "visit", que indica o
+número da visita (1, 2, 3, 4 ou 5), espaçadas aproximadamente um semestre entre
+si, indicando dados longitudinais; e a variável "person", indicando o número da
+participante no estudo. Como variáveis quantitativas, temos a variável "age",
+medida de forma contínua em anos e a variável resposta "bmd", que indica a
+densidade mineral óssea (DMO), medida em g/cm².
+
+Iniciaremos por uma análise numérica para então partirmos para a análise
+gráfica.
+
+```{r}
+#| label: tbl-descritiva
+#| tbl-cap: "Análise descritiva numérica da DMO"
+#| tbl-subcap:
+#|   - "Placebo"
+#|   - "Suplementado"
+#| layout-nrow: 2
+
+dados_placebo <- dados[dados$group == "P", ] |>
+  group_by(visit) |>
+  summarise(
+    n = n(),
+    media = round(mean(bmd, na.rm = TRUE), digits = 3),
+    sd = round(sd(bmd, na.rm = TRUE), digits = 3),
+    min = round(min(bmd, na.rm = TRUE), digits = 3),
+    mediana = round(median(bmd, na.rm = TRUE), digits = 3),
+    max = round(max(bmd, na.rm = TRUE), digits = 3)
+  )
+dados_calcio <- dados[dados$group == "C", ] |>
+  group_by(visit) |>
+  summarise(
+    n = n(),
+    media = round(mean(bmd, na.rm = TRUE), digits = 3),
+    sd = round(sd(bmd, na.rm = TRUE), digits = 3),
+    min = round(min(bmd, na.rm = TRUE), digits = 3),
+    mediana = round(median(bmd, na.rm = TRUE), digits = 3),
+    max = round(max(bmd, na.rm = TRUE), digits = 3)
+  )
+kable(dados_placebo)
+kable(dados_calcio)
+```
+
+Observamos na @tbl-descritiva que, em ambas as condições, a média da densidade
+mineral óssea aumenta com o passar do tempo. Contudo, o grupo suplementado
+parece apresentar crescimento maior, especialmente entre a segunda e terceira 
+visita, quando comparado com o grupo placebo. Por outro lado, a mediana
+diferença de crescimento maior entre os grupos da primeira para segunda visita. 
+Partiremos para a análise gráfica para melhor visualizarmos essas diferenças.
+
+```{r}
+#| label: fig-bmd
+#| fig-cap: "Evolução da densidade mineral óssea ao longo do tempo"
+pmean <- ggplot(dados, aes(
+  x = visit, y = bmd,
+  linetype = group, color = group, group = group
+)) +
+  stat_summary(fun = mean, geom = "line") +
+  stat_summary(fun = mean, geom = "point") +
+  labs(
+    x = "Visita",
+    y = "Média da DMO (g/cm²)",
+    linetype = "Grupo",
+    color = "Grupo"
+  ) +
+  theme_minimal()
+pmed <- ggplot(dados, aes(
+  x = visit, y = bmd,
+  linetype = group, color = group, group = group,
+)) +
+  stat_summary(fun = median, geom = "line") +
+  stat_summary(fun = median, geom = "point") +
+  labs(
+    x = "Visita",
+    y = "Mediana da DMO (g/cm²)",
+    linetype = "Grupo",
+    color = "Grupo"
+  ) +
+  theme_minimal()
+pmean + pmed + plot_layout(axis_titles = "collect", guides = "collect")
+```
+Os gráficos na @fig-bmd mostram a evolução da densidade mineral óssea ao longo
+do tempo para ambos os grupos. Observa-se que o grupo suplementado com cálcio
+apresenta um aumento mais acentuado na densidade mineral óssea *média* em
+comparação com o grupo placebo, especialmente entre a segunda e terceira visita,
+enquanto a diferença entre crescimento das *medianas* é mais acentuada entre a
+primeira e segunda visita. Ambos resultados sugerem que pode existir um efeito
+de interação entre a idade e a suplementação, com esta sendo mais efetiva em
+crianças mais novas.
+
+
+
+:::{.refs}
+:::
+
