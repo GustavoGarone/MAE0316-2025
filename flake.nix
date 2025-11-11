@@ -20,6 +20,7 @@
           rPackages.kableExtra
           rPackages.languageserver
           rPackages.patchwork
+          rPackages.pander
           rPackages.pacman
           rPackages.car
           rPackages.lava
