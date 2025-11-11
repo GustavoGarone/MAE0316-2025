@@ -45,7 +45,7 @@ NIX_BINTOOLS_WRAPPER_TARGET_HOST_x86_64_unknown_linux_gnu='1'
 export NIX_BINTOOLS_WRAPPER_TARGET_HOST_x86_64_unknown_linux_gnu
 NIX_BINTOOLS_WRAPPER_TARGET_TARGET_x86_64_unknown_linux_gnu='1'
 export NIX_BINTOOLS_WRAPPER_TARGET_TARGET_x86_64_unknown_linux_gnu
-NIX_BUILD_CORES='8'
+NIX_BUILD_CORES='4'
 export NIX_BUILD_CORES
 NIX_CC='/nix/store/95k9rsn1zsw1yvir8mj824ldhf90i4qw-gcc-wrapper-14.3.0'
 export NIX_CC
@@ -63,7 +63,7 @@ NIX_ENFORCE_NO_NATIVE='1'
 export NIX_ENFORCE_NO_NATIVE
 NIX_HARDENING_ENABLE='bindnow format fortify fortify3 pic relro stackclashprotection stackprotector strictoverflow zerocallusedregs'
 export NIX_HARDENING_ENABLE
-NIX_LDFLAGS='-rpath /home/minze/usp/Disciplinas/MAE0316-2025/outputs/out/lib  -L/nix/store/g5b7qnbhjmiac5q4jb5yvahy6pysd88g-blas-3/lib -L/nix/store/fg9b1k4xgrfbdqyrgyllmp48i5p8gfv1-gfortran-14.3.0-lib/lib -L/nix/store/scc1dql7r346njqxjhsxkgji27bfzry1-python3-3.13.7-env/lib -L/nix/store/g5b7qnbhjmiac5q4jb5yvahy6pysd88g-blas-3/lib -L/nix/store/fg9b1k4xgrfbdqyrgyllmp48i5p8gfv1-gfortran-14.3.0-lib/lib -L/nix/store/scc1dql7r346njqxjhsxkgji27bfzry1-python3-3.13.7-env/lib'
+NIX_LDFLAGS='-rpath /home/minze/usp/Viviana/outputs/out/lib  -L/nix/store/g5b7qnbhjmiac5q4jb5yvahy6pysd88g-blas-3/lib -L/nix/store/fg9b1k4xgrfbdqyrgyllmp48i5p8gfv1-gfortran-14.3.0-lib/lib -L/nix/store/scc1dql7r346njqxjhsxkgji27bfzry1-python3-3.13.7-env/lib -L/nix/store/g5b7qnbhjmiac5q4jb5yvahy6pysd88g-blas-3/lib -L/nix/store/fg9b1k4xgrfbdqyrgyllmp48i5p8gfv1-gfortran-14.3.0-lib/lib -L/nix/store/scc1dql7r346njqxjhsxkgji27bfzry1-python3-3.13.7-env/lib'
 export NIX_LDFLAGS
 NIX_LDFLAGS_FOR_TARGET=' -L/nix/store/g5b7qnbhjmiac5q4jb5yvahy6pysd88g-blas-3/lib -L/nix/store/g5b7qnbhjmiac5q4jb5yvahy6pysd88g-blas-3/lib -L/nix/store/fg9b1k4xgrfbdqyrgyllmp48i5p8gfv1-gfortran-14.3.0-lib/lib -L/nix/store/fg9b1k4xgrfbdqyrgyllmp48i5p8gfv1-gfortran-14.3.0-lib/lib -L/nix/store/scc1dql7r346njqxjhsxkgji27bfzry1-python3-3.13.7-env/lib -L/nix/store/scc1dql7r346njqxjhsxkgji27bfzry1-python3-3.13.7-env/lib'
 export NIX_LDFLAGS_FOR_TARGET
@@ -176,7 +176,7 @@ name='nix-shell-env'
 export name
 nativeBuildInputs='/nix/store/7zwa3r9agcyzf21d0792fvhrsl6gajiy-bash-interactive-5.3p3-dev'
 export nativeBuildInputs
-out='/home/minze/usp/Disciplinas/MAE0316-2025/outputs/out'
+out='/home/minze/usp/Viviana/outputs/out'
 export out
 outputBin='out'
 outputDev='out'
@@ -207,7 +207,7 @@ preConfigurePhases=' updateAutotoolsGnuConfigScriptsPhase'
 declare -a preFixupHooks=('_moveToShare' '_multioutDocs' '_multioutDevs' )
 preferLocalBuild='1'
 export preferLocalBuild
-prefix='/home/minze/usp/Disciplinas/MAE0316-2025/outputs/out'
+prefix='/home/minze/usp/Viviana/outputs/out'
 declare -a propagatedBuildDepFiles=('propagated-build-build-deps' 'propagated-native-build-inputs' 'propagated-build-target-deps' )
 propagatedBuildInputs=''
 export propagatedBuildInputs
