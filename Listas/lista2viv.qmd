@@ -60,8 +60,9 @@ suplementados por cálcio e "P" para placebo; a variável "visit", que indica o
 número da visita (1, 2, 3, 4 ou 5), espaçadas aproximadamente um semestre entre
 si, indicando dados longitudinais; e a variável "person", indicando o número da
 participante no estudo. Como variáveis quantitativas, temos a variável "age",
-medida de forma contínua em anos e a variável resposta "bmd", que indica a
-densidade mineral óssea (DMO), medida em g/cm².
+medida de forma contínua em anos, a variável resposta "bmd", que indica a
+densidade mineral óssea (DMO), medida em g/cm² e a variável "ctime", uma medida
+contínua do tempo das obervações, tranformadas das datas das visitas.
 
 Iniciaremos por uma análise numérica para então partirmos para a análise
 gráfica.
@@ -102,8 +103,34 @@ Observamos na @tbl-descritiva que, em ambas as condições, a média da densidad
 mineral óssea aumenta com o passar do tempo. Contudo, o grupo suplementado
 parece apresentar crescimento maior, especialmente entre a segunda e terceira 
 visita, quando comparado com o grupo placebo. Por outro lado, a mediana
-diferença de crescimento maior entre os grupos da primeira para segunda visita. 
+diferença de crescimento maior entre os grupos da primeira para segunda visita.
+
 Partiremos para a análise gráfica para melhor visualizarmos essas diferenças.
+Foi orientado atenção ao conteúdo longitudinal dos dados. Além das visitas,
+podemos analisar a variável "ctime".
+
+```{r}
+#| label: fig-ctime
+#| fig-cap: "Evolução da densidade mineral óssea ao longo do tempo contínuo"
+
+ggplot(dados, aes(
+  x = ctime, y = bmd,
+  linetype = group, color = group, group = group
+)) +
+  geom_point(alpha = 0.3) +
+  labs(
+    x = "Tempo contínuo",
+    y = "DMO (g/cm²)",
+    linetype = "Grupo",
+    color = "Grupo"
+  ) +
+  theme_minimal()
+```
+
+O gráfico da @fig-ctime mostra a dispersão dos dados ao longo do tempo contínuo.
+Observa-se uma tendência de aumento da densidade mineral óssea com o passar do
+tempo, mas não fica imediatamente claro se há uma diferença entre os grupos.
+Analisaremos graficamente considerando as visitas como pontos no tempo.
 
 ```{r}
 #| label: fig-bmd
@@ -143,9 +170,29 @@ comparação com o grupo placebo, especialmente entre a segunda e terceira visit
 enquanto a diferença entre crescimento das *medianas* é mais acentuada entre a
 primeira e segunda visita. Ambos resultados sugerem que pode existir um efeito
 de interação entre a idade e a suplementação, com esta sendo mais efetiva em
-crianças mais novas.
+crianças mais novas. Levaremos isso em consideração na modelagem, atentando-nos
+a possível existência de interação.
+
+Finalmente, resta-nos uma análise dos perfis individuais das participantes para
+identificação de efeito aleatório.
+
+```{r}
+#| label: fig-perfis
+#| fig-cap: "Perfis da DMO das participantes ao longo do tempo contínuo"
+ggplot(dados, aes(
+  x = ctime, y = bmd,
+  group = person,
+)) +
+  geom_line(alpha = 0.3) +
+  labs(
+    x = "Tempo contínuo",
+    y = "DMO (g/cm²)",
+  ) +
+  theme_minimal()
+```
 
 
+# Referências
 
 :::{.refs}
 :::
