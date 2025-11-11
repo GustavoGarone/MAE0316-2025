@@ -8,6 +8,7 @@ format:
     # include-in-header:
     #   - text: |
     #       \usepackage{multirow}
+  html: default
 title: Lista 02 - Planejamento e Análise de Experimentos (MAE0316)
 date: last-modified
 date-format: long
@@ -36,7 +37,14 @@ engine: knitr
 
 `\vspace{-0.5cm}\noindent\rule{\textwidth}{1pt}`{=latex}
 
-Nesta lista, usaremos "$.$" como separador decimal.
+```{css}
+#| echo: false
+p {
+  text-align: justify
+}
+```
+
+Nesta lista, usaremos "$.$" como separador decimal e quatro dígitos decimais.
 
 # Exercício 3
 
@@ -49,11 +57,14 @@ library(dplyr)
 library(lava)
 library(ggplot2)
 library(patchwork)
+library(nlme)
+library(pander)
+library(car)
 data(calcium)
 dados <- tibble(calcium)
 ```
 
-## AED
+## Análise Exploratória de Dados (AED)
 
 Consta-se três variáveis qulitativas: a variável "group", dividido entre "C" para
 suplementados por cálcio e "P" para placebo; a variável "visit", que indica o
@@ -106,35 +117,46 @@ visita, quando comparado com o grupo placebo. Por outro lado, a mediana
 diferença de crescimento maior entre os grupos da primeira para segunda visita.
 
 Partiremos para a análise gráfica para melhor visualizarmos essas diferenças.
-Foi orientado atenção ao conteúdo longitudinal dos dados. Além das visitas,
-podemos analisar a variável "ctime".
+Foi orientado atenção ao conteúdo longitudinal dos dados. Temos três variáveis
+temporais disponíveis: a variável "visit", que indica o número da visita (1 a
+5); a variável "ctime", que indica o tempo contínuo em que as observações foram
+realizadas; e a variável "age", que indica a idade das participantes no momento
+da medição. Por conta da colinearidade, precisaremos escolher uma dessas
+variáveis para representar o fator temporal na modelagem, em especial se a idade
+inicial das participantes for similar.
 
 ```{r}
 #| label: fig-ctime
 #| fig-cap: "Evolução da densidade mineral óssea ao longo do tempo contínuo"
 
 ggplot(dados, aes(
-  x = ctime, y = bmd,
-  linetype = group, color = group, group = group
+  x = ctime, y = bmd, color = group
 )) +
   geom_point(alpha = 0.3) +
   labs(
-    x = "Tempo contínuo",
+    x = "Idade (anos)",
     y = "DMO (g/cm²)",
-    linetype = "Grupo",
     color = "Grupo"
   ) +
   theme_minimal()
 ```
 
-O gráfico da @fig-ctime mostra a dispersão dos dados ao longo do tempo contínuo.
-Observa-se uma tendência de aumento da densidade mineral óssea com o passar do
-tempo, mas não fica imediatamente claro se há uma diferença entre os grupos.
-Analisaremos graficamente considerando as visitas como pontos no tempo.
+Os gráficos na @fig-ctime mostram a evolução da densidade mineral óssea ao longo
+do tempo contínuo para ambos os grupos. Observa-se que o grupo suplementado com cálcio
+apresenta um aumento mais acentuado na densidade mineral óssea *média* em
+comparação com o grupo placebo, especialmente entre a segunda e terceira visita,
+enquanto a diferença entre crescimento das *medianas* é mais acentuada entre a
+primeira e segunda visita. Ambos resultados sugerem que pode existir um efeito
+de interação entre a idade e a suplementação, com esta sendo mais efetiva em
+crianças mais novas. Levaremos isso em consideração na modelagem, atentando-nos
+a possível existência de interação. 
+
+Verificaremos se essa tendência é a mesma ao analisarmos em função das visitas,
+como esperamos.
 
 ```{r}
-#| label: fig-bmd
-#| fig-cap: "Evolução da densidade mineral óssea ao longo do tempo"
+#| label: fig-visit
+#| fig-cap: "Evolução da densidade mineral óssea ao longo das visitas"
 pmean <- ggplot(dados, aes(
   x = visit, y = bmd,
   linetype = group, color = group, group = group
@@ -163,15 +185,40 @@ pmed <- ggplot(dados, aes(
   theme_minimal()
 pmean + pmed + plot_layout(axis_titles = "collect", guides = "collect")
 ```
-Os gráficos na @fig-bmd mostram a evolução da densidade mineral óssea ao longo
-do tempo para ambos os grupos. Observa-se que o grupo suplementado com cálcio
-apresenta um aumento mais acentuado na densidade mineral óssea *média* em
-comparação com o grupo placebo, especialmente entre a segunda e terceira visita,
-enquanto a diferença entre crescimento das *medianas* é mais acentuada entre a
-primeira e segunda visita. Ambos resultados sugerem que pode existir um efeito
-de interação entre a idade e a suplementação, com esta sendo mais efetiva em
-crianças mais novas. Levaremos isso em consideração na modelagem, atentando-nos
-a possível existência de interação.
+
+Os gráficos na @fig-visit mostram a evolução da densidade mineral óssea ao longo
+das visitas para ambos os grupos. Observa-se que os resultados são similares aos
+observados na @fig-ctime, confirmando que ambas variáveis retratam o fator
+temporal similarmente.
+
+
+Analisaremos agora a evolução da densidade mineral óssea em função da idade das
+participantes. Esperamos que, caso as idades iniciais das participantes sejam
+similares, o gráfico seja similar ao da @fig-ctime.
+
+```{r}
+#| label: fig-age
+#| fig-cap: "Evolução da DMO ao longo do tempo contínuo, separada por idade"
+ggplot(dados, aes(
+  x = age, y = bmd, color = group
+)) +
+  geom_point(alpha = 0.3) +
+  labs(
+    x = "Idade (anos)",
+    y = "DMO (g/cm²)",
+    color = "Grupo"
+  ) +
+  theme_minimal()
+```
+
+O gráfico da @fig-age mostra a dispersão da densidade mineral óssea em função
+da idade das participantes. Observa-se que este gráfico é quase idêntico ao
+gráfico da @fig-ctime, sugerindo que ambas variáveis retratam o fator temporal
+similarmente, uma vez que, como indicam, as participantes iniciaram sua
+participação no estudo com idades próximas. Disso, concluímos que tanto a
+variável "ctime" quanto a variável "age" podem ser utilizadas para representar
+o fator temporal quantitativamente na modelagem, enquanto a variável "visit"
+pode ser utilizada como variável categórica alternativa.
 
 Finalmente, resta-nos uma análise dos perfis individuais das participantes para
 identificação de efeito aleatório.
@@ -191,9 +238,491 @@ ggplot(dados, aes(
   theme_minimal()
 ```
 
+Pelo gráfico da @fig-perfis, observa-se que os perfis individuais das
+participantes apresentam variação considerável em seus níveis iniciais de
+densidade mineral óssea, sugerindo a presença de um efeito aleatório de
+intercepto. Por outro lado, a baixa variação na inclinação dos perfis sugere que
+pode não haver efeito aleatório de inclinação. Ademais, não está claro se, caso
+de fato exista efeito aleatório de inclinação, este seria correlacionado com o
+efeito aleatório de intercepto. Levaremos essas observações em consideração na
+modelagem.
 
-# Referências
+## Formulação dos modelos
 
-:::{.refs}
-:::
+Para este modelo, utilizaremos a variável "Age" para representação do aspecto
+temporal por sua fácil interpretação biológica. A variável "visit" será incluida
+indiretamente como as obersavações de um mesmo indivíduo ao longo do tempo (ver
+modelo adiante). A variável "ctime" não será utilizada por redundância e
+colinearidade.
 
+Somada à variável "Age", temos a variável "group", que indica se a participante foi
+suplementada com cálcio ou recebeu placebo, e a interação entre "group" e "age",
+que pode capturar efeitos diferenciados da suplementação em diferentes idades,
+como sugere a Análise Exploratória de Dados.
+
+Finalmente, precisaremos incluir efeitos aleatórios para capturar a variação
+entre as participantes, conforme aponta o gráfico da @fig-perfis, e tratar da
+dependência entre observações de uma mesma participante. Durante nossa análise,
+faremos testes para determinar a necessidade de incluir efeitos aleatórios de
+intercepto e inclinação, bem como a possível correlação entre estes. Pode ser
+que precisaremos também tratar da heterocedasticidade esperada nos dados
+longitudinais, uma vez que a variância dos erros pode variar com a idade
+(visitas) das participantes.
+
+Para modelarmos essas variáveis em um modelo de efeitos mistos lineares com
+dados longitudinais, inicaremos por um modelo completo da forma:
+
+$$
+\pmb{y}_i = \begin{bmatrix}y_{i1} \\
+y_{i2} \\
+\vdots \\
+y_{i5}
+\end{bmatrix} = \begin{bmatrix}
+A_{i1} & G_{i} & A_{i1} G_{i} \\
+A_{i2} & G_{i} & A_{i2} G_{i} \\
+\vdots & \vdots & \vdots \\
+A_{i5} & G_{i} & A_{i5} G_{i}
+\end{bmatrix}
+\begin{bmatrix}
+\tau \\
+\beta \\
+(\tau,\beta) \\
+\end{bmatrix} + \begin{bmatrix}
+1 & A_{i1} \\
+1 & A_{i2} \\
+\vdots & \vdots \\
+1 & A_{i5}
+\end{bmatrix}
+\begin{bmatrix}
+b_{0i} \\
+b_{1i}
+\end{bmatrix} + \begin{bmatrix}
+\epsilon_{i1} \\
+\epsilon_{i2} \\
+\vdots \\
+\epsilon_{i5}
+\end{bmatrix}
+$$
+
+em que $A_{ij}$ é a idade da participante $i$ na visita $j$, $G_i$ é um
+indicador binário (dummy) que vale 1 se a participante $i$ foi suplementada com
+cálcio e 0 caso contrário, $A_{ij}G_{i}$ é a interação entre idade e grupo,
+$b_{0i}$ é o efeito aleatório de intercepto da participante $i$, $b_{1i}$ é o
+efeito aleatório de inclinação da participante $i$ e $\epsilon_{ij}$ é o erro
+aleatório da observação $ij$. Ademais,
+
+$$
+\pmb{b}_i = \begin{bmatrix}
+b_{0i} \\
+b_{1i}
+\end{bmatrix} \sim N \left( \begin{bmatrix}
+0 \\
+0
+\end{bmatrix}, \begin{bmatrix}
+\sigma_{b0}^2 & \sigma_{b0b1} \\
+\sigma_{b0b1} & \sigma_{b1}^2
+\end{bmatrix} \right)
+$$
+
+e
+
+$$
+\pmb{\epsilon}_i = \begin{bmatrix}
+\epsilon_{i1} \\
+\epsilon_{i2} \\
+\vdots \\
+\epsilon_{i5}
+\end{bmatrix} \sim N \left( \begin{bmatrix}
+0 \\
+0 \\
+\vdots \\
+0
+\end{bmatrix},
+\begin{bmatrix}
+\sigma^2 \lvert A_{i1} \rvert^{\delta} & 0 & \dots & 0 \\
+0 & \sigma^2 \lvert A_{i2} \rvert^{\delta} & \dots & 0 \\
+\vdots & \vdots & \ddots & \vdots \\
+0 & 0 & \dots & \sigma^2 \lvert A_{i5} \rvert^{\delta}
+\end{bmatrix}
+\right)
+$$
+
+Dessa forma, podemos modear o efeito aleatório de intercepto e inclinação, bem
+como a correlação entre estes. O modelo trata a heterocedasticidade esperada nos
+dados longitudinais, modelando a variância dos erros como uma função da idade
+das participantes, com parâmetro $\delta$ a ser estimado.
+
+Partiremos deste modelo completo e o reduziremos conforme nossas análises
+progredirem.
+
+## Implementação e comparação dos modelos
+
+Como estratégia, criaremos todos os modelos possíveis de efeitos aleatórios e
+ajuste para heterocedasticidade pela `varPower`, totalizando oito modelos.
+Faremos a comparação entre estes modelos utilizando os critérios AIC e BIC,
+selecionando o melhor modelo dentre estes. Então, partiremos para análise
+diagnóstica desse modelo. Caso não satisfaça os pressupostos, partiremos para o
+próximo modelo melhor classificado pelos critérios AIC e BIC, repetindo o
+processo até encontrarmos um modelo satisfatório.
+
+Finalmente, com melhor modelo de efeitos aleatórios selecionado e melhor ajuste
+para heterocedasticidade, faremos a seleção do modelo de efeitos fixos, com
+interesse especial na inclusão ou não da interação entre idade e grupo.
+Finalmente, com o modelo finalizado, faremos a análise dos resíduos para
+verificação dos pressupostos do modelo e, se bem ajustado, decidiremos se há
+efeito significativo ou não da suplementação com cálcio na densidade mineral
+óssea dessa população.
+
+### Seleção do modelo de efeitos aleatórios e ajuste de heterocedasticidade
+
+```{r}
+#| output: false
+# Declaração dos modelos
+mod_completo_corr <- lme(
+  bmd ~ age + group + age * group,
+  random = ~ age | person,
+  data = dados,
+  method = "REML"
+)
+
+mod_completo_corr_adj <- lme(
+  bmd ~ age + group + age * group,
+  random = ~ age | person,
+  weights = varConstPower(form = ~age),
+  data = dados,
+  method = "REML"
+)
+
+mod_completo_semcorr <- lme(
+  bmd ~ age + group + age * group,
+  random = list(person = pdDiag(~age)),
+  data = dados,
+  method = "REML"
+)
+
+mod_completo_semcorr_adj <- lme(
+  bmd ~ age + group + age * group,
+  random = list(person = pdDiag(~age)),
+  weights = varPower(form = ~age),
+  data = dados,
+  method = "REML"
+)
+
+mod_semincline <- lme(
+  bmd ~ age + group + age * group,
+  random = ~ 1 | person,
+  data = dados,
+  method = "REML"
+)
+
+mod_semincline_adj <- lme(
+  bmd ~ age + group + age * group,
+  random = ~ 1 | person,
+  weights = varPower(form = ~age),
+  data = dados,
+  method = "REML"
+)
+
+mod_semintercepto <- lme(
+  bmd ~ age + group + age * group,
+  random = ~ 0 + age | person,
+  data = dados,
+  method = "REML"
+)
+
+mod_semintercepto_adj <- lme(
+  bmd ~ age + group + age * group,
+  random = ~ 0 + age | person,
+  weights = varPower(form = ~age),
+  data = dados,
+  method = "REML"
+)
+
+mod_semaleatorio <- lm(
+  bmd ~ age + group + age * group,
+  data = dados
+)
+
+mod_semaleatorio_adj <- gls(
+  bmd ~ age + group + age * group,
+  weights = varPower(form = ~age),
+  data = dados
+)
+```
+
+```{r}
+#| label: tbl-comparacao
+#| tbl-cap: "Comparação dos modelos de efeitos aleatórios e ajuste de heterocedasticidade"
+modelos <- list(
+  "Completo com correlação" = mod_completo_corr,
+  "Completo com correlação e ajuste" = mod_completo_corr_adj, # Não convergiu
+  "Completo sem correlação" = mod_completo_semcorr,
+  "Completo sem correlação com ajuste" = mod_completo_semcorr_adj,
+  "Sem inclinação" = mod_semincline,
+  "Sem inclinação com ajuste" = mod_semincline_adj,
+  "Sem intercepto" = mod_semintercepto,
+  "Sem intercepto com ajuste" = mod_semintercepto_adj,
+  "Sem efeito aleatório" = mod_semaleatorio,
+  "Sem efeito aleatório com ajuste" = mod_semaleatorio_adj
+)
+aic_values <- sapply(modelos, AIC)
+bic_values <- sapply(modelos, BIC)
+tbl_comparacao <- tibble(
+  Modelo = names(aic_values),
+  AIC = round(aic_values, digits = 2),
+  BIC = round(bic_values, digits = 2)
+)
+
+kable(tbl_comparacao)
+```
+
+O modelo com correção ajustado não covergiu com o método `varPower`, por isso,
+utilizamos `varConstPower`.
+
+Da @tbl-comparacao, observa-se que o modelo completo com correlação e sem ajuste
+apresenta os menores valores de AIC e BIC, caracterizando-o como melhor
+candidato dentre os testados. Partiremos para a análise diagnóstica deste
+modelo para verificar se satisfaz os pressupostos.
+
+```{r}
+#| output: false
+# Resíduos do modelo candidato
+residuos <- resid(mod_completo_corr)
+```  
+
+#### Normalidade
+
+Começamos pela análise gráfica via QQ-Plot:
+
+```{r}
+#| label: fig-qqplot-mod
+#| fig-cap: Comparação dos quantis
+
+ggplot(data = data.frame(
+  resid = residuos
+), aes(sample = resid)) +
+  stat_qq() +
+  stat_qq_line(color = "red") +
+  labs(
+    x = "Quantis teóricos",
+    y = "Quantis amostrais"
+  ) +
+  theme_minimal()
+```
+
+O gráfico da @fig-qqplot-mod aponta bom ajuste, vamos confirmar com teste de
+Shapiro-Wilk, com resultados em @tbl-shapiro.
+
+```{r}
+#| label: tbl-shapiro
+#| tbl-cap: Saída do teste de Shapiro-Wilk sobre os resíduos
+
+teste <- shapiro.test(residuos)
+
+tbl_shapiro <- tibble(
+  "Estatística" = round(teste$statistic, digits = 4),
+  "Valor-p" = round(teste$p.value, digits = 4)
+)
+
+pander(tbl_shapiro)
+```
+
+Com normalidade não rejeitada, partimos para teste da homocedasticidade.
+
+#### Homocedasticiadade
+
+```{r}
+#| label: fig-resid-ajust
+#| fig-cap: Resíduos x Ajustados do Modelo com Correlação
+
+resid <- data.frame(
+  Fitted = fitted(mod_completo_corr),
+  Residuals = residuals(mod_completo_corr)
+)
+res_ajust <- ggplot(resid, aes(x = Fitted, y = Residuals)) +
+  geom_point() +
+  labs(
+    x = "Ajustados", y = "Resíduos"
+  ) +
+  theme_minimal() +
+  geom_hline(yintercept = 0, linetype = "dashed", color = "red") +
+  theme(plot.title = element_text(hjust = 0.5))
+
+res_ajust
+```
+
+O gráfico da @fig-resid-ajust reafirma média dos resíduos próxima de zero (como
+visto no QQ-plot da @fig-qqplot-mod), e dá indícios de homocedasticidade, com
+resíduos distribuídos aleatoria e uniformemente em torno de zero, o que também
+reforça a independência obtida pela inclusão dos efeitos aleatórios.
+
+
+Confirmaremos a homocedasticiadade com o teste de Bartlett, com resultado na
+@tbl-bartlett.
+
+```{r}
+#| label: tbl-bartlett
+#| tbl-cap: Saída do teste de Bartlett para homocedasticidade entre os grupos (P x C)
+
+grupo_residuos <- data.frame(
+  group = dados$group,
+  residuals = residuos
+)
+teste_bartlett <- bartlett.test(
+  residuals ~ group,
+  data = grupo_residuos
+)
+tbl_bartlett <- tibble(
+  "Estatística" = round(teste_bartlett$statistic, digits = 4),
+  "Valor-p" = round(teste_bartlett$p.value, digits = 4)
+)
+pander(tbl_bartlett)
+```
+
+Podemos também realizar o teste de Levene, cujos resultados são apresentados na
+@tbl-levene.
+
+```{r}
+#| label: tbl-levene
+#| tbl-cap: Saída do teste de Levene para homocedasticidade entre os grupos (P x C)
+
+teste_levene <- leveneTest(
+  residuals ~ group,
+  data = grupo_residuos
+)
+tbl_levene <- tibble(
+  "Estatística" = round(teste_levene$"F value", digits = 4),
+  "Valor-p" = round(teste_levene$"Pr(>F)", digits = 4)
+)
+pander(tbl_levene)
+```
+
+Concluímos destas estatísticas que não há evidências suficientes para
+rejeitarmos a homocedasticidade dos resíduos do modelo completo com correlação.
+Dessa forma, não será necessário considerar o modelo com ajuste para
+heterocedasticidade, e podemos partir para seleção dos efeitos fixos.
+
+### Seleção dos efeitos fixos
+
+Da análise anterior, o modelo completo com correlação e sem ajuste foi
+selecionado como melhor candidato dentre os modelos de efeitos aleatórios
+testados, satisfazendo os pressupostos de normalidade e homocedasticidade dos
+resíduos, assim como a independência entre observações após tratamento com
+efeito aleatório. Partiremos para a seleção do modelo de efeitos fixos, testando
+a inclusão ou não da interação entre idade e grupo, e se existe efeito da
+suplementação com cálcio na densidade mineral óssea.
+
+Primeiramente, conferimos um sumário de nosso modelo na @tbl-sumario-mod.
+
+```{r}
+#| label: tbl-sumario-mod
+#| tbl-cap: "Sumário do modelo completo com correlação"
+summary_mod <- summary(mod_completo_corr)$tTable
+tbl_sumario <- as_tibble(summary_mod) |>
+  mutate(
+    Termo = c("Intecepto", "Idade", "Grupo(P)", "Idade:Grupo(P)"),
+    Estimativa = round(Value, digits = 4),
+    EP = round(`Std.Error`, digits = 4),
+    GL = `DF`,
+    t = round(`t-value`, digits = 4),
+    "Valor-p" = round(`p-value`, digits = 4)
+  ) |>
+  select(Termo, Estimativa, EP, GL, t, `Valor-p`)
+pander(tbl_sumario)
+```
+Da @tbl-sumario-mod, observa-se que o termo de interação entre idade e grupo
+é significativo ao nível de 5%, indicando que o efeito da suplementação com
+cálcio na densidade mineral óssea varia conforme a idade das participantes.
+De fato, por apresentar uma estimativa negativa, ocorre o que observamos na
+Análise Exploratória de Dados: a suplementação com cálcio é mais efetiva em
+crianças mais novas, com o efeito diminuindo conforme a idade aumenta.
+
+Como não há parâmetros a serem removidos do modelo, este é nosso modelo final,
+mantendo a forma completa com correlação, mas sem ajuste para
+heterocedasticidade. Dessa forma, nosso modelo final é:
+
+$$
+\pmb{y}_i = \begin{bmatrix}y_{i1} \\
+y_{i2} \\
+\vdots \\
+y_{i5}
+\end{bmatrix} = \begin{bmatrix}
+A_{i1} & G_{i} & A_{i1} G_{i} \\
+A_{i2} & G_{i} & A_{i2} G_{i} \\
+\vdots & \vdots & \vdots \\
+1 & A_{i5} & A_{i5} G_{i}
+\end{bmatrix}
+\begin{bmatrix}
+\tau \\
+\beta \\
+(\tau,\beta) \\
+\end{bmatrix} + \begin{bmatrix}
+1 & A_{i1} \\
+1 & A_{i2} \\
+\vdots & \vdots \\
+1 & A_{i5}
+\end{bmatrix}
+\begin{bmatrix}
+b_{0i} \\
+b_{1i}
+\end{bmatrix} + \begin{bmatrix}
+\epsilon_{i1} \\
+\epsilon_{i2} \\
+\vdots \\
+y_{i5}
+\end{bmatrix}
+$$
+
+em que $A_{ij}$ é a idade da participante $i$ na visita $j$, $G_i$ é um
+indicador binário (dummy) que vale 1 se a participante $i$ foi suplementada com
+cálcio e 0 caso contrário, $A_{ij}G_{i}$ é a interação entre idade e grupo,
+$b_{0i}$ é o efeito aleatório de intercepto da participante $i$, $b_{1i}$ é o
+efeito aleatório de inclinação (slope, coeficiente angular) da participante $i$
+e $\epsilon_{ij}$ é o erro aleatório da observação $ij$. Ademais,
+
+$$
+\pmb{b}_i = \begin{bmatrix}
+b_{0i} \\
+b_{1i}
+\end{bmatrix} \sim N \left( \begin{bmatrix}
+0 \\
+0
+\end{bmatrix}, \begin{bmatrix}
+\sigma_{b0}^2 & \sigma_{b0b1} \\
+\sigma_{b0b1} & \sigma_{b1}^2
+\end{bmatrix} \right)
+$$
+
+e 
+
+$$
+\pmb{\epsilon}_i = \begin{bmatrix}
+\epsilon_{i1} \\
+\epsilon_{i2} \\
+\vdots \\
+\epsilon_{i5}
+\end{bmatrix} \sim N \left( \begin{bmatrix}
+0 \\
+0 \\
+\vdots \\
+0
+\end{bmatrix},
+\begin{bmatrix}
+\sigma^2 & 0 & \dots & 0 \\
+0 & \sigma^2 & \dots & 0 \\
+\vdots & \vdots & \ddots & \vdots \\
+0 & 0 & \dots & \sigma^2
+\end{bmatrix}
+\right)
+$$
+
+Com esse modelo, podemos explicar a variação da densidade mineral óssea em
+função da idade, da suplementação com cálcio e da interação entre estes,
+possibilitando a predição de valores em cada visita, além de
+capturar a variação entre as participantes via efeitos aleatórios de intercepto
+e inclinação.
+
+Podemos dizer que há evidências para eficácia da suplementação com cálcio na
+densidade mineral óssea dessa população, com efeito mais acentuado em crianças
+mais novas, conforme indicado pela interação significativa e negativa entre
+idade e grupo.

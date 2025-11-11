@@ -1,0 +1,1200 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="pt" xml:lang="pt"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.34">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Caio M. de Almeida - 15444560">
+<meta name="author" content="Eduardo Yukio G. Ishihara - 15449012">
+<meta name="author" content="Gustavo S. Garone - 15458155">
+<meta name="author" content="Ian B. Loures - 15459667">
+<meta name="author" content="João Victor G. de Sousa - 15463912">
+
+<title>Lista 02 - Planejamento e Análise de Experimentos (MAE0316)</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="lista2viv_files/libs/clipboard/clipboard.min.js"></script>
+<script src="lista2viv_files/libs/quarto-html/quarto.js" type="module"></script>
+<script src="lista2viv_files/libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="lista2viv_files/libs/quarto-html/popper.min.js"></script>
+<script src="lista2viv_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="lista2viv_files/libs/quarto-html/anchor.min.js"></script>
+<link href="lista2viv_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="lista2viv_files/libs/quarto-html/quarto-syntax-highlighting-c8ad9e5dbd60b7b70b38521ab19b7da4.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="lista2viv_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="lista2viv_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="lista2viv_files/libs/bootstrap/bootstrap-660d2daf153e5b07428d61da30c953b0.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="quarto-light">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+<div class="quarto-alternate-formats"><h2>Outros formatos</h2><ul><li><a href="lista2viv.pdf"><i class="bi bi-file-pdf"></i>PDF</a></li></ul></div></div>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Lista 02 - Planejamento e Análise de Experimentos (MAE0316)</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Autores</div>
+    <div class="quarto-title-meta-contents">
+             <p>Caio M. de Almeida - 15444560 </p>
+             <p>Eduardo Yukio G. Ishihara - 15449012 </p>
+             <p>Gustavo S. Garone - 15458155 </p>
+             <p>Ian B. Loures - 15459667 </p>
+             <p>João Victor G. de Sousa - 15463912 </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Data de Publicação</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">11 de novembro de 2025</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p></p>
+<div class="cell">
+<style type="text/css">
+p {
+  text-align: justify
+}
+</style>
+</div>
+<p>Nesta lista, usaremos “<span class="math inline">\(.\)</span>” como separador decimal e quatro dígitos decimais.</p>
+<section id="exercício-3" class="level1">
+<h1>Exercício 3</h1>
+<section id="análise-exploratória-de-dados-aed" class="level2">
+<h2 class="anchored" data-anchor-id="análise-exploratória-de-dados-aed">Análise Exploratória de Dados (AED)</h2>
+<p>Consta-se três variáveis qulitativas: a variável “group”, dividido entre “C” para suplementados por cálcio e “P” para placebo; a variável “visit”, que indica o número da visita (1, 2, 3, 4 ou 5), espaçadas aproximadamente um semestre entre si, indicando dados longitudinais; e a variável “person”, indicando o número da participante no estudo. Como variáveis quantitativas, temos a variável “age”, medida de forma contínua em anos, a variável resposta “bmd”, que indica a densidade mineral óssea (DMO), medida em g/cm² e a variável “ctime”, uma medida contínua do tempo das obervações, tranformadas das datas das visitas.</p>
+<p>Iniciaremos por uma análise numérica para então partirmos para a análise gráfica.</p>
+<div class="cell" data-layout-nrow="2">
+<div id="tbl-descritiva" class="quarto-layout-panel anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-descritiva-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Tabela&nbsp;1: Análise descritiva numérica da DMO
+</figcaption>
+<div aria-describedby="tbl-descritiva-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="quarto-layout-row">
+<div class="cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="tbl-descritiva" style="flex-basis: 100.0%;justify-content: center;">
+<div id="tbl-descritiva-1" class="do-not-create-environment quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-subfloat-caption quarto-subfloat-tbl" id="tbl-descritiva-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(a) Placebo
+</figcaption>
+<div aria-describedby="tbl-descritiva-1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table id="tbl-descritiva-1" class="do-not-create-environment caption-top table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: right;">visit</th>
+<th style="text-align: right;">n</th>
+<th style="text-align: right;">media</th>
+<th style="text-align: right;">sd</th>
+<th style="text-align: right;">min</th>
+<th style="text-align: right;">mediana</th>
+<th style="text-align: right;">max</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">57</td>
+<td style="text-align: right;">0.870</td>
+<td style="text-align: right;">0.066</td>
+<td style="text-align: right;">0.746</td>
+<td style="text-align: right;">0.861</td>
+<td style="text-align: right;">1.014</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">53</td>
+<td style="text-align: right;">0.890</td>
+<td style="text-align: right;">0.075</td>
+<td style="text-align: right;">0.748</td>
+<td style="text-align: right;">0.869</td>
+<td style="text-align: right;">1.055</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">51</td>
+<td style="text-align: right;">0.914</td>
+<td style="text-align: right;">0.078</td>
+<td style="text-align: right;">0.756</td>
+<td style="text-align: right;">0.904</td>
+<td style="text-align: right;">1.067</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">48</td>
+<td style="text-align: right;">0.942</td>
+<td style="text-align: right;">0.075</td>
+<td style="text-align: right;">0.809</td>
+<td style="text-align: right;">0.925</td>
+<td style="text-align: right;">1.096</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">47</td>
+<td style="text-align: right;">0.958</td>
+<td style="text-align: right;">0.074</td>
+<td style="text-align: right;">0.816</td>
+<td style="text-align: right;">0.950</td>
+<td style="text-align: right;">1.119</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+</div>
+</div>
+<div class="quarto-layout-row">
+<div class="cell-output-display quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="tbl-descritiva" style="flex-basis: 100.0%;justify-content: center;">
+<div id="tbl-descritiva-2" class="do-not-create-environment quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-subfloat-caption quarto-subfloat-tbl" id="tbl-descritiva-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(b) Suplementado
+</figcaption>
+<div aria-describedby="tbl-descritiva-2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table id="tbl-descritiva-2" class="do-not-create-environment caption-top table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: right;">visit</th>
+<th style="text-align: right;">n</th>
+<th style="text-align: right;">media</th>
+<th style="text-align: right;">sd</th>
+<th style="text-align: right;">min</th>
+<th style="text-align: right;">mediana</th>
+<th style="text-align: right;">max</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">55</td>
+<td style="text-align: right;">0.880</td>
+<td style="text-align: right;">0.060</td>
+<td style="text-align: right;">0.762</td>
+<td style="text-align: right;">0.879</td>
+<td style="text-align: right;">1.028</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">52</td>
+<td style="text-align: right;">0.903</td>
+<td style="text-align: right;">0.059</td>
+<td style="text-align: right;">0.769</td>
+<td style="text-align: right;">0.905</td>
+<td style="text-align: right;">1.051</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">48</td>
+<td style="text-align: right;">0.938</td>
+<td style="text-align: right;">0.059</td>
+<td style="text-align: right;">0.816</td>
+<td style="text-align: right;">0.939</td>
+<td style="text-align: right;">1.080</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">46</td>
+<td style="text-align: right;">0.965</td>
+<td style="text-align: right;">0.065</td>
+<td style="text-align: right;">0.830</td>
+<td style="text-align: right;">0.955</td>
+<td style="text-align: right;">1.114</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">44</td>
+<td style="text-align: right;">0.988</td>
+<td style="text-align: right;">0.063</td>
+<td style="text-align: right;">0.849</td>
+<td style="text-align: right;">0.986</td>
+<td style="text-align: right;">1.126</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+</div>
+</div>
+</div>
+</figure>
+</div>
+</div>
+<p>Observamos na <a href="#tbl-descritiva" class="quarto-xref">Tabela&nbsp;1</a> que, em ambas as condições, a média da densidade mineral óssea aumenta com o passar do tempo. Contudo, o grupo suplementado parece apresentar crescimento maior, especialmente entre a segunda e terceira visita, quando comparado com o grupo placebo. Por outro lado, a mediana diferença de crescimento maior entre os grupos da primeira para segunda visita.</p>
+<p>Partiremos para a análise gráfica para melhor visualizarmos essas diferenças. Foi orientado atenção ao conteúdo longitudinal dos dados. Temos três variáveis temporais disponíveis: a variável “visit”, que indica o número da visita (1 a 5); a variável “ctime”, que indica o tempo contínuo em que as observações foram realizadas; e a variável “age”, que indica a idade das participantes no momento da medição. Por conta da colinearidade, precisaremos escolher uma dessas variáveis para representar o fator temporal na modelagem, em especial se a idade inicial das participantes for similar.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-ctime" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-fig" id="fig-ctime-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;1: Evolução da densidade mineral óssea ao longo do tempo contínuo
+</figcaption>
+<div aria-describedby="fig-ctime-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="lista2viv_files/figure-html/fig-ctime-1.png" class="img-fluid figure-img" width="672">
+</div>
+</figure>
+</div>
+</div>
+</div>
+<p>Os gráficos na <a href="#fig-ctime" class="quarto-xref">Figura&nbsp;1</a> mostram a evolução da densidade mineral óssea ao longo do tempo contínuo para ambos os grupos. Observa-se que o grupo suplementado com cálcio apresenta um aumento mais acentuado na densidade mineral óssea <em>média</em> em comparação com o grupo placebo, especialmente entre a segunda e terceira visita, enquanto a diferença entre crescimento das <em>medianas</em> é mais acentuada entre a primeira e segunda visita. Ambos resultados sugerem que pode existir um efeito de interação entre a idade e a suplementação, com esta sendo mais efetiva em crianças mais novas. Levaremos isso em consideração na modelagem, atentando-nos a possível existência de interação.</p>
+<p>Verificaremos se essa tendência é a mesma ao analisarmos em função das visitas, como esperamos.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-visit" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-fig" id="fig-visit-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;2: Evolução da densidade mineral óssea ao longo das visitas
+</figcaption>
+<div aria-describedby="fig-visit-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="lista2viv_files/figure-html/fig-visit-1.png" class="img-fluid figure-img" width="672">
+</div>
+</figure>
+</div>
+</div>
+</div>
+<p>Os gráficos na <a href="#fig-visit" class="quarto-xref">Figura&nbsp;2</a> mostram a evolução da densidade mineral óssea ao longo das visitas para ambos os grupos. Observa-se que os resultados são similares aos observados na <a href="#fig-ctime" class="quarto-xref">Figura&nbsp;1</a>, confirmando que ambas variáveis retratam o fator temporal similarmente.</p>
+<p>Analisaremos agora a evolução da densidade mineral óssea em função da idade das participantes. Esperamos que, caso as idades iniciais das participantes sejam similares, o gráfico seja similar ao da <a href="#fig-ctime" class="quarto-xref">Figura&nbsp;1</a>.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-age" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-fig" id="fig-age-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;3: Evolução da DMO ao longo do tempo contínuo, separada por idade
+</figcaption>
+<div aria-describedby="fig-age-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="lista2viv_files/figure-html/fig-age-1.png" class="img-fluid figure-img" width="672">
+</div>
+</figure>
+</div>
+</div>
+</div>
+<p>O gráfico da <a href="#fig-age" class="quarto-xref">Figura&nbsp;3</a> mostra a dispersão da densidade mineral óssea em função da idade das participantes. Observa-se que este gráfico é quase idêntico ao gráfico da <a href="#fig-ctime" class="quarto-xref">Figura&nbsp;1</a>, sugerindo que ambas variáveis retratam o fator temporal similarmente, uma vez que, como indicam, as participantes iniciaram sua participação no estudo com idades próximas. Disso, concluímos que tanto a variável “ctime” quanto a variável “age” podem ser utilizadas para representar o fator temporal quantitativamente na modelagem, enquanto a variável “visit” pode ser utilizada como variável categórica alternativa.</p>
+<p>Finalmente, resta-nos uma análise dos perfis individuais das participantes para identificação de efeito aleatório.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-perfis" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-fig" id="fig-perfis-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;4: Perfis da DMO das participantes ao longo do tempo contínuo
+</figcaption>
+<div aria-describedby="fig-perfis-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="lista2viv_files/figure-html/fig-perfis-1.png" class="img-fluid figure-img" width="672">
+</div>
+</figure>
+</div>
+</div>
+</div>
+<p>Pelo gráfico da <a href="#fig-perfis" class="quarto-xref">Figura&nbsp;4</a>, observa-se que os perfis individuais das participantes apresentam variação considerável em seus níveis iniciais de densidade mineral óssea, sugerindo a presença de um efeito aleatório de intercepto. Por outro lado, a baixa variação na inclinação dos perfis sugere que pode não haver efeito aleatório de inclinação. Ademais, não está claro se, caso de fato exista efeito aleatório de inclinação, este seria correlacionado com o efeito aleatório de intercepto. Levaremos essas observações em consideração na modelagem.</p>
+</section>
+<section id="formulação-dos-modelos" class="level2">
+<h2 class="anchored" data-anchor-id="formulação-dos-modelos">Formulação dos modelos</h2>
+<p>Para este modelo, utilizaremos a variável “Age” para representação do aspecto temporal por sua fácil interpretação biológica. A variável “visit” será incluida indiretamente como as obersavações de um mesmo indivíduo ao longo do tempo (ver modelo adiante). A variável “ctime” não será utilizada por redundância e colinearidade.</p>
+<p>Somada à variável “Age”, temos a variável “group”, que indica se a participante foi suplementada com cálcio ou recebeu placebo, e a interação entre “group” e “age”, que pode capturar efeitos diferenciados da suplementação em diferentes idades, como sugere a Análise Exploratória de Dados.</p>
+<p>Finalmente, precisaremos incluir efeitos aleatórios para capturar a variação entre as participantes, conforme aponta o gráfico da <a href="#fig-perfis" class="quarto-xref">Figura&nbsp;4</a>, e tratar da dependência entre observações de uma mesma participante. Durante nossa análise, faremos testes para determinar a necessidade de incluir efeitos aleatórios de intercepto e inclinação, bem como a possível correlação entre estes. Pode ser que precisaremos também tratar da heterocedasticidade esperada nos dados longitudinais, uma vez que a variância dos erros pode variar com a idade (visitas) das participantes.</p>
+<p>Para modelarmos essas variáveis em um modelo de efeitos mistos lineares com dados longitudinais, inicaremos por um modelo completo da forma:</p>
+<p><span class="math display">\[
+\pmb{y}_i = \begin{bmatrix}y_{i1} \\
+y_{i2} \\
+\vdots \\
+y_{i5}
+\end{bmatrix} = \begin{bmatrix}
+A_{i1} &amp; G_{i} &amp; A_{i1} G_{i} \\
+A_{i2} &amp; G_{i} &amp; A_{i2} G_{i} \\
+\vdots &amp; \vdots &amp; \vdots \\
+A_{i5} &amp; G_{i} &amp; A_{i5} G_{i}
+\end{bmatrix}
+\begin{bmatrix}
+\tau \\
+\beta \\
+(\tau,\beta) \\
+\end{bmatrix} + \begin{bmatrix}
+1 &amp; A_{i1} \\
+1 &amp; A_{i2} \\
+\vdots &amp; \vdots \\
+1 &amp; A_{i5}
+\end{bmatrix}
+\begin{bmatrix}
+b_{0i} \\
+b_{1i}
+\end{bmatrix} + \begin{bmatrix}
+\epsilon_{i1} \\
+\epsilon_{i2} \\
+\vdots \\
+\epsilon_{i5}
+\end{bmatrix}
+\]</span></p>
+<p>em que <span class="math inline">\(A_{ij}\)</span> é a idade da participante <span class="math inline">\(i\)</span> na visita <span class="math inline">\(j\)</span>, <span class="math inline">\(G_i\)</span> é um indicador binário (dummy) que vale 1 se a participante <span class="math inline">\(i\)</span> foi suplementada com cálcio e 0 caso contrário, <span class="math inline">\(A_{ij}G_{i}\)</span> é a interação entre idade e grupo, <span class="math inline">\(b_{0i}\)</span> é o efeito aleatório de intercepto da participante <span class="math inline">\(i\)</span>, <span class="math inline">\(b_{1i}\)</span> é o efeito aleatório de inclinação da participante <span class="math inline">\(i\)</span> e <span class="math inline">\(\epsilon_{ij}\)</span> é o erro aleatório da observação <span class="math inline">\(ij\)</span>. Ademais,</p>
+<p><span class="math display">\[
+\pmb{b}_i = \begin{bmatrix}
+b_{0i} \\
+b_{1i}
+\end{bmatrix} \sim N \left( \begin{bmatrix}
+0 \\
+0
+\end{bmatrix}, \begin{bmatrix}
+\sigma_{b0}^2 &amp; \sigma_{b0b1} \\
+\sigma_{b0b1} &amp; \sigma_{b1}^2
+\end{bmatrix} \right)
+\]</span></p>
+<p>e</p>
+<p><span class="math display">\[
+\pmb{\epsilon}_i = \begin{bmatrix}
+\epsilon_{i1} \\
+\epsilon_{i2} \\
+\vdots \\
+\epsilon_{i5}
+\end{bmatrix} \sim N \left( \begin{bmatrix}
+0 \\
+0 \\
+\vdots \\
+0
+\end{bmatrix},
+\begin{bmatrix}
+\sigma^2 \lvert A_{i1} \rvert^{\delta} &amp; 0 &amp; \dots &amp; 0 \\
+0 &amp; \sigma^2 \lvert A_{i2} \rvert^{\delta} &amp; \dots &amp; 0 \\
+\vdots &amp; \vdots &amp; \ddots &amp; \vdots \\
+0 &amp; 0 &amp; \dots &amp; \sigma^2 \lvert A_{i5} \rvert^{\delta}
+\end{bmatrix}
+\right)
+\]</span></p>
+<p>Dessa forma, podemos modear o efeito aleatório de intercepto e inclinação, bem como a correlação entre estes. O modelo trata a heterocedasticidade esperada nos dados longitudinais, modelando a variância dos erros como uma função da idade das participantes, com parâmetro <span class="math inline">\(\delta\)</span> a ser estimado.</p>
+<p>Partiremos deste modelo completo e o reduziremos conforme nossas análises progredirem.</p>
+</section>
+<section id="implementação-e-comparação-dos-modelos" class="level2">
+<h2 class="anchored" data-anchor-id="implementação-e-comparação-dos-modelos">Implementação e comparação dos modelos</h2>
+<p>Como estratégia, criaremos todos os modelos possíveis de efeitos aleatórios e ajuste para heterocedasticidade pela <code>varPower</code>, totalizando oito modelos. Faremos a comparação entre estes modelos utilizando os critérios AIC e BIC, selecionando o melhor modelo dentre estes. Então, partiremos para análise diagnóstica desse modelo. Caso não satisfaça os pressupostos, partiremos para o próximo modelo melhor classificado pelos critérios AIC e BIC, repetindo o processo até encontrarmos um modelo satisfatório.</p>
+<p>Finalmente, com melhor modelo de efeitos aleatórios selecionado e melhor ajuste para heterocedasticidade, faremos a seleção do modelo de efeitos fixos, com interesse especial na inclusão ou não da interação entre idade e grupo. Finalmente, com o modelo finalizado, faremos a análise dos resíduos para verificação dos pressupostos do modelo e, se bem ajustado, decidiremos se há efeito significativo ou não da suplementação com cálcio na densidade mineral óssea dessa população.</p>
+<section id="seleção-do-modelo-de-efeitos-aleatórios-e-ajuste-de-heterocedasticidade" class="level3">
+<h3 class="anchored" data-anchor-id="seleção-do-modelo-de-efeitos-aleatórios-e-ajuste-de-heterocedasticidade">Seleção do modelo de efeitos aleatórios e ajuste de heterocedasticidade</h3>
+<div class="cell">
+<div id="tbl-comparacao" class="cell quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-comparacao-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Tabela&nbsp;2: Comparação dos modelos de efeitos aleatórios e ajuste de heterocedasticidade
+</figcaption>
+<div aria-describedby="tbl-comparacao-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output-display">
+<table class="do-not-create-environment cell caption-top table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Modelo</th>
+<th style="text-align: right;">AIC</th>
+<th style="text-align: right;">BIC</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Completo com correlação</td>
+<td style="text-align: right;">-2334.11</td>
+<td style="text-align: right;">-2300.45</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Completo com correlação e ajuste</td>
+<td style="text-align: right;">-2265.52</td>
+<td style="text-align: right;">-2223.44</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Completo sem correlação</td>
+<td style="text-align: right;">-2262.92</td>
+<td style="text-align: right;">-2233.46</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Completo sem correlação com ajuste</td>
+<td style="text-align: right;">-2261.54</td>
+<td style="text-align: right;">-2227.87</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Sem inclinação</td>
+<td style="text-align: right;">-2239.75</td>
+<td style="text-align: right;">-2214.49</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Sem inclinação com ajuste</td>
+<td style="text-align: right;">-2239.23</td>
+<td style="text-align: right;">-2209.77</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Sem intercepto</td>
+<td style="text-align: right;">-2251.85</td>
+<td style="text-align: right;">-2226.60</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Sem intercepto com ajuste</td>
+<td style="text-align: right;">-2250.13</td>
+<td style="text-align: right;">-2220.67</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Sem efeito aleatório</td>
+<td style="text-align: right;">-1269.87</td>
+<td style="text-align: right;">-1248.78</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Sem efeito aleatório com ajuste</td>
+<td style="text-align: right;">-1233.83</td>
+<td style="text-align: right;">-1208.58</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</figure>
+</div>
+</div>
+<p>O modelo com correção ajustado não covergiu com o método <code>varPower</code>, por isso, utilizamos <code>varConstPower</code>.</p>
+<p>Da <a href="#tbl-comparacao" class="quarto-xref">Tabela&nbsp;2</a>, observa-se que o modelo completo com correlação e sem ajuste apresenta os menores valores de AIC e BIC, caracterizando-o como melhor candidato dentre os testados. Partiremos para a análise diagnóstica deste modelo para verificar se satisfaz os pressupostos.</p>
+<section id="normalidade" class="level4">
+<h4 class="anchored" data-anchor-id="normalidade">Normalidade</h4>
+<p>Começamos pela análise gráfica via QQ-Plot:</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-qqplot-mod" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-fig" id="fig-qqplot-mod-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;5: Comparação dos quantis
+</figcaption>
+<div aria-describedby="fig-qqplot-mod-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="lista2viv_files/figure-html/fig-qqplot-mod-1.png" class="img-fluid figure-img" width="672">
+</div>
+</figure>
+</div>
+</div>
+</div>
+<p>O gráfico da <a href="#fig-qqplot-mod" class="quarto-xref">Figura&nbsp;5</a> aponta bom ajuste, vamos confirmar com teste de Shapiro-Wilk, com resultados em <a href="#tbl-shapiro" class="quarto-xref">Tabela&nbsp;3</a>.</p>
+<div class="cell">
+<div id="tbl-shapiro" class="cell quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-shapiro-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Tabela&nbsp;3: Saída do teste de Shapiro-Wilk sobre os resíduos
+</figcaption>
+<div aria-describedby="tbl-shapiro-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output-display">
+<table class="do-not-create-environment cell caption-top table table-sm table-striped small">
+<colgroup>
+<col style="width: 19%">
+<col style="width: 13%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;">Estatística</th>
+<th style="text-align: center;">Valor-p</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">0.9978</td>
+<td style="text-align: center;">0.7776</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</figure>
+</div>
+</div>
+<p>Com normalidade não rejeitada, partimos para teste da homocedasticidade.</p>
+</section>
+<section id="homocedasticiadade" class="level4">
+<h4 class="anchored" data-anchor-id="homocedasticiadade">Homocedasticiadade</h4>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-resid-ajust" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-fig" id="fig-resid-ajust-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;6: Resíduos x Ajustados do Modelo com Correlação
+</figcaption>
+<div aria-describedby="fig-resid-ajust-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="lista2viv_files/figure-html/fig-resid-ajust-1.png" class="img-fluid figure-img" width="672">
+</div>
+</figure>
+</div>
+</div>
+</div>
+<p>O gráfico da <a href="#fig-resid-ajust" class="quarto-xref">Figura&nbsp;6</a> reafirma média dos resíduos próxima de zero (como visto no QQ-plot da <a href="#fig-qqplot-mod" class="quarto-xref">Figura&nbsp;5</a>), e dá indícios de homocedasticidade, com resíduos distribuídos aleatoria e uniformemente em torno de zero, o que também reforça a independência obtida pela inclusão dos efeitos aleatórios.</p>
+<p>Confirmaremos a homocedasticiadade com o teste de Bartlett, com resultado na <a href="#tbl-bartlett" class="quarto-xref">Tabela&nbsp;4</a>.</p>
+<div class="cell">
+<div id="tbl-bartlett" class="cell quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-bartlett-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Tabela&nbsp;4: Saída do teste de Bartlett para homocedasticidade entre os grupos (P x C)
+</figcaption>
+<div aria-describedby="tbl-bartlett-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output-display">
+<table class="do-not-create-environment cell caption-top table table-sm table-striped small">
+<colgroup>
+<col style="width: 19%">
+<col style="width: 13%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;">Estatística</th>
+<th style="text-align: center;">Valor-p</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">0.3235</td>
+<td style="text-align: center;">0.5695</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</figure>
+</div>
+</div>
+<p>Podemos também realizar o teste de Levene, cujos resultados são apresentados na <a href="#tbl-levene" class="quarto-xref">Tabela&nbsp;5</a>.</p>
+<div class="cell">
+<div id="tbl-levene" class="cell quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-levene-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Tabela&nbsp;5: Saída do teste de Levene para homocedasticidade entre os grupos (P x C)
+</figcaption>
+<div aria-describedby="tbl-levene-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output-display">
+<table class="do-not-create-environment cell caption-top table table-sm table-striped small">
+<colgroup>
+<col style="width: 19%">
+<col style="width: 13%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;">Estatística</th>
+<th style="text-align: center;">Valor-p</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">0.8616</td>
+<td style="text-align: center;">0.3537</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">NA</td>
+<td style="text-align: center;">NA</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</figure>
+</div>
+</div>
+<p>Concluímos destas estatísticas que não há evidências suficientes para rejeitarmos a homocedasticidade dos resíduos do modelo completo com correlação. Dessa forma, não será necessário considerar o modelo com ajuste para heterocedasticidade, e podemos partir para seleção dos efeitos fixos.</p>
+</section>
+</section>
+<section id="seleção-dos-efeitos-fixos" class="level3">
+<h3 class="anchored" data-anchor-id="seleção-dos-efeitos-fixos">Seleção dos efeitos fixos</h3>
+<p>Da análise anterior, o modelo completo com correlação e sem ajuste foi selecionado como melhor candidato dentre os modelos de efeitos aleatórios testados, satisfazendo os pressupostos de normalidade e homocedasticidade dos resíduos, assim como a independência entre observações após tratamento com efeito aleatório. Partiremos para a seleção do modelo de efeitos fixos, testando a inclusão ou não da interação entre idade e grupo, e se existe efeito da suplementação com cálcio na densidade mineral óssea.</p>
+<p>Primeiramente, conferimos um sumário de nosso modelo na <a href="#tbl-sumario-mod" class="quarto-xref">Tabela&nbsp;6</a>.</p>
+<div class="cell">
+<div id="tbl-sumario-mod" class="cell quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-sumario-mod-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Tabela&nbsp;6: Sumário do modelo completo com correlação
+</figcaption>
+<div aria-describedby="tbl-sumario-mod-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output-display">
+<table class="do-not-create-environment cell caption-top table table-sm table-striped small">
+<colgroup>
+<col style="width: 23%">
+<col style="width: 18%">
+<col style="width: 12%">
+<col style="width: 8%">
+<col style="width: 11%">
+<col style="width: 13%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;">Termo</th>
+<th style="text-align: center;">Estimativa</th>
+<th style="text-align: center;">EP</th>
+<th style="text-align: center;">GL</th>
+<th style="text-align: center;">t</th>
+<th style="text-align: center;">Valor-p</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">Intecepto</td>
+<td style="text-align: center;">0.2818</td>
+<td style="text-align: center;">0.0255</td>
+<td style="text-align: center;">387</td>
+<td style="text-align: center;">11.05</td>
+<td style="text-align: center;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Idade</td>
+<td style="text-align: center;">0.0542</td>
+<td style="text-align: center;">0.0022</td>
+<td style="text-align: center;">387</td>
+<td style="text-align: center;">24.64</td>
+<td style="text-align: center;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Grupo(P)</td>
+<td style="text-align: center;">0.0867</td>
+<td style="text-align: center;">0.0357</td>
+<td style="text-align: center;">110</td>
+<td style="text-align: center;">2.43</td>
+<td style="text-align: center;">0.0167</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Idade:Grupo(P)</td>
+<td style="text-align: center;">-0.0089</td>
+<td style="text-align: center;">0.0031</td>
+<td style="text-align: center;">387</td>
+<td style="text-align: center;">-2.89</td>
+<td style="text-align: center;">0.0041</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</figure>
+</div>
+</div>
+<p>Da <a href="#tbl-sumario-mod" class="quarto-xref">Tabela&nbsp;6</a>, observa-se que o termo de interação entre idade e grupo é significativo ao nível de 5%, indicando que o efeito da suplementação com cálcio na densidade mineral óssea varia conforme a idade das participantes. De fato, por apresentar uma estimativa negativa, ocorre o que observamos na Análise Exploratória de Dados: a suplementação com cálcio é mais efetiva em crianças mais novas, com o efeito diminuindo conforme a idade aumenta.</p>
+<p>Como não há parâmetros a serem removidos do modelo, este é nosso modelo final, mantendo a forma completa com correlação, mas sem ajuste para heterocedasticidade. Dessa forma, nosso modelo final é:</p>
+<p><span class="math display">\[
+\pmb{y}_i = \begin{bmatrix}y_{i1} \\
+y_{i2} \\
+\vdots \\
+y_{i5}
+\end{bmatrix} = \begin{bmatrix}
+A_{i1} &amp; G_{i} &amp; A_{i1} G_{i} \\
+A_{i2} &amp; G_{i} &amp; A_{i2} G_{i} \\
+\vdots &amp; \vdots &amp; \vdots \\
+1 &amp; A_{i5} &amp; A_{i5} G_{i}
+\end{bmatrix}
+\begin{bmatrix}
+\tau \\
+\beta \\
+(\tau,\beta) \\
+\end{bmatrix} + \begin{bmatrix}
+1 &amp; A_{i1} \\
+1 &amp; A_{i2} \\
+\vdots &amp; \vdots \\
+1 &amp; A_{i5}
+\end{bmatrix}
+\begin{bmatrix}
+b_{0i} \\
+b_{1i}
+\end{bmatrix} + \begin{bmatrix}
+\epsilon_{i1} \\
+\epsilon_{i2} \\
+\vdots \\
+y_{i5}
+\end{bmatrix}
+\]</span></p>
+<p>em que <span class="math inline">\(A_{ij}\)</span> é a idade da participante <span class="math inline">\(i\)</span> na visita <span class="math inline">\(j\)</span>, <span class="math inline">\(G_i\)</span> é um indicador binário (dummy) que vale 1 se a participante <span class="math inline">\(i\)</span> foi suplementada com cálcio e 0 caso contrário, <span class="math inline">\(A_{ij}G_{i}\)</span> é a interação entre idade e grupo, <span class="math inline">\(b_{0i}\)</span> é o efeito aleatório de intercepto da participante <span class="math inline">\(i\)</span>, <span class="math inline">\(b_{1i}\)</span> é o efeito aleatório de inclinação (slope, coeficiente angular) da participante <span class="math inline">\(i\)</span> e <span class="math inline">\(\epsilon_{ij}\)</span> é o erro aleatório da observação <span class="math inline">\(ij\)</span>. Ademais,</p>
+<p><span class="math display">\[
+\pmb{b}_i = \begin{bmatrix}
+b_{0i} \\
+b_{1i}
+\end{bmatrix} \sim N \left( \begin{bmatrix}
+0 \\
+0
+\end{bmatrix}, \begin{bmatrix}
+\sigma_{b0}^2 &amp; \sigma_{b0b1} \\
+\sigma_{b0b1} &amp; \sigma_{b1}^2
+\end{bmatrix} \right)
+\]</span></p>
+<p>e</p>
+<p><span class="math display">\[
+\pmb{\epsilon}_i = \begin{bmatrix}
+\epsilon_{i1} \\
+\epsilon_{i2} \\
+\vdots \\
+\epsilon_{i5}
+\end{bmatrix} \sim N \left( \begin{bmatrix}
+0 \\
+0 \\
+\vdots \\
+0
+\end{bmatrix},
+\begin{bmatrix}
+\sigma^2 &amp; 0 &amp; \dots &amp; 0 \\
+0 &amp; \sigma^2 &amp; \dots &amp; 0 \\
+\vdots &amp; \vdots &amp; \ddots &amp; \vdots \\
+0 &amp; 0 &amp; \dots &amp; \sigma^2
+\end{bmatrix}
+\right)
+\]</span></p>
+<p>Com esse modelo, podemos explicar a variação da densidade mineral óssea em função da idade, da suplementação com cálcio e da interação entre estes, possibilitando a predição de valores em cada visita, além de capturar a variação entre as participantes via efeitos aleatórios de intercepto e inclinação.</p>
+<p>Podemos dizer que há evidências para eficácia da suplementação com cálcio na densidade mineral óssea dessa população, com efeito mais acentuado em crianças mais novas, conforme indicado pela interação significativa e negativa entre idade e grupo.</p>
+</section>
+</section>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copiada");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copiada");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
