@@ -38,7 +38,7 @@ ul.task-list li input[type="checkbox"] {
 <link href="lista2viv_files/libs/quarto-html/quarto-syntax-highlighting-c8ad9e5dbd60b7b70b38521ab19b7da4.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="lista2viv_files/libs/bootstrap/bootstrap.min.js"></script>
 <link href="lista2viv_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="lista2viv_files/libs/bootstrap/bootstrap-660d2daf153e5b07428d61da30c953b0.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="lista2viv_files/libs/bootstrap/bootstrap-90136c64d215317bd37bdeca0530c6fb.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
@@ -102,7 +102,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Data de Publicação</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">11 de novembro de 2025</p>
+      <p class="date">12 de novembro de 2025</p>
     </div>
   </div>
   
@@ -127,7 +127,7 @@ p {
 <h1>Exercício 3</h1>
 <section id="análise-exploratória-de-dados-aed" class="level2">
 <h2 class="anchored" data-anchor-id="análise-exploratória-de-dados-aed">Análise Exploratória de Dados (AED)</h2>
-<p>Consta-se três variáveis qulitativas: a variável “group”, dividido entre “C” para suplementados por cálcio e “P” para placebo; a variável “visit”, que indica o número da visita (1, 2, 3, 4 ou 5), espaçadas aproximadamente um semestre entre si, indicando dados longitudinais; e a variável “person”, indicando o número da participante no estudo. Como variáveis quantitativas, temos a variável “age”, medida de forma contínua em anos, a variável resposta “bmd”, que indica a densidade mineral óssea (DMO), medida em g/cm² e a variável “ctime”, uma medida contínua do tempo das obervações, tranformadas das datas das visitas.</p>
+<p>Consta-se três variáveis qualitativas: a variável “group”, dividido entre “C” para suplementados por cálcio e “P” para placebo; a variável “visit”, que indica o número da visita (1, 2, 3, 4 ou 5), espaçadas aproximadamente um semestre entre si, indicando dados longitudinais; e a variável “person”, indicando o número da participante no estudo. Como variáveis quantitativas, temos a variável “age”, medida de forma contínua em anos, a variável resposta “bmd”, que indica a densidade mineral óssea (DMO), medida em g/cm² e a variável “ctime”, uma medida contínua do tempo das obervações, transformadas das datas das visitas.</p>
 <p>Iniciaremos por uma análise numérica para então partirmos para a análise gráfica.</p>
 <div class="cell" data-layout-nrow="2">
 <div id="tbl-descritiva" class="quarto-layout-panel anchored">
@@ -354,22 +354,23 @@ Figura&nbsp;4: Perfis da DMO das participantes ao longo do tempo contínuo
 </section>
 <section id="formulação-dos-modelos" class="level2">
 <h2 class="anchored" data-anchor-id="formulação-dos-modelos">Formulação dos modelos</h2>
-<p>Para este modelo, utilizaremos a variável “Age” para representação do aspecto temporal por sua fácil interpretação biológica. A variável “visit” será incluida indiretamente como as obersavações de um mesmo indivíduo ao longo do tempo (ver modelo adiante). A variável “ctime” não será utilizada por redundância e colinearidade.</p>
+<p>Para este modelo, utilizaremos a variável “Age” para representação do aspecto temporal por sua fácil interpretação biológica. A variável “visit” será incluida indiretamente como as obersvações de um mesmo indivíduo ao longo do tempo (ver modelo adiante). A variável “ctime” não será utilizada por redundância e colinearidade.</p>
 <p>Somada à variável “Age”, temos a variável “group”, que indica se a participante foi suplementada com cálcio ou recebeu placebo, e a interação entre “group” e “age”, que pode capturar efeitos diferenciados da suplementação em diferentes idades, como sugere a Análise Exploratória de Dados.</p>
 <p>Finalmente, precisaremos incluir efeitos aleatórios para capturar a variação entre as participantes, conforme aponta o gráfico da <a href="#fig-perfis" class="quarto-xref">Figura&nbsp;4</a>, e tratar da dependência entre observações de uma mesma participante. Durante nossa análise, faremos testes para determinar a necessidade de incluir efeitos aleatórios de intercepto e inclinação, bem como a possível correlação entre estes. Pode ser que precisaremos também tratar da heterocedasticidade esperada nos dados longitudinais, uma vez que a variância dos erros pode variar com a idade (visitas) das participantes.</p>
-<p>Para modelarmos essas variáveis em um modelo de efeitos mistos lineares com dados longitudinais, inicaremos por um modelo completo da forma:</p>
+<p>Para modelarmos essas variáveis em um modelo de efeitos mistos lineares com dados longitudinais, iniciaremos por um modelo completo da forma:</p>
 <p><span class="math display">\[
 \pmb{y}_i = \begin{bmatrix}y_{i1} \\
 y_{i2} \\
 \vdots \\
 y_{i5}
 \end{bmatrix} = \begin{bmatrix}
-A_{i1} &amp; G_{i} &amp; A_{i1} G_{i} \\
-A_{i2} &amp; G_{i} &amp; A_{i2} G_{i} \\
-\vdots &amp; \vdots &amp; \vdots \\
-A_{i5} &amp; G_{i} &amp; A_{i5} G_{i}
+1 &amp; A_{i1} &amp; G_{i} &amp; A_{i1} G_{i} \\
+1 &amp; A_{i2} &amp; G_{i} &amp; A_{i2} G_{i} \\
+\vdots &amp; \vdots &amp; \vdots &amp; \vdots \\
+1 &amp; A_{i5} &amp; G_{i} &amp;  A_{i5} G_{i}
 \end{bmatrix}
 \begin{bmatrix}
+\mu \\
 \tau \\
 \beta \\
 (\tau,\beta) \\
@@ -389,12 +390,12 @@ b_{1i}
 \epsilon_{i5}
 \end{bmatrix}
 \]</span></p>
-<p>em que <span class="math inline">\(A_{ij}\)</span> é a idade da participante <span class="math inline">\(i\)</span> na visita <span class="math inline">\(j\)</span>, <span class="math inline">\(G_i\)</span> é um indicador binário (dummy) que vale 1 se a participante <span class="math inline">\(i\)</span> foi suplementada com cálcio e 0 caso contrário, <span class="math inline">\(A_{ij}G_{i}\)</span> é a interação entre idade e grupo, <span class="math inline">\(b_{0i}\)</span> é o efeito aleatório de intercepto da participante <span class="math inline">\(i\)</span>, <span class="math inline">\(b_{1i}\)</span> é o efeito aleatório de inclinação da participante <span class="math inline">\(i\)</span> e <span class="math inline">\(\epsilon_{ij}\)</span> é o erro aleatório da observação <span class="math inline">\(ij\)</span>. Ademais,</p>
+<p>em que <span class="math inline">\(A_{ij}\)</span> é a idade da participante <span class="math inline">\(i\)</span> na visita <span class="math inline">\(j\)</span>, <span class="math inline">\(G_i\)</span> é um indicador binário (<em>dummy</em>) que vale 1 se a participante <span class="math inline">\(i\)</span> foi suplementada com cálcio e 0 caso contrário, <span class="math inline">\(A_{ij}G_{i}\)</span> é o produto entre idade e grupo, <span class="math inline">\(b_{0i}\)</span> é o efeito aleatório de intercepto da participante <span class="math inline">\(i\)</span>, <span class="math inline">\(b_{1i}\)</span> é o efeito aleatório de inclinação da participante <span class="math inline">\(i\)</span> e <span class="math inline">\(\epsilon_{ij}\)</span> é o erro aleatório da observação <span class="math inline">\(ij\)</span>. Ademais,</p>
 <p><span class="math display">\[
 \pmb{b}_i = \begin{bmatrix}
 b_{0i} \\
 b_{1i}
-\end{bmatrix} \sim N \left( \begin{bmatrix}
+\end{bmatrix} \sim \mathcal{N} \left( \begin{bmatrix}
 0 \\
 0
 \end{bmatrix}, \begin{bmatrix}
@@ -409,7 +410,7 @@ b_{1i}
 \epsilon_{i2} \\
 \vdots \\
 \epsilon_{i5}
-\end{bmatrix} \sim N \left( \begin{bmatrix}
+\end{bmatrix} \sim \mathcal{N} \left( \begin{bmatrix}
 0 \\
 0 \\
 \vdots \\
@@ -423,7 +424,7 @@ b_{1i}
 \end{bmatrix}
 \right)
 \]</span></p>
-<p>Dessa forma, podemos modear o efeito aleatório de intercepto e inclinação, bem como a correlação entre estes. O modelo trata a heterocedasticidade esperada nos dados longitudinais, modelando a variância dos erros como uma função da idade das participantes, com parâmetro <span class="math inline">\(\delta\)</span> a ser estimado.</p>
+<p>Dessa forma, podemos modelar o efeito aleatório de intercepto e inclinação, bem como a correlação entre estes. O modelo trata a heterocedasticidade esperada nos dados longitudinais, modelando a variância dos erros como uma função da idade das participantes, com parâmetro <span class="math inline">\(\delta\)</span> a ser estimado.</p>
 <p>Partiremos deste modelo completo e o reduziremos conforme nossas análises progredirem.</p>
 </section>
 <section id="implementação-e-comparação-dos-modelos" class="level2">
@@ -506,7 +507,7 @@ Tabela&nbsp;2: Comparação dos modelos de efeitos aleatórios e ajuste de heter
 </figure>
 </div>
 </div>
-<p>O modelo com correção ajustado não covergiu com o método <code>varPower</code>, por isso, utilizamos <code>varConstPower</code>.</p>
+<p>O modelo com correlação ajustado não convergiu com o método <code>varPower</code>, por isso, utilizamos <code>varConstPower</code>.</p>
 <p>Da <a href="#tbl-comparacao" class="quarto-xref">Tabela&nbsp;2</a>, observa-se que o modelo completo com correlação e sem ajuste apresenta os menores valores de AIC e BIC, caracterizando-o como melhor candidato dentre os testados. Partiremos para a análise diagnóstica deste modelo para verificar se satisfaz os pressupostos.</p>
 <section id="normalidade" class="level4">
 <h4 class="anchored" data-anchor-id="normalidade">Normalidade</h4>
@@ -559,8 +560,8 @@ Tabela&nbsp;3: Saída do teste de Shapiro-Wilk sobre os resíduos
 </div>
 <p>Com normalidade não rejeitada, partimos para teste da homocedasticidade.</p>
 </section>
-<section id="homocedasticiadade" class="level4">
-<h4 class="anchored" data-anchor-id="homocedasticiadade">Homocedasticiadade</h4>
+<section id="homocedasticidade" class="level4">
+<h4 class="anchored" data-anchor-id="homocedasticidade">Homocedasticidade</h4>
 <div class="cell">
 <div class="cell-output-display">
 <div id="fig-resid-ajust" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -575,8 +576,8 @@ Figura&nbsp;6: Resíduos x Ajustados do Modelo com Correlação
 </div>
 </div>
 </div>
-<p>O gráfico da <a href="#fig-resid-ajust" class="quarto-xref">Figura&nbsp;6</a> reafirma média dos resíduos próxima de zero (como visto no QQ-plot da <a href="#fig-qqplot-mod" class="quarto-xref">Figura&nbsp;5</a>), e dá indícios de homocedasticidade, com resíduos distribuídos aleatoria e uniformemente em torno de zero, o que também reforça a independência obtida pela inclusão dos efeitos aleatórios.</p>
-<p>Confirmaremos a homocedasticiadade com o teste de Bartlett, com resultado na <a href="#tbl-bartlett" class="quarto-xref">Tabela&nbsp;4</a>.</p>
+<p>O gráfico da <a href="#fig-resid-ajust" class="quarto-xref">Figura&nbsp;6</a> reafirma média dos resíduos próxima de zero (como visto no QQ-plot da <a href="#fig-qqplot-mod" class="quarto-xref">Figura&nbsp;5</a>), e dá indícios de homocedasticidade, com resíduos distribuídos aleatória e uniformemente em torno de zero, o que também reforça a independência obtida pela inclusão dos efeitos aleatórios.</p>
+<p>Confirmaremos a homocedasticidade com o teste de Bartlett, com resultado na <a href="#tbl-bartlett" class="quarto-xref">Tabela&nbsp;4</a>.</p>
 <div class="cell">
 <div id="tbl-bartlett" class="cell quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
@@ -632,10 +633,6 @@ Tabela&nbsp;5: Saída do teste de Levene para homocedasticidade entre os grupos 
 <tr class="odd">
 <td style="text-align: center;">0.8616</td>
 <td style="text-align: center;">0.3537</td>
-</tr>
-<tr class="even">
-<td style="text-align: center;">NA</td>
-<td style="text-align: center;">NA</td>
 </tr>
 </tbody>
 </table>
@@ -726,12 +723,13 @@ y_{i2} \\
 \vdots \\
 y_{i5}
 \end{bmatrix} = \begin{bmatrix}
-A_{i1} &amp; G_{i} &amp; A_{i1} G_{i} \\
-A_{i2} &amp; G_{i} &amp; A_{i2} G_{i} \\
-\vdots &amp; \vdots &amp; \vdots \\
-1 &amp; A_{i5} &amp; A_{i5} G_{i}
+1 &amp; A_{i1} &amp; G_{i} &amp; A_{i1} G_{i} \\
+1 &amp; A_{i2} &amp; G_{i} &amp; A_{i2} G_{i} \\
+\vdots &amp; \vdots &amp; \vdots &amp; \vdots \\
+1 &amp; A_{i5} &amp; G_{i} &amp;  A_{i5} G_{i}
 \end{bmatrix}
 \begin{bmatrix}
+\mu \\
 \tau \\
 \beta \\
 (\tau,\beta) \\
@@ -751,12 +749,12 @@ b_{1i}
 y_{i5}
 \end{bmatrix}
 \]</span></p>
-<p>em que <span class="math inline">\(A_{ij}\)</span> é a idade da participante <span class="math inline">\(i\)</span> na visita <span class="math inline">\(j\)</span>, <span class="math inline">\(G_i\)</span> é um indicador binário (dummy) que vale 1 se a participante <span class="math inline">\(i\)</span> foi suplementada com cálcio e 0 caso contrário, <span class="math inline">\(A_{ij}G_{i}\)</span> é a interação entre idade e grupo, <span class="math inline">\(b_{0i}\)</span> é o efeito aleatório de intercepto da participante <span class="math inline">\(i\)</span>, <span class="math inline">\(b_{1i}\)</span> é o efeito aleatório de inclinação (slope, coeficiente angular) da participante <span class="math inline">\(i\)</span> e <span class="math inline">\(\epsilon_{ij}\)</span> é o erro aleatório da observação <span class="math inline">\(ij\)</span>. Ademais,</p>
+<p>em que <span class="math inline">\(A_{ij}\)</span> é a idade da participante <span class="math inline">\(i\)</span> na visita <span class="math inline">\(j\)</span>, <span class="math inline">\(G_i\)</span> é um indicador binário (<em>dummy</em>) que vale 1 se a participante <span class="math inline">\(i\)</span> foi suplementada com cálcio e 0 caso contrário, <span class="math inline">\(A_{ij}G_{i}\)</span> é o produto entre idade e grupo, <span class="math inline">\(b_{0i}\)</span> é o efeito aleatório de intercepto da participante <span class="math inline">\(i\)</span>, <span class="math inline">\(b_{1i}\)</span> é o efeito aleatório de inclinação (<em>slope</em>, coeficiente angular) da participante <span class="math inline">\(i\)</span> e <span class="math inline">\(\epsilon_{ij}\)</span> é o erro aleatório da observação <span class="math inline">\(ij\)</span>. Ademais,</p>
 <p><span class="math display">\[
 \pmb{b}_i = \begin{bmatrix}
 b_{0i} \\
 b_{1i}
-\end{bmatrix} \sim N \left( \begin{bmatrix}
+\end{bmatrix} \sim \mathcal{N} \left( \begin{bmatrix}
 0 \\
 0
 \end{bmatrix}, \begin{bmatrix}
@@ -771,7 +769,7 @@ b_{1i}
 \epsilon_{i2} \\
 \vdots \\
 \epsilon_{i5}
-\end{bmatrix} \sim N \left( \begin{bmatrix}
+\end{bmatrix} \sim \mathcal{N} \left( \begin{bmatrix}
 0 \\
 0 \\
 \vdots \\

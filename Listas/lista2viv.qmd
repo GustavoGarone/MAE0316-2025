@@ -2,20 +2,19 @@
 format:
   pdf:
     documentclass: scrarticle
-    # tables: true
+    fontsize: 12pt
+    monofont: "Consolas"
     extra-dependencies:
       - float
-    # include-in-header:
-    #   - text: |
-    #       \usepackage{multirow}
-  html: default
+  html: 
+    theme: cosmo
 title: Lista 02 - Planejamento e Análise de Experimentos (MAE0316)
 date: last-modified
 date-format: long
 lang: pt
 geometry:
-    - left=3cm
-    - top=3cm
+    - left=2cm
+    - top=2cm
     - bottom=2cm
     - right=2cm
 author: 
@@ -26,6 +25,7 @@ author:
     - name: João Victor G. de Sousa - 15463912
 execute:
   echo: false
+  keep-ipynb: true
 fig-align: center
 fig-cap-location: top
 fig-pos: H
@@ -44,13 +44,9 @@ p {
 }
 ```
 
-Nesta lista, usaremos "$.$" como separador decimal e quatro dígitos decimais.
-
-# Exercício 3
-
 ```{r}
 #| output: false
-# Loading data
+# Carrega pacotes
 library(tidyr)
 library(knitr)
 library(dplyr)
@@ -60,20 +56,112 @@ library(patchwork)
 library(nlme)
 library(pander)
 library(car)
+```
+
+Nesta lista, usaremos "$.$" como separador decimal e quatro dígitos decimais.
+
+# Exercício 1
+
+```{r}
+#| output: false
+# Carrega dados para o exercício 1
+dados <- tibble(read.csv("Dieta.txt", header = TRUE, row.names = NULL))
+```
+
+```{r}
+#| output: false
+# Modelo a ser usado
+modelo <- anova(lm(dados$Ganho ~ dados$Grupo))
+```
+
+A média e variância entre os grupos podem ser calculadas diretamente a partir
+dos dados, enquanto usamos um modelo linear simples e estimamos a variância
+dentro dos grupos pelo erro quadrático médio dos resíduos obtido através da
+ANOVA. As médias estão exibidas na @tbl-med, enquanto as variâncias encontram-se
+na @tbl-var.
+
+```{r}
+#| label: tbl-med
+#| tbl-cap: "Média e variância (entre grupos) dos ganhos de peso por dieta"
+media_ganho <- aggregate(Ganho ~ Grupo, data = dados, FUN = mean)
+tbl_medvar <- tibble(
+  Grupo = media_ganho$Grupo,
+  Media = round(media_ganho$Ganho, digits = 4)
+)
+pander(tbl_medvar)
+```
+
+```{r}
+#| label: tbl-var
+#| tbl-cap: "Variância entre os grupos dos ganhos de peso por dieta"
+mean_sq_res <- modelo$`Mean Sq`[2]
+var_between_groups <- var(media_ganho$Ganho)
+tbl_var <- tibble(
+  "Variância" = c("Dentro dos grupos", "Entre os grupos"),
+  "Estimativa" = c(
+    round(mean_sq_res, digits = 4),
+    round(var_between_groups, digits = 4)
+  )
+)
+pander(tbl_var)
+```
+
+Finalmente, dado o tamanho amostral e as variâncias entre e dentro dos grupos
+obtidas, podemos obter o poder do teste ANOVA através da função
+`power.anova.test`.
+
+
+```{r}
+#| label: tbl-power
+#| tbl-cap: "Cálculo do poder do teste ANOVA equilibrado *one-way*"
+teste <- power.anova.test(
+  groups = 3,
+  n = length(dados$Grupo) / 3,
+  between.var = var_between_groups,
+  within.var = mean_sq_res
+)
+tbl_teste <- tibble(
+  "Parâmetro" = c(
+    "Número de grupos", "Tamanho amostral por grupo",
+    "Var. entre os grupos", "Var. dentro dos grupos",
+    "Significância", "Poder do teste"
+  ),
+  "Valor" = c(
+    teste$groups,
+    teste$n,
+    round(teste$between.var, digits = 4),
+    round(teste$within.var, digits = 4),
+    teste$sig.level,
+    round(teste$power, digits = 4)
+  )
+)
+pander(tbl_teste)
+```
+
+Da @tbl-power, com essa variância entre e dentro dos grupos e com $n = 10$,
+estimamos que o $\mathrm{Poder} = 1$ a $5\%$ de significância estatística, ou
+seja, não há evidências para dizer que o tamanho amostral não está apropriado em
+termos de poder para a detecção de diferenças entre as dietas.
+
+# Exercício 3
+
+```{r}
+#| output: false
+# Carrega dados para o exercício 3
 data(calcium)
 dados <- tibble(calcium)
 ```
 
 ## Análise Exploratória de Dados (AED)
 
-Consta-se três variáveis qulitativas: a variável "group", dividido entre "C" para
+Consta-se três variáveis qualitativas: a variável "group", dividido entre "C" para
 suplementados por cálcio e "P" para placebo; a variável "visit", que indica o
 número da visita (1, 2, 3, 4 ou 5), espaçadas aproximadamente um semestre entre
 si, indicando dados longitudinais; e a variável "person", indicando o número da
 participante no estudo. Como variáveis quantitativas, temos a variável "age",
 medida de forma contínua em anos, a variável resposta "bmd", que indica a
 densidade mineral óssea (DMO), medida em g/cm² e a variável "ctime", uma medida
-contínua do tempo das obervações, tranformadas das datas das visitas.
+contínua do tempo das obervações, transformadas das datas das visitas.
 
 Iniciaremos por uma análise numérica para então partirmos para a análise
 gráfica.
@@ -251,7 +339,7 @@ modelagem.
 
 Para este modelo, utilizaremos a variável "Age" para representação do aspecto
 temporal por sua fácil interpretação biológica. A variável "visit" será incluida
-indiretamente como as obersavações de um mesmo indivíduo ao longo do tempo (ver
+indiretamente como as obersvações de um mesmo indivíduo ao longo do tempo (ver
 modelo adiante). A variável "ctime" não será utilizada por redundância e
 colinearidade.
 
@@ -270,7 +358,7 @@ longitudinais, uma vez que a variância dos erros pode variar com a idade
 (visitas) das participantes.
 
 Para modelarmos essas variáveis em um modelo de efeitos mistos lineares com
-dados longitudinais, inicaremos por um modelo completo da forma:
+dados longitudinais, iniciaremos por um modelo completo da forma:
 
 $$
 \pmb{y}_i = \begin{bmatrix}y_{i1} \\
@@ -278,12 +366,13 @@ y_{i2} \\
 \vdots \\
 y_{i5}
 \end{bmatrix} = \begin{bmatrix}
-A_{i1} & G_{i} & A_{i1} G_{i} \\
-A_{i2} & G_{i} & A_{i2} G_{i} \\
-\vdots & \vdots & \vdots \\
-A_{i5} & G_{i} & A_{i5} G_{i}
+1 & A_{i1} & G_{i} & A_{i1} G_{i} \\
+1 & A_{i2} & G_{i} & A_{i2} G_{i} \\
+\vdots & \vdots & \vdots & \vdots \\
+1 & A_{i5} & G_{i} &  A_{i5} G_{i}
 \end{bmatrix}
 \begin{bmatrix}
+\mu \\
 \tau \\
 \beta \\
 (\tau,\beta) \\
@@ -305,8 +394,8 @@ b_{1i}
 $$
 
 em que $A_{ij}$ é a idade da participante $i$ na visita $j$, $G_i$ é um
-indicador binário (dummy) que vale 1 se a participante $i$ foi suplementada com
-cálcio e 0 caso contrário, $A_{ij}G_{i}$ é a interação entre idade e grupo,
+indicador binário (*dummy*) que vale 1 se a participante $i$ foi suplementada
+com cálcio e 0 caso contrário, $A_{ij}G_{i}$ é o produto entre idade e grupo,
 $b_{0i}$ é o efeito aleatório de intercepto da participante $i$, $b_{1i}$ é o
 efeito aleatório de inclinação da participante $i$ e $\epsilon_{ij}$ é o erro
 aleatório da observação $ij$. Ademais,
@@ -315,7 +404,7 @@ $$
 \pmb{b}_i = \begin{bmatrix}
 b_{0i} \\
 b_{1i}
-\end{bmatrix} \sim N \left( \begin{bmatrix}
+\end{bmatrix} \sim \mathcal{N} \left( \begin{bmatrix}
 0 \\
 0
 \end{bmatrix}, \begin{bmatrix}
@@ -332,7 +421,7 @@ $$
 \epsilon_{i2} \\
 \vdots \\
 \epsilon_{i5}
-\end{bmatrix} \sim N \left( \begin{bmatrix}
+\end{bmatrix} \sim \mathcal{N} \left( \begin{bmatrix}
 0 \\
 0 \\
 \vdots \\
@@ -347,7 +436,7 @@ $$
 \right)
 $$
 
-Dessa forma, podemos modear o efeito aleatório de intercepto e inclinação, bem
+Dessa forma, podemos modelar o efeito aleatório de intercepto e inclinação, bem
 como a correlação entre estes. O modelo trata a heterocedasticidade esperada nos
 dados longitudinais, modelando a variância dos erros como uma função da idade
 das participantes, com parâmetro $\delta$ a ser estimado.
@@ -476,7 +565,7 @@ tbl_comparacao <- tibble(
 kable(tbl_comparacao)
 ```
 
-O modelo com correção ajustado não covergiu com o método `varPower`, por isso,
+O modelo com correlação ajustado não convergiu com o método `varPower`, por isso,
 utilizamos `varConstPower`.
 
 Da @tbl-comparacao, observa-se que o modelo completo com correlação e sem ajuste
@@ -529,7 +618,7 @@ pander(tbl_shapiro)
 
 Com normalidade não rejeitada, partimos para teste da homocedasticidade.
 
-#### Homocedasticiadade
+#### Homocedasticidade
 
 ```{r}
 #| label: fig-resid-ajust
@@ -553,11 +642,11 @@ res_ajust
 
 O gráfico da @fig-resid-ajust reafirma média dos resíduos próxima de zero (como
 visto no QQ-plot da @fig-qqplot-mod), e dá indícios de homocedasticidade, com
-resíduos distribuídos aleatoria e uniformemente em torno de zero, o que também
+resíduos distribuídos aleatória e uniformemente em torno de zero, o que também
 reforça a independência obtida pela inclusão dos efeitos aleatórios.
 
 
-Confirmaremos a homocedasticiadade com o teste de Bartlett, com resultado na
+Confirmaremos a homocedasticidade com o teste de Bartlett, com resultado na
 @tbl-bartlett.
 
 ```{r}
@@ -591,8 +680,8 @@ teste_levene <- leveneTest(
   data = grupo_residuos
 )
 tbl_levene <- tibble(
-  "Estatística" = round(teste_levene$"F value", digits = 4),
-  "Valor-p" = round(teste_levene$"Pr(>F)", digits = 4)
+  "Estatística" = round(teste_levene[1, ]$"F value", digits = 4),
+  "Valor-p" = round(teste_levene[1, ]$"Pr(>F)", digits = 4)
 )
 pander(tbl_levene)
 ```
@@ -647,12 +736,13 @@ y_{i2} \\
 \vdots \\
 y_{i5}
 \end{bmatrix} = \begin{bmatrix}
-A_{i1} & G_{i} & A_{i1} G_{i} \\
-A_{i2} & G_{i} & A_{i2} G_{i} \\
-\vdots & \vdots & \vdots \\
-1 & A_{i5} & A_{i5} G_{i}
+1 & A_{i1} & G_{i} & A_{i1} G_{i} \\
+1 & A_{i2} & G_{i} & A_{i2} G_{i} \\
+\vdots & \vdots & \vdots & \vdots \\
+1 & A_{i5} & G_{i} &  A_{i5} G_{i}
 \end{bmatrix}
 \begin{bmatrix}
+\mu \\
 \tau \\
 \beta \\
 (\tau,\beta) \\
@@ -674,17 +764,17 @@ y_{i5}
 $$
 
 em que $A_{ij}$ é a idade da participante $i$ na visita $j$, $G_i$ é um
-indicador binário (dummy) que vale 1 se a participante $i$ foi suplementada com
-cálcio e 0 caso contrário, $A_{ij}G_{i}$ é a interação entre idade e grupo,
+indicador binário (*dummy*) que vale 1 se a participante $i$ foi suplementada
+com cálcio e 0 caso contrário, $A_{ij}G_{i}$ é o produto entre idade e grupo,
 $b_{0i}$ é o efeito aleatório de intercepto da participante $i$, $b_{1i}$ é o
-efeito aleatório de inclinação (slope, coeficiente angular) da participante $i$
-e $\epsilon_{ij}$ é o erro aleatório da observação $ij$. Ademais,
+efeito aleatório de inclinação (*slope*, coeficiente angular) da participante
+$i$ e $\epsilon_{ij}$ é o erro aleatório da observação $ij$. Ademais,
 
 $$
 \pmb{b}_i = \begin{bmatrix}
 b_{0i} \\
 b_{1i}
-\end{bmatrix} \sim N \left( \begin{bmatrix}
+\end{bmatrix} \sim \mathcal{N} \left( \begin{bmatrix}
 0 \\
 0
 \end{bmatrix}, \begin{bmatrix}
@@ -701,7 +791,7 @@ $$
 \epsilon_{i2} \\
 \vdots \\
 \epsilon_{i5}
-\end{bmatrix} \sim N \left( \begin{bmatrix}
+\end{bmatrix} \sim \mathcal{N} \left( \begin{bmatrix}
 0 \\
 0 \\
 \vdots \\

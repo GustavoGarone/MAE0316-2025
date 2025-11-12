@@ -21,6 +21,8 @@
           rPackages.languageserver
           rPackages.patchwork
           rPackages.pander
+          rPackages.lme4
+          rPackages.lmerTest
           rPackages.pacman
           rPackages.car
           rPackages.lava
