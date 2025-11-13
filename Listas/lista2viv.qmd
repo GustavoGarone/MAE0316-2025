@@ -1,7 +1,7 @@
 ---
 format:
   pdf:
-    documentclass: scrarticle
+    documentclass: article
     fontsize: 12pt
     monofont: "Consolas"
     extra-dependencies:
@@ -11,7 +11,7 @@ format:
 title: Lista 02 - Planejamento e Análise de Experimentos (MAE0316)
 date: last-modified
 date-format: long
-lang: pt
+lang: pt-BR
 geometry:
     - left=2cm
     - top=2cm
@@ -142,6 +142,190 @@ Da @tbl-power, com essa variância entre e dentro dos grupos e com $n = 10$,
 estimamos que o $\mathrm{Poder} = 1$ a $5\%$ de significância estatística, ou
 seja, não há evidências para dizer que o tamanho amostral não está apropriado em
 termos de poder para a detecção de diferenças entre as dietas.
+
+# Exercício 2
+
+## Item a
+
+Objetivo: O objetivo geral do estudo é avaliar o efeito da duração da
+amamentação predominante sobre o perfil antropométrico (comprimento e peso)
+infantil durante os primeiros anos de vida, considerando tanto o peso quanto a
+estatura, em uma coorte de crianças do Rio de Janeiro acompanhadas entre 1999 e
+2001 e identificar os determinantes do crescimento infantil em crianças
+brasileiras durante os nove primeiros meses de vida.
+
+## Item b
+
+Estudo longitudinal de coorte observacional analítico quantitativo.
+
+## Item c
+
+Foi utilizada a parametrização da cela de referência. A cela de referência usada
+foram os indivíduos do sexo masculino nascidos de parto normal 
+
+Modelo do indivíduo $i$:
+$$
+\mathbf{Y}_i = \mathbf{X}_i \beta + \mathbf{Z}_i \mathbf{b}_i + \varepsilon_i
+$$
+Tal que
+$$
+\mathbf{X}_i = 
+\begin{pmatrix}
+1 & idade_{i,1} & idade_{i,1}^2 & fem_i & dura_i & peso_i & gest_i & norm_i & comp_i & int_{i,1} \\
+1 & idade_{i,2} & idade_{i,2}^2 & fem_i & dura_i & peso_i & gest_i & norm_i & comp_i & int_{i,2} \\
+1 & idade_{i,4} & idade_{i,4}^2 & fem_i & dura_i & peso_i & gest_i & norm_i & comp_i & int_{i,3} \\
+1 & idade_{i,5} & idade_{i,2}^2 & fem_i & dura_i & peso_i & gest_i & norm_i & comp_i & int_{i,4} \\
+\end{pmatrix}
+$$
+
+Tal que:
+
+- $idade_{i,j}$ é a idade do indivíduo $i$ no instante $j$, medida em meses;
+- $fem_i$ é uma variável *dummy* que assume valor $1$ se o indivíduo é do sexo feminino e $0$, caso contrário;
+- $dura_i$ é a duração da amamentação predominante (em meses) do indivíduo $i$;
+- $peso_i$ é o peso do indivíduo $i$ ao nascer;
+- $gest_i$ é a idade gestacional da mãe do indivíduo $i$;
+- $norm_i$ é uma variável *dummy* que assume valor $1$ se o tipo de parto for normal e $0$ se foi do tipo cesárea;
+- $comp_i$ é o comprimento ao nascer do indivíduo $i$;
+- $int_{i,j}$ é a interação entre o sexo e a idade do indivíduo $i$, que pode ser obtido multiplicando $idade_{i,j}$ por $fem_i$.
+
+
+$$
+\beta = \begin{pmatrix}
+\beta_0 \\ \beta_1 \\ \beta_2 \\ \beta_3 \\ \beta_4 \\ \beta_5 \\ \beta_6 \\ \beta_7 \\ \beta_8 \\ \beta_9 \\ 
+\end{pmatrix}
+$$
+
+Tal que:
+
+- $\beta_0$ é o valor médio esperado da variável resposta no tempo zero (nascimento), para o grupo de referência: criança do sexo masculino, não amamentada prolongadamente, parto normal, não baixo peso ao nascer, e com idade gestacional de referência (média).
+- $\beta_1$ é a taxa média de crescimento (variação linear do peso infantil por mês);
+- $\beta_2$ é o termo quadrático da idade: capta variação na trajetória de crescimento ao decorrer do tempo;
+- $\beta_3$ é a diferença média na resposta entre meninas e meninos (grupo de referência), mantidos os demais fatores constantes;
+- $\beta_4$ é a taxa média de variação linear do peso infantil por mês de duração da amamentação
+- $\beta_5$ é a taxa média de variação linear do peso infantil por Kg ao nascer
+- $\beta_6$ é a taxa média de variação linear do peso infantil por semana de duração da gestação
+- $\beta_7$ é a diferença média na resposta entre crianças que nasceram de cesárea ou parto normal (grupo de referência), mantidos os demais fatores constantes;
+- $\beta_8$ é a taxa média de variação linear do peso infantil por cm de comprimento ao nascer
+- $\beta_9$ termo de interação entre sexo e idade: indica se a velocidade de crescimento (inclinação) difere entre meninas e meninos com o tempo
+
+$$
+\mathbf{Z}_i = 
+\begin{pmatrix}
+1 & idade_{i,1} \\
+1 & idade_{i,2} \\
+1 & idade_{i,4} \\
+1 & idade_{i,5} \\
+\end{pmatrix}
+$$
+
+Todos os termos de $\mathbf{Z}_i$ foram definidos anteriormente, sendo o
+primeiro o efeito aleatório de intercepto, e o segundo, o efeito aleatório da
+inclinação (idade) de cada criança $i$.
+$$
+\mathbf{b}_i = 
+\begin{pmatrix}
+b_{i,0} \\ b_{i,1}
+\end{pmatrix} \sim \mathcal{N} \left( 
+\mathbf{0}; \mathbf{D}
+\right)
+$$
+
+
+$$
+\mathbf{D} = \begin{pmatrix}
+\sigma_{b_0}^2 & \rho\,\sigma_{b_0}\sigma_{b_1} \\[6pt]
+\rho\,\sigma_{b_0}\sigma_{b_1} & \sigma_{b_1}^2
+\end{pmatrix}
+$$
+
+$\mathbf{b}_i$ é um vetor bidimensional, que vem de uma normal bidimensional de
+médias $0$ e matriz de covariâncias $\mathbf{D}$ e é 
+$$
+\varepsilon_i  \sim \mathcal{N} \left(
+\mathbf{0}_5;\sigma^2 \mathbf{I}_5 \right)
+$$
+
+$\varepsilon$ é um vetor penta dimensional com os erros associados a cada
+observação do indivíduo $i$ no tempo. Sua interpretação é descrita mais a
+frente.
+
+## Item d
+
+Utilizou-se uma matriz não estruturada, isso é, não há nenhuma restrição sobre a
+matriz de delineamento além de $\lvert \rho \rvert<1$ para garantir que a matriz
+seja positiva definida. Tal matriz foi utilizada, pois, após testarem diferentes
+tipos de estruturas, constataram que uma matriz com intercepto e coeficiente
+angular correlacionados melhor modela os dados de correlação serial das
+observações das crianças e não viram necessidade de estabelecer relação linear
+explícita entre os termos.
+
+## Item e
+
+A matriz dos erros ser $\sigma^2 \mathbf{I}$, ou seja, $\varepsilon_i  \sim
+\mathcal{N} \left( \mathbf{0};\sigma^2 \mathbf{I}_5 \right)$, implica que os
+erros são independentes e homocedásticos. Assim, toda a dependência entre
+observações do mesmo indivíduo (seriais) é capturada somente pelos efeitos
+aleatórios e pela matriz $\mathbf{D}$. 
+
+## Item f
+
+O estudo utilizou uma abordagem metodológica adequada, ao empregar modelos
+lineares mistos para analisar dados longitudinais de crescimento infantil. Essa
+escolha permitiu captar realisticamente as trajetórias individuais de
+crescimento, considerando simultaneamente a variação entre crianças (efeitos
+aleatórios) e o efeito médio dos fatores explicativos (efeitos fixos). É
+especialmente interessante considerar a variação entre as crianças um efeito
+aleatório, pois há muitas variáveis associadas às diferenças entre as crianças,
+das quais muitas são inacessíveis, extremamente custosos de serem acessadas ou
+impossíveis de controlar entre crianças, como as informações
+genéticas.
+
+Constatou-se que estão associadas positivamente ao peso infantil: idade da
+criança, duração da amamentação, peso ao nascer, idade gestacional, parto
+cesáreo e comprimento ao nascer.
+
+Contatou-se que estão negativamente associadas ao peso infantil: efeito
+quadrático da idade e ser do sexo feminino, tanto isoladamente quanto na
+interação.
+
+## Item g
+
+É interessante que efeito quadrático seja negativo, pois implica que as crianças
+apresentam um ganho de peso mais elevado nos primeiros meses de vida e passam a
+ganhar cada vez menos peso conforme crescem. Tal fato converge com a crença
+popular de que bebês crescem muito nos primeiros meses de vida.
+
+Também é surpreendente que bebês nascidos de parto cesáreo, em geral, apresentam
+maior peso do que os bebês nascidos de parto normal. Tal fato surpreende, pois,
+muitas vezes, associa-se o parto do tipo cesárea a bebês que nascem em condições
+não ideais, especialmente os prematuros. Segundo a OMS, em 2023, no Brasil, 60%
+dos bebês nasceram de cesárea, enquanto a taxa recomendada é entre 10% e 15%. Ou
+seja, há uma tendência anômala de preferir o parto por cesárea, o que,
+possivelmente, explica o fato do parto cesárea estar associado a um maior peso
+médio entre os bebês.
+
+
+
+## Item h
+
+As saídas dos modelos dos dois artigos são semelhantes. Ambos os artigos
+utilizam modelos lineares mistos para analisar dados longitudinais. 
+
+A principal diferença que pode ser notada entre os artigos é que o artigo sobre
+amamentação apresenta os resultados de um estudo realizado entre 1999 e 2011, ou
+seja, o foco do artigo está em apresentar os resultados obtidos e as estimativas
+encontradas para modelar o peso das crianças em função das variáveis
+explicativas usadas pelos pesquisadores. O artigo sobre análise de dados
+longitudinais no R, em contrapartida, não foca em apresentar resultados, mas
+apresentar métodos para fazer análises de dados longitudinais com modelos de
+efeitos mistos na linguagem R, ou seja, o foco do artigo está em apresentar as
+técnicas e os exemplos utilizados são apenas uma ferramenta para facilitar a
+compreensão dos leitos. Não há necessidade de apresentar as estimativas dos
+parâmetros encontrados no modelo, é suficiente apresentar os comandos usados e
+as justificativas para fazê-los.
+
+
 
 # Exercício 3
 

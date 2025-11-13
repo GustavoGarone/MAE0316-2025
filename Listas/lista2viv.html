@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="pt" xml:lang="pt"><head>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="pt-BR" xml:lang="pt-BR"><head>
 
 <meta charset="utf-8">
 <meta name="generator" content="quarto-1.7.34">
@@ -123,6 +123,245 @@ p {
 </style>
 </div>
 <p>Nesta lista, usaremos “<span class="math inline">\(.\)</span>” como separador decimal e quatro dígitos decimais.</p>
+<section id="exercício-1" class="level1">
+<h1>Exercício 1</h1>
+<p>A média e variância entre os grupos podem ser calculadas diretamente a partir dos dados, enquanto usamos um modelo linear simples e estimamos a variância dentro dos grupos pelo erro quadrático médio dos resíduos obtido através da ANOVA. As médias estão exibidas na <a href="#tbl-med" class="quarto-xref">Tabela&nbsp;1</a>, enquanto as variâncias encontram-se na <a href="#tbl-var" class="quarto-xref">Tabela&nbsp;2</a>.</p>
+<div class="cell">
+<div id="tbl-med" class="cell quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-med-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Tabela&nbsp;1: Média e variância (entre grupos) dos ganhos de peso por dieta
+</figcaption>
+<div aria-describedby="tbl-med-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output-display">
+<table class="do-not-create-environment cell caption-top table table-sm table-striped small">
+<colgroup>
+<col style="width: 19%">
+<col style="width: 11%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;">Grupo</th>
+<th style="text-align: center;">Media</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">Ração A</td>
+<td style="text-align: center;">12.21</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Ração B</td>
+<td style="text-align: center;">8.58</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Tradicional</td>
+<td style="text-align: center;">10.28</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</figure>
+</div>
+</div>
+<div class="cell">
+<div id="tbl-var" class="cell quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-var-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Tabela&nbsp;2: Variância entre os grupos dos ganhos de peso por dieta
+</figcaption>
+<div aria-describedby="tbl-var-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output-display">
+<table class="do-not-create-environment cell caption-top table table-sm table-striped small">
+<colgroup>
+<col style="width: 27%">
+<col style="width: 18%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;">Variância</th>
+<th style="text-align: center;">Estimativa</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">Dentro dos grupos</td>
+<td style="text-align: center;">0.7889</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Entre os grupos</td>
+<td style="text-align: center;">3.299</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</figure>
+</div>
+</div>
+<p>Finalmente, dado o tamanho amostral e as variâncias entre e dentro dos grupos obtidas, podemos obter o poder do teste ANOVA através da função <code>power.anova.test</code>.</p>
+<div class="cell">
+<div id="tbl-power" class="cell quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-power-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Tabela&nbsp;3: Cálculo do poder do teste ANOVA equilibrado <em>one-way</em>
+</figcaption>
+<div aria-describedby="tbl-power-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output-display">
+<table class="do-not-create-environment cell caption-top table table-sm table-striped small">
+<colgroup>
+<col style="width: 40%">
+<col style="width: 12%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;">Parâmetro</th>
+<th style="text-align: center;">Valor</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">Número de grupos</td>
+<td style="text-align: center;">3</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Tamanho amostral por grupo</td>
+<td style="text-align: center;">10</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Var. entre os grupos</td>
+<td style="text-align: center;">3.299</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Var. dentro dos grupos</td>
+<td style="text-align: center;">0.7889</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">Significância</td>
+<td style="text-align: center;">0.05</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">Poder do teste</td>
+<td style="text-align: center;">1</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</figure>
+</div>
+</div>
+<p>Da <a href="#tbl-power" class="quarto-xref">Tabela&nbsp;3</a>, com essa variância entre e dentro dos grupos e com <span class="math inline">\(n = 10\)</span>, estimamos que o <span class="math inline">\(\mathrm{Poder} = 1\)</span> a <span class="math inline">\(5\%\)</span> de significância estatística, ou seja, não há evidências para dizer que o tamanho amostral não está apropriado em termos de poder para a detecção de diferenças entre as dietas.</p>
+</section>
+<section id="exercício-2" class="level1">
+<h1>Exercício 2</h1>
+<section id="item-a" class="level2">
+<h2 class="anchored" data-anchor-id="item-a">Item a</h2>
+<p>Objetivo: O objetivo geral do estudo é avaliar o efeito da duração da amamentação predominante sobre o perfil antropométrico (comprimento e peso) infantil durante os primeiros anos de vida, considerando tanto o peso quanto a estatura, em uma coorte de crianças do Rio de Janeiro acompanhadas entre 1999 e 2001 e identificar os determinantes do crescimento infantil em crianças brasileiras durante os nove primeiros meses de vida.</p>
+</section>
+<section id="item-b" class="level2">
+<h2 class="anchored" data-anchor-id="item-b">Item b</h2>
+<p>Estudo longitudinal de coorte observacional analítico quantitativo.</p>
+</section>
+<section id="item-c" class="level2">
+<h2 class="anchored" data-anchor-id="item-c">Item c</h2>
+<p>Foi utilizada a parametrização da cela de referência. A cela de referência usada foram os indivíduos do sexo masculino nascidos de parto normal</p>
+<p>Modelo do indivíduo <span class="math inline">\(i\)</span>: <span class="math display">\[
+\mathbf{Y}_i = \mathbf{X}_i \beta + \mathbf{Z}_i \mathbf{b}_i + \varepsilon_i
+\]</span> Tal que <span class="math display">\[
+\mathbf{X}_i =
+\begin{pmatrix}
+1 &amp; idade_{i,1} &amp; idade_{i,1}^2 &amp; fem_i &amp; dura_i &amp; peso_i &amp; gest_i &amp; norm_i &amp; comp_i &amp; int_{i,1} \\
+1 &amp; idade_{i,2} &amp; idade_{i,2}^2 &amp; fem_i &amp; dura_i &amp; peso_i &amp; gest_i &amp; norm_i &amp; comp_i &amp; int_{i,2} \\
+1 &amp; idade_{i,4} &amp; idade_{i,4}^2 &amp; fem_i &amp; dura_i &amp; peso_i &amp; gest_i &amp; norm_i &amp; comp_i &amp; int_{i,3} \\
+1 &amp; idade_{i,5} &amp; idade_{i,2}^2 &amp; fem_i &amp; dura_i &amp; peso_i &amp; gest_i &amp; norm_i &amp; comp_i &amp; int_{i,4} \\
+\end{pmatrix}
+\]</span></p>
+<p>Tal que:</p>
+<ul>
+<li><span class="math inline">\(idade_{i,j}\)</span> é a idade do indivíduo <span class="math inline">\(i\)</span> no instante <span class="math inline">\(j\)</span>, medida em meses;</li>
+<li><span class="math inline">\(fem_i\)</span> é uma variável <em>dummy</em> que assume valor <span class="math inline">\(1\)</span> se o indivíduo é do sexo feminino e <span class="math inline">\(0\)</span>, caso contrário;</li>
+<li><span class="math inline">\(dura_i\)</span> é a duração da amamentação predominante (em meses) do indivíduo <span class="math inline">\(i\)</span>;</li>
+<li><span class="math inline">\(peso_i\)</span> é o peso do indivíduo <span class="math inline">\(i\)</span> ao nascer;</li>
+<li><span class="math inline">\(gest_i\)</span> é a idade gestacional da mãe do indivíduo <span class="math inline">\(i\)</span>;</li>
+<li><span class="math inline">\(norm_i\)</span> é uma variável <em>dummy</em> que assume valor <span class="math inline">\(1\)</span> se o tipo de parto for normal e <span class="math inline">\(0\)</span> se foi do tipo cesárea;</li>
+<li><span class="math inline">\(comp_i\)</span> é o comprimento ao nascer do indivíduo <span class="math inline">\(i\)</span>;</li>
+<li><span class="math inline">\(int_{i,j}\)</span> é a interação entre o sexo e a idade do indivíduo <span class="math inline">\(i\)</span>, que pode ser obtido multiplicando <span class="math inline">\(idade_{i,j}\)</span> por <span class="math inline">\(fem_i\)</span>.</li>
+</ul>
+<p><span class="math display">\[
+\beta = \begin{pmatrix}
+\beta_0 \\ \beta_1 \\ \beta_2 \\ \beta_3 \\ \beta_4 \\ \beta_5 \\ \beta_6 \\ \beta_7 \\ \beta_8 \\ \beta_9 \\
+\end{pmatrix}
+\]</span></p>
+<p>Tal que:</p>
+<ul>
+<li><span class="math inline">\(\beta_0\)</span> é o valor médio esperado da variável resposta no tempo zero (nascimento), para o grupo de referência: criança do sexo masculino, não amamentada prolongadamente, parto normal, não baixo peso ao nascer, e com idade gestacional de referência (média).</li>
+<li><span class="math inline">\(\beta_1\)</span> é a taxa média de crescimento (variação linear do peso infantil por mês);</li>
+<li><span class="math inline">\(\beta_2\)</span> é o termo quadrático da idade: capta variação na trajetória de crescimento ao decorrer do tempo;</li>
+<li><span class="math inline">\(\beta_3\)</span> é a diferença média na resposta entre meninas e meninos (grupo de referência), mantidos os demais fatores constantes;</li>
+<li><span class="math inline">\(\beta_4\)</span> é a taxa média de variação linear do peso infantil por mês de duração da amamentação</li>
+<li><span class="math inline">\(\beta_5\)</span> é a taxa média de variação linear do peso infantil por Kg ao nascer</li>
+<li><span class="math inline">\(\beta_6\)</span> é a taxa média de variação linear do peso infantil por semana de duração da gestação</li>
+<li><span class="math inline">\(\beta_7\)</span> é a diferença média na resposta entre crianças que nasceram de cesárea ou parto normal (grupo de referência), mantidos os demais fatores constantes;</li>
+<li><span class="math inline">\(\beta_8\)</span> é a taxa média de variação linear do peso infantil por cm de comprimento ao nascer</li>
+<li><span class="math inline">\(\beta_9\)</span> termo de interação entre sexo e idade: indica se a velocidade de crescimento (inclinação) difere entre meninas e meninos com o tempo</li>
+</ul>
+<p><span class="math display">\[
+\mathbf{Z}_i =
+\begin{pmatrix}
+1 &amp; idade_{i,1} \\
+1 &amp; idade_{i,2} \\
+1 &amp; idade_{i,4} \\
+1 &amp; idade_{i,5} \\
+\end{pmatrix}
+\]</span></p>
+<p>Todos os termos de <span class="math inline">\(\mathbf{Z}_i\)</span> foram definidos anteriormente, sendo o primeiro o efeito aleatório de intercepto, e o segundo, o efeito aleatório da inclinação (idade) de cada criança <span class="math inline">\(i\)</span>. <span class="math display">\[
+\mathbf{b}_i =
+\begin{pmatrix}
+b_{i,0} \\ b_{i,1}
+\end{pmatrix} \sim \mathcal{N} \left(
+\mathbf{0}; \mathbf{D}
+\right)
+\]</span></p>
+<p><span class="math display">\[
+\mathbf{D} = \begin{pmatrix}
+\sigma_{b_0}^2 &amp; \rho\,\sigma_{b_0}\sigma_{b_1} \\[6pt]
+\rho\,\sigma_{b_0}\sigma_{b_1} &amp; \sigma_{b_1}^2
+\end{pmatrix}
+\]</span></p>
+<p><span class="math inline">\(\mathbf{b}_i\)</span> é um vetor bidimensional, que vem de uma normal bidimensional de médias <span class="math inline">\(0\)</span> e matriz de covariâncias <span class="math inline">\(\mathbf{D}\)</span> e é <span class="math display">\[
+\varepsilon_i  \sim \mathcal{N} \left(
+\mathbf{0}_5;\sigma^2 \mathbf{I}_5 \right)
+\]</span></p>
+<p><span class="math inline">\(\varepsilon\)</span> é um vetor penta dimensional com os erros associados a cada observação do indivíduo <span class="math inline">\(i\)</span> no tempo. Sua interpretação é descrita mais a frente.</p>
+</section>
+<section id="item-d" class="level2">
+<h2 class="anchored" data-anchor-id="item-d">Item d</h2>
+<p>Utilizou-se uma matriz não estruturada, isso é, não há nenhuma restrição sobre a matriz de delineamento além de <span class="math inline">\(\lvert \rho \rvert&lt;1\)</span> para garantir que a matriz seja positiva definida. Tal matriz foi utilizada, pois, após testarem diferentes tipos de estruturas, constataram que uma matriz com intercepto e coeficiente angular correlacionados melhor modela os dados de correlação serial das observações das crianças e não viram necessidade de estabelecer relação linear explícita entre os termos.</p>
+</section>
+<section id="item-e" class="level2">
+<h2 class="anchored" data-anchor-id="item-e">Item e</h2>
+<p>A matriz dos erros ser <span class="math inline">\(\sigma^2 \mathbf{I}\)</span>, ou seja, <span class="math inline">\(\varepsilon_i  \sim
+\mathcal{N} \left( \mathbf{0};\sigma^2 \mathbf{I}_5 \right)\)</span>, implica que os erros são independentes e homocedásticos. Assim, toda a dependência entre observações do mesmo indivíduo (seriais) é capturada somente pelos efeitos aleatórios e pela matriz <span class="math inline">\(\mathbf{D}\)</span>.</p>
+</section>
+<section id="item-f" class="level2">
+<h2 class="anchored" data-anchor-id="item-f">Item f</h2>
+<p>O estudo utilizou uma abordagem metodológica adequada, ao empregar modelos lineares mistos para analisar dados longitudinais de crescimento infantil. Essa escolha permitiu captar realisticamente as trajetórias individuais de crescimento, considerando simultaneamente a variação entre crianças (efeitos aleatórios) e o efeito médio dos fatores explicativos (efeitos fixos). É especialmente interessante considerar a variação entre as crianças um efeito aleatório, pois há muitas variáveis associadas às diferenças entre as crianças, das quais muitas são inacessíveis, extremamente custosos de serem acessadas ou impossíveis de controlar entre crianças, como as informações genéticas.</p>
+<p>Constatou-se que estão associadas positivamente ao peso infantil: idade da criança, duração da amamentação, peso ao nascer, idade gestacional, parto cesáreo e comprimento ao nascer.</p>
+<p>Contatou-se que estão negativamente associadas ao peso infantil: efeito quadrático da idade e ser do sexo feminino, tanto isoladamente quanto na interação.</p>
+</section>
+<section id="item-g" class="level2">
+<h2 class="anchored" data-anchor-id="item-g">Item g</h2>
+<p>É interessante que efeito quadrático seja negativo, pois implica que as crianças apresentam um ganho de peso mais elevado nos primeiros meses de vida e passam a ganhar cada vez menos peso conforme crescem. Tal fato converge com a crença popular de que bebês crescem muito nos primeiros meses de vida.</p>
+<p>Também é surpreendente que bebês nascidos de parto cesáreo, em geral, apresentam maior peso do que os bebês nascidos de parto normal. Tal fato surpreende, pois, muitas vezes, associa-se o parto do tipo cesárea a bebês que nascem em condições não ideais, especialmente os prematuros. Segundo a OMS, em 2023, no Brasil, 60% dos bebês nasceram de cesárea, enquanto a taxa recomendada é entre 10% e 15%. Ou seja, há uma tendência anômala de preferir o parto por cesárea, o que, possivelmente, explica o fato do parto cesárea estar associado a um maior peso médio entre os bebês.</p>
+</section>
+<section id="item-h" class="level2">
+<h2 class="anchored" data-anchor-id="item-h">Item h</h2>
+<p>As saídas dos modelos dos dois artigos são semelhantes. Ambos os artigos utilizam modelos lineares mistos para analisar dados longitudinais.</p>
+<p>A principal diferença que pode ser notada entre os artigos é que o artigo sobre amamentação apresenta os resultados de um estudo realizado entre 1999 e 2011, ou seja, o foco do artigo está em apresentar os resultados obtidos e as estimativas encontradas para modelar o peso das crianças em função das variáveis explicativas usadas pelos pesquisadores. O artigo sobre análise de dados longitudinais no R, em contrapartida, não foca em apresentar resultados, mas apresentar métodos para fazer análises de dados longitudinais com modelos de efeitos mistos na linguagem R, ou seja, o foco do artigo está em apresentar as técnicas e os exemplos utilizados são apenas uma ferramenta para facilitar a compreensão dos leitos. Não há necessidade de apresentar as estimativas dos parâmetros encontrados no modelo, é suficiente apresentar os comandos usados e as justificativas para fazê-los.</p>
+</section>
+</section>
 <section id="exercício-3" class="level1">
 <h1>Exercício 3</h1>
 <section id="análise-exploratória-de-dados-aed" class="level2">
@@ -133,7 +372,7 @@ p {
 <div id="tbl-descritiva" class="quarto-layout-panel anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-descritiva-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Tabela&nbsp;1: Análise descritiva numérica da DMO
+Tabela&nbsp;4: Análise descritiva numérica da DMO
 </figcaption>
 <div aria-describedby="tbl-descritiva-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="quarto-layout-row">
@@ -286,7 +525,7 @@ Tabela&nbsp;1: Análise descritiva numérica da DMO
 </figure>
 </div>
 </div>
-<p>Observamos na <a href="#tbl-descritiva" class="quarto-xref">Tabela&nbsp;1</a> que, em ambas as condições, a média da densidade mineral óssea aumenta com o passar do tempo. Contudo, o grupo suplementado parece apresentar crescimento maior, especialmente entre a segunda e terceira visita, quando comparado com o grupo placebo. Por outro lado, a mediana diferença de crescimento maior entre os grupos da primeira para segunda visita.</p>
+<p>Observamos na <a href="#tbl-descritiva" class="quarto-xref">Tabela&nbsp;4</a> que, em ambas as condições, a média da densidade mineral óssea aumenta com o passar do tempo. Contudo, o grupo suplementado parece apresentar crescimento maior, especialmente entre a segunda e terceira visita, quando comparado com o grupo placebo. Por outro lado, a mediana diferença de crescimento maior entre os grupos da primeira para segunda visita.</p>
 <p>Partiremos para a análise gráfica para melhor visualizarmos essas diferenças. Foi orientado atenção ao conteúdo longitudinal dos dados. Temos três variáveis temporais disponíveis: a variável “visit”, que indica o número da visita (1 a 5); a variável “ctime”, que indica o tempo contínuo em que as observações foram realizadas; e a variável “age”, que indica a idade das participantes no momento da medição. Por conta da colinearidade, precisaremos escolher uma dessas variáveis para representar o fator temporal na modelagem, em especial se a idade inicial das participantes for similar.</p>
 <div class="cell">
 <div class="cell-output-display">
@@ -437,7 +676,7 @@ b_{1i}
 <div id="tbl-comparacao" class="cell quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-comparacao-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Tabela&nbsp;2: Comparação dos modelos de efeitos aleatórios e ajuste de heterocedasticidade
+Tabela&nbsp;5: Comparação dos modelos de efeitos aleatórios e ajuste de heterocedasticidade
 </figcaption>
 <div aria-describedby="tbl-comparacao-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
@@ -508,7 +747,7 @@ Tabela&nbsp;2: Comparação dos modelos de efeitos aleatórios e ajuste de heter
 </div>
 </div>
 <p>O modelo com correlação ajustado não convergiu com o método <code>varPower</code>, por isso, utilizamos <code>varConstPower</code>.</p>
-<p>Da <a href="#tbl-comparacao" class="quarto-xref">Tabela&nbsp;2</a>, observa-se que o modelo completo com correlação e sem ajuste apresenta os menores valores de AIC e BIC, caracterizando-o como melhor candidato dentre os testados. Partiremos para a análise diagnóstica deste modelo para verificar se satisfaz os pressupostos.</p>
+<p>Da <a href="#tbl-comparacao" class="quarto-xref">Tabela&nbsp;5</a>, observa-se que o modelo completo com correlação e sem ajuste apresenta os menores valores de AIC e BIC, caracterizando-o como melhor candidato dentre os testados. Partiremos para a análise diagnóstica deste modelo para verificar se satisfaz os pressupostos.</p>
 <section id="normalidade" class="level4">
 <h4 class="anchored" data-anchor-id="normalidade">Normalidade</h4>
 <p>Começamos pela análise gráfica via QQ-Plot:</p>
@@ -526,12 +765,12 @@ Figura&nbsp;5: Comparação dos quantis
 </div>
 </div>
 </div>
-<p>O gráfico da <a href="#fig-qqplot-mod" class="quarto-xref">Figura&nbsp;5</a> aponta bom ajuste, vamos confirmar com teste de Shapiro-Wilk, com resultados em <a href="#tbl-shapiro" class="quarto-xref">Tabela&nbsp;3</a>.</p>
+<p>O gráfico da <a href="#fig-qqplot-mod" class="quarto-xref">Figura&nbsp;5</a> aponta bom ajuste, vamos confirmar com teste de Shapiro-Wilk, com resultados em <a href="#tbl-shapiro" class="quarto-xref">Tabela&nbsp;6</a>.</p>
 <div class="cell">
 <div id="tbl-shapiro" class="cell quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-shapiro-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Tabela&nbsp;3: Saída do teste de Shapiro-Wilk sobre os resíduos
+Tabela&nbsp;6: Saída do teste de Shapiro-Wilk sobre os resíduos
 </figcaption>
 <div aria-describedby="tbl-shapiro-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
@@ -577,12 +816,12 @@ Figura&nbsp;6: Resíduos x Ajustados do Modelo com Correlação
 </div>
 </div>
 <p>O gráfico da <a href="#fig-resid-ajust" class="quarto-xref">Figura&nbsp;6</a> reafirma média dos resíduos próxima de zero (como visto no QQ-plot da <a href="#fig-qqplot-mod" class="quarto-xref">Figura&nbsp;5</a>), e dá indícios de homocedasticidade, com resíduos distribuídos aleatória e uniformemente em torno de zero, o que também reforça a independência obtida pela inclusão dos efeitos aleatórios.</p>
-<p>Confirmaremos a homocedasticidade com o teste de Bartlett, com resultado na <a href="#tbl-bartlett" class="quarto-xref">Tabela&nbsp;4</a>.</p>
+<p>Confirmaremos a homocedasticidade com o teste de Bartlett, com resultado na <a href="#tbl-bartlett" class="quarto-xref">Tabela&nbsp;7</a>.</p>
 <div class="cell">
 <div id="tbl-bartlett" class="cell quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-bartlett-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Tabela&nbsp;4: Saída do teste de Bartlett para homocedasticidade entre os grupos (P x C)
+Tabela&nbsp;7: Saída do teste de Bartlett para homocedasticidade entre os grupos (P x C)
 </figcaption>
 <div aria-describedby="tbl-bartlett-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
@@ -609,12 +848,12 @@ Tabela&nbsp;4: Saída do teste de Bartlett para homocedasticidade entre os grupo
 </figure>
 </div>
 </div>
-<p>Podemos também realizar o teste de Levene, cujos resultados são apresentados na <a href="#tbl-levene" class="quarto-xref">Tabela&nbsp;5</a>.</p>
+<p>Podemos também realizar o teste de Levene, cujos resultados são apresentados na <a href="#tbl-levene" class="quarto-xref">Tabela&nbsp;8</a>.</p>
 <div class="cell">
 <div id="tbl-levene" class="cell quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-levene-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Tabela&nbsp;5: Saída do teste de Levene para homocedasticidade entre os grupos (P x C)
+Tabela&nbsp;8: Saída do teste de Levene para homocedasticidade entre os grupos (P x C)
 </figcaption>
 <div aria-describedby="tbl-levene-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
@@ -647,12 +886,12 @@ Tabela&nbsp;5: Saída do teste de Levene para homocedasticidade entre os grupos 
 <section id="seleção-dos-efeitos-fixos" class="level3">
 <h3 class="anchored" data-anchor-id="seleção-dos-efeitos-fixos">Seleção dos efeitos fixos</h3>
 <p>Da análise anterior, o modelo completo com correlação e sem ajuste foi selecionado como melhor candidato dentre os modelos de efeitos aleatórios testados, satisfazendo os pressupostos de normalidade e homocedasticidade dos resíduos, assim como a independência entre observações após tratamento com efeito aleatório. Partiremos para a seleção do modelo de efeitos fixos, testando a inclusão ou não da interação entre idade e grupo, e se existe efeito da suplementação com cálcio na densidade mineral óssea.</p>
-<p>Primeiramente, conferimos um sumário de nosso modelo na <a href="#tbl-sumario-mod" class="quarto-xref">Tabela&nbsp;6</a>.</p>
+<p>Primeiramente, conferimos um sumário de nosso modelo na <a href="#tbl-sumario-mod" class="quarto-xref">Tabela&nbsp;9</a>.</p>
 <div class="cell">
 <div id="tbl-sumario-mod" class="cell quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-sumario-mod-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Tabela&nbsp;6: Sumário do modelo completo com correlação
+Tabela&nbsp;9: Sumário do modelo completo com correlação
 </figcaption>
 <div aria-describedby="tbl-sumario-mod-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
@@ -715,7 +954,7 @@ Tabela&nbsp;6: Sumário do modelo completo com correlação
 </figure>
 </div>
 </div>
-<p>Da <a href="#tbl-sumario-mod" class="quarto-xref">Tabela&nbsp;6</a>, observa-se que o termo de interação entre idade e grupo é significativo ao nível de 5%, indicando que o efeito da suplementação com cálcio na densidade mineral óssea varia conforme a idade das participantes. De fato, por apresentar uma estimativa negativa, ocorre o que observamos na Análise Exploratória de Dados: a suplementação com cálcio é mais efetiva em crianças mais novas, com o efeito diminuindo conforme a idade aumenta.</p>
+<p>Da <a href="#tbl-sumario-mod" class="quarto-xref">Tabela&nbsp;9</a>, observa-se que o termo de interação entre idade e grupo é significativo ao nível de 5%, indicando que o efeito da suplementação com cálcio na densidade mineral óssea varia conforme a idade das participantes. De fato, por apresentar uma estimativa negativa, ocorre o que observamos na Análise Exploratória de Dados: a suplementação com cálcio é mais efetiva em crianças mais novas, com o efeito diminuindo conforme a idade aumenta.</p>
 <p>Como não há parâmetros a serem removidos do modelo, este é nosso modelo final, mantendo a forma completa com correlação, mas sem ajuste para heterocedasticidade. Dessa forma, nosso modelo final é:</p>
 <p><span class="math display">\[
 \pmb{y}_i = \begin{bmatrix}y_{i1} \\
