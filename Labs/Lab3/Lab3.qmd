@@ -1,0 +1,256 @@
+---
+format:
+  pdf:
+    documentclass: article
+    fontsize: 12pt
+    monofont: "Consolas"
+    extra-dependencies:
+      - float
+  html: 
+    theme: cosmo
+title: Laboratório 03 - Planejamento e Análise de Experimentos (MAE0316)
+date: last-modified
+date-format: long
+lang: pt-BR
+geometry:
+    - left=2cm
+    - top=2cm
+    - bottom=2cm
+    - right=2cm
+author: 
+    - name: Caio M. de Almeida - 15444560
+    - name: Eduardo Yukio G. Ishihara - 15449012
+    - name: Gustavo S. Garone - 15458155
+    - name: Ian B. Loures - 15459667
+    - name: João Victor G. de Sousa - 15463912
+execute:
+  echo: false
+  keep-ipynb: true
+fig-align: center
+fig-cap-location: top
+fig-pos: H
+tbl-pos: H
+engine: knitr
+---
+
+`\vspace{-0.5cm}\noindent\rule{\textwidth}{1pt}`{=latex}
+
+```{css}
+#| echo: false
+p {
+  text-align: justify
+}
+```
+
+```{r}
+#| output: false
+# Carrega pacotes
+library(tidyr)
+library(knitr)
+library(dplyr)
+library(ggplot2)
+library(patchwork)
+library(pander)
+library(readxl)
+library(vegan)
+library(npmv)
+library(lmPerm)
+library(devtools)
+library(car)
+set.seed(123)
+```
+
+Neste laboratório, usaremos "$.$" como separador decimal e quatro dígitos decimais.
+
+# Exercício 1
+
+```{r}
+#| output: false
+# Carrega dados para o exercício 1
+dados <- tibble(read_excel("./Besouro.xlsx"))
+# Corrigir NA na posição Trat 25 -> T1
+dados$Trat[25] <- "T1"
+# Transforma Planta e Tratamento em fator
+dados$Planta <- as.factor(dados$Planta)
+dados$Trat <- as.factor(dados$Trat)
+```
+
+## Item a
+
+A unidade experimental são as folhas, enquanto a unidade
+observacional são seus quadrantes.
+
+## Item b
+
+Um DCA (Delineamento Completamente Aleatorizado) realiza a alocação
+aleatoriamente dos tratamentos às unidades experimentais, enquanto um DABC
+(Delineamento Aleatorizado em Blocos Completos) designa para cada bloco pelo
+menos uma repetição de cada tratamento.
+
+```{r}
+modeloDCA <- lm(Obser ~ Trat, data = dados)
+modeloDABC <- lm(Obser ~ Planta + Trat, data = dados)
+```
+
+<!-- TODO: bonitizar anova -->
+
+```{r}
+#| label: tbl-DCA-anova
+#| tbl-cap: "ANOVA para o modelo DCA"
+anovaDCA <- anova(modeloDCA)
+kable(anovaDCA, digits = 4)
+```
+
+```{r}
+#| label: tbl-DABC-anova
+#| tbl-cap: "ANOVA para o modelo DABC"
+anovaDABC <- anova(modeloDABC)
+kable(anovaDABC, digits = 4)
+```
+
+Vemos efeito significativo dos tratamentos em ambos modelos, como indica a
+@tbl-DABC-anova e a @tbl-DCA-anova. Porém, o modelo DABC efeito significativo
+para o fator Planta, o que indica que o modelo DABC é mais adequado para esses
+dados.
+
+### Verificação das assunções
+
+Primeiramente, verificaremos as assunções do modelo com blocos (DABC)
+
+```{r}
+#| label: fig-DABC-diagnostics
+#| fig-cap: "Gráfico Resíduos x Ajustados para modelo DABC"
+residuos <- resid(modeloDABC)
+p1 <- ggplot(data = dados, aes(x = fitted(modeloDABC), y = residuos)) +
+  geom_point() +
+  geom_hline(yintercept = 0, linetype = "dashed", color = "red") +
+  labs(x = "Valores ajustados", y = "Resíduos") +
+  theme_minimal()
+p1
+```
+
+O gráfico de resíduos vs ajustados na @fig-DABC-diagnostics não apresenta
+padrões evidentes, sugerindo homocedasticidade dos resíduos. Prosseguiremos com
+o teste de Shapiro-Wilk para normalidade dos resíduos, com resultados na
+@tbl-DABC-shapiro, e um QQ-plot para visualização, na @fig-QQ-DABC.
+
+```{r}
+#| label: tbl-DABC-shapiro
+shapiroDABC <- shapiro.test(residuos)
+pander(shapiroDABC, digits = 4)
+```
+
+```{r}
+#| label: fig-QQ-DABC
+#| fig-cap: "QQ-Plot dos resíduos do modelo DABC"
+ggplot(data = dados, aes(sample = residuos)) +
+  stat_qq() +
+  stat_qq_line(color = "red") +
+  labs(x = "Quantis teóricos", y = "Quantis amostrais") +
+  theme_minimal()
+```
+
+Finalmente, com normalidade não rejeitada, aplicamos o teste de Bartlett para
+verificar homocedasticidade, com resultados na @tbl-DABC-bartlett.
+
+```{r}
+#| label: tbl-DABC-bartlett
+bartlettDABC <- bartlett.test(residuos ~ Trat, data = dados)
+pander(bartlettDABC, digits = 4)
+```
+
+Deste diagnóstico, concluímos que o modelo DABC satisfaz as assunções de
+normalidade e homocedasticidade dos resíduos. Dessa forma, por incluir `Planta`
+no modelo, o DABC é um modelo mais completo para esses dados. Sendo assim,
+poderíamos parar nossa análise por aqui, mas seguiremos com diagnóstico do
+modelo DCA.
+
+Agora, verificaremos as assunções do modelo sem blocos (DCA)
+
+```{r}
+#| label: fig-DCA-diagnostics
+#| fig-cap: "Gráfico Resíduos x Ajustados para modelo DCA"
+residuosDCA <- resid(modeloDCA)
+p2 <- ggplot(data = dados, aes(x = fitted(modeloDCA), y = residuosDCA)) +
+  geom_point() +
+  geom_hline(yintercept = 0, linetype = "dashed", color = "red") +
+  labs(x = "Valores ajustados", y = "Resíduos") +
+  theme_minimal()
+p2
+```
+
+O gráfico de resíduos vs ajustados na @fig-DCA-diagnostics pode indicar
+heterocedasticidade dos resíduos. Prosseguiremos com o teste de Shapiro-Wilk
+para normalidade dos resíduos, com resultados na @tbl-DCA-shapiro, e um QQ-plot
+para visualização, na @fig-QQ-DCA.
+
+```{r}
+#| label: tbl-DCA-shapiro
+shapiroDCA <- shapiro.test(residuosDCA)
+pander(shapiroDCA, digits = 4)
+```
+
+```{r}
+#| label: fig-QQ-DCA
+#| fig-cap: "QQ-Plot dos resíduos do modelo DCA"
+ggplot(data = dados, aes(sample = residuosDCA)) +
+  stat_qq() +
+  stat_qq_line(color = "red") +
+  labs(x = "Quantis teóricos", y = "Quantis amostrais") +
+  theme_minimal()
+```
+
+O QQ-plot na @fig-QQ-DCA sugere que os resíduos podem não seguir uma
+distribuição normal, além disso, o teste de Shapiro-Wilk na @tbl-DCA-shapiro
+apresentou um `valor-p` bem mais baixo que do modelo DABC, indicando uma maior
+evidência contra a normalidade dos resíduos. Ainda assim, não rejeitou a
+normalidade ao nível de 5%.
+
+Com desconfiança da normalidade, usaremos o teste de Levene para verificar
+homocedasticidade, com resultados na @tbl-DCA-levene.
+
+```{r}
+#| label: tbl-DCA-levene
+leveneDCA <- leveneTest(residuosDCA ~ Trat, data = dados)
+pander(leveneDCA, digits = 4)
+```
+
+O teste de Levene na @tbl-DCA-levene não rejeita a homocedasticidade dos
+resíduos. Ainda assim, o modelo DCA apresenta mais indícios de violação da
+normalidaed que o modelo DABC, que também modela melhor os dados. Desta forma,
+escolheríamos o modelo DABC para descrever esses dados. Por curiosidade,
+verificamos também os $R^2$ ajustados dos dois modelos, na @tbl-rsquared.
+
+```{r}
+#| label: tbl-rsquared
+#| tbl-cap: "R² ajustado dos modelos DCA e DABC"
+rsquared <- tibble(
+  Modelo = c("DCA", "DABC"),
+  "R² Ajustado" = c(
+    summary(modeloDCA)$adj.r.squared,
+    summary(modeloDABC)$adj.r.squared
+  )
+)
+kable(rsquared, digits = 4)
+```
+
+## Item c
+
+Realizaremos o teste de aleatorização para um modelo DABC, considerando que as
+assunções de normalidade e homocedasticidade podem foram satisfeitas.
+
+```{r}
+#| output: false
+modeloDABCperm <- lmp(Obser ~ Planta + Trat, data = dados)
+```
+
+```{r}
+#| label: tbl-anova-DABC-perm
+#| tbl-cap: "ANOVA por permutação para o modelo DABC"
+anovaDABCperm <- anova(aov(modeloDABCperm))
+kable(anovaDABCperm, digits = 4)
+```
+
+De acordo com a @tbl-anova-DABC-perm, o teste de aleatorização também indica
+efeito significativo dos tratamentos. O `valor-p` do fator de tratamentos do
+teste de aleatorização global é $0$ (menor que $0.0001$).
