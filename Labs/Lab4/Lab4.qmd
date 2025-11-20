@@ -1,0 +1,231 @@
+---
+format:
+  pdf:
+    documentclass: article
+    fontsize: 12pt
+    monofont: "Consolas"
+    extra-dependencies:
+      - float
+  html: 
+    theme: cosmo
+title: Laboratório 04 - Planejamento e Análise de Experimentos (MAE0316)
+date: last-modified
+date-format: long
+lang: pt-BR
+geometry:
+    - left=2cm
+    - top=2cm
+    - bottom=2cm
+    - right=2cm
+author: 
+    - name: Caio M. de Almeida - 15444560
+    - name: Eduardo Yukio G. Ishihara - 15449012
+    - name: Gustavo S. Garone - 15458155
+    - name: Ian B. Loures - 15459667
+    - name: João Victor G. de Sousa - 15463912
+execute:
+  echo: false
+  keep-ipynb: true
+fig-align: center
+fig-cap-location: top
+fig-pos: H
+tbl-pos: H
+engine: knitr
+---
+
+`\vspace{-0.5cm}\noindent\rule{\textwidth}{1pt}`{=latex}
+
+```{css}
+#| echo: false
+p {
+  text-align: justify
+}
+```
+
+```{r}
+#| output: false
+# Carrega pacotes
+library(tidyr)
+library(knitr)
+library(dplyr)
+library(ggplot2)
+library(patchwork)
+library(pander)
+library(nlme)
+library(devtools)
+library(car)
+set.seed(123)
+```
+
+Neste laboratório, usaremos "$.$" como separador decimal e quatro dígitos decimais.
+
+
+```{r Carregano Dados}
+data(Milk)
+attach(Milk)
+dados <- Milk
+```
+
+# Exercício 1
+
+## Análise Descritiva
+
+```{r Perfis}
+#| label: fig-perfis-vacas
+#| fig-cap: "Gráfico de perfis da quantidade de proteína ao longo do tempo para cada vaca, diferenciando as dietas."
+ggplot(dados, aes(x = Time, y = protein, group = Cow, colour = Diet)) +
+  geom_line() +
+  theme_minimal() +
+  xlab("Semana") +
+  ylab("Quantidade de Proteína") +
+  labs(colour = "Dieta")
+```
+
+```{r perfis medios}
+#| label: fig-medias-dietas
+#| fig-cap: "Média da quantidade de proteína ao longo do tempo para cada dieta."
+medias <- dados |>
+  dplyr::group_by(Time, Diet) |>
+  dplyr::summarise(media = mean(protein), .groups = "drop")
+
+ggplot(medias, aes(x = Time, y = media, colour = Diet, group = Diet)) +
+  geom_line(linewidth = 1.2) +
+  theme_minimal() +
+  xlab("Semana") +
+  ylab("Média da Quantidade de Proteína") +
+  labs(colour = "Dieta")
+```
+
+<!-- TODO: CONTINUAR DESCRTIVIA  -->
+```{r boxplot dieta}
+#| label: fig-boxplot-diet
+#| fig-cap: "Boxplot da quantidade de proteína para cada dieta."
+ggplot(dados, aes(x = Diet, y = protein, fill = Diet)) +
+  geom_boxplot() +
+  theme_minimal() +
+  xlab("Dieta") +
+  ylab("Quantidade de Proteína") +
+  labs(fill = "Dieta")
+```
+
+```{r Semanas Iniciais}
+dados$Inicial <- dados$Time < 4
+```
+
+## Modelo com apenas efeitos fixos
+
+```{r Modelo Fixo}
+modelo_fixo <- lm(protein ~ Time + Inicial + Time * Inicial + Diet + Diet * Time +
+  Inicial, data = dados)
+```
+
+Vamos conferir um diagnóstico simples do modelo com os resíduos por vaca.
+
+```{r Residuos Fixo}
+residuos_fixo <- resid(modelo_fixo)
+dados_residuos_fixo <- tibble(Cow = dados$Cow, Residuos = residuos_fixo)
+ggplot(dados_residuos_fixo, aes(x = Cow, y = Residuos)) +
+  geom_boxplot() +
+  theme_minimal() +
+  xlab("Vaca") +
+  ylab("Resíduos") +
+  theme(axis.text.x = element_blank())
+```
+
+Claramente, os resíduos autocorrelação não nula nas vacas. Verificaremos a homocedasticidade dos resíduos com os testes de Bartlett em @tbl-bartlett-fixo.
+
+```{r Teste Bartlett Fixo}
+#| label: tbl-bartlett-fixo
+#| tbl-cap: "Teste de Bartlett para homocedasticidade dos resíduos do modelo com efeitos fixos."
+teste_bf <- bartlett.test(residuos_fixo ~ dados$Cow)
+tibble(
+  Estatística = teste_bf$statistic,
+  `Valor-p` = teste_bf$p.value
+) |>
+  kable(digits = 4)
+```
+
+Não rejeitada a homocedasticidade, verificamos a normalidade pelo QQ-plot em
+@fig-qq-fixo.
+
+```{r QQ Fixo}
+#| label: fig-qq-fixo
+#| fig-cap: "QQ-Plot dos resíduos do modelo com efeitos fixos."
+ggplot(data = dados_residuos_fixo, aes(sample = Residuos)) +
+  stat_qq() +
+  stat_qq_line() +
+  theme_minimal() +
+  xlab("Quantis Teóricos") +
+  ylab("Quantis Amostrais")
+```
+
+E o teste de Shapiro-Wilk em @tbl-shapiro-fixo.
+
+```{r Teste Shapiro Fixo}
+#| label: tbl-shapiro-fixo
+#| tbl-cap: "Teste de Shapiro-Wilk para normalidade dos resíduos do modelo com efeitos fixos."
+teste_sf <- shapiro.test(residuos_fixo)
+tibble(
+  Estatística = teste_sf$statistic,
+  `Valor-p` = teste_sf$p.value
+) |>
+  kable(digits = 4)
+```
+
+Com normalidade não rejeitada, realizamos o teste de levene em @tbl-levene-fixo.
+
+```{r Teste Levene Fixo}
+#| label: tbl-levene-fixo
+#| tbl-cap: "Teste de Levene para homocedasticidade dos resíduos do modelo com efeitos fixos."
+teste_lf <- leveneTest(residuos_fixo ~ dados$Cow)
+tibble(
+  Estatística = teste_lf$`F value`[1],
+  `Valor-p` = teste_lf$`Pr(>F)`[1]
+) |>
+  kable(digits = 4)
+```
+
+Ainda precisamos verificar a autocorrelação dos resíduos que observamos no
+gráfico de resíduos por vaca. Faremos isso com o gráfico de autocorrelação em
+@fig-acf-fixo.
+
+```{r ACF Fixo}
+#| label: fig-acf-fixo
+#| fig-cap: "Função de autocorrelação dos resíduos do modelo com efeitos fixos."
+acf(residuos_fixo, main = "ACF dos Resíduos do Modelo com Efeitos Fixos")
+```
+
+Claramente, há autocorrelação significativa nos resíduos, mas confirmaremos com
+o teste de Durbin-Watson em @tbl-durbin-fixo.
+
+```{r Teste Durbin Fixo}
+#| label: tbl-durbin-fixo
+#| tbl-cap: "Teste de Durbin-Watson para autocorrelação dos resíduos do modelo com efeitos fixos."
+teste_df <- durbinWatsonTest(modelo_fixo)
+tibble(
+  Estatística = teste_df$dw,
+  `Valor-p` = teste_df$p
+) |>
+  kable(digits = 4)
+```
+
+Pelo teste de Durbin-Watson, rejeitamos a hipótese nula de ausência de
+autocorrelação nos resíduos. Portanto, o modelo com efeitos fixos não é adequado
+para os dados por romper com as suposições do modelo linear clássico.
+
+
+## Modelo com efeitos mistos
+
+Para modelarmos a variabilidade entre as vacas, ajustaremos um modelo com efeitos
+mistos considerando interceptos aleatórios para as vacas, como aponta O gráfico
+de perfis em @fig-perfis-vacas, mas verificaremos também presença.
+
+```{r modelo completo com efeitos}
+modelo_misto <- lme(
+  protein ~ Time + Inicial + Time * Inicial + Diet + Diet * Time + Inicial,
+  random = ~ Time | Cow,
+  data = dados,
+  method = "REML"
+)
+summary(modelo_misto)
+```
