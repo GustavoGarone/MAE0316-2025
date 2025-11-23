@@ -35,7 +35,7 @@ engine: knitr
 
 `\vspace{-0.5cm}\noindent\rule{\textwidth}{1pt}`{=latex}
 
-```{css}
+```{css css para web}
 #| echo: false
 p {
   text-align: justify
@@ -60,10 +60,11 @@ set.seed(123)
 Neste laboratório, usaremos "$.$" como separador decimal e quatro dígitos decimais.
 
 
-```{r Carregano Dados}
+```{r Carregando Dados}
 data(Milk)
 attach(Milk)
 dados <- Milk
+dados$Inicial <- dados$Time < 4
 ```
 
 # Exercício 1
@@ -81,6 +82,11 @@ ggplot(dados, aes(x = Time, y = protein, group = Cow, colour = Diet)) +
   labs(colour = "Dieta")
 ```
 
+Pelo gráfico de perfis na @fig-perfis-vacas, parece haver diferença considerável
+entre o intercepto (proteína inicial) das vacas, mas não é claro se há diferença
+no coeficiente angular. Com uma análise das médias, podemos observar o melhor o
+comportamento entre as dietas.
+
 ```{r perfis medios}
 #| label: fig-medias-dietas
 #| fig-cap: "Média da quantidade de proteína ao longo do tempo para cada dieta."
@@ -96,43 +102,77 @@ ggplot(medias, aes(x = Time, y = media, colour = Diet, group = Diet)) +
   labs(colour = "Dieta")
 ```
 
-<!-- TODO: CONTINUAR DESCRTIVIA  -->
+Esperamos que, pela aleatorização, as dietas tenham intercepto semelhantes. Pelo
+gráfico de médias na @fig-medias-dietas, isso parece ser válido, apesar de uma
+diferença sutil com a dieta 'Lupins'. Ademais, nota-se um efeito acentuado de
+queda nas primeiras semanas para todas as dietas, sugerindo um período de
+adaptação dos animais. Após esse período, as dietas parecem distintas no ganho
+de proteína, com 'Barley' apresentando melhor resultado, enquanto 'Lupins'
+mostra o pior desempenho.
+
 ```{r boxplot dieta}
 #| label: fig-boxplot-diet
 #| fig-cap: "Boxplot da quantidade de proteína para cada dieta."
 ggplot(dados, aes(x = Diet, y = protein, fill = Diet)) +
-  geom_boxplot() +
+  geom_boxplot(show.legend = FALSE) +
   theme_minimal() +
   xlab("Dieta") +
   ylab("Quantidade de Proteína") +
   labs(fill = "Dieta")
 ```
 
-```{r Semanas Iniciais}
-dados$Inicial <- dados$Time < 4
+O *boxplot* da @fig-boxplot-diet facilita a visualização das diferenças
+observadas anteriormente. Vamos excluir as semanas iniciais para focar na
+análise das dietas após o período de adaptação.
+
+```{r dados apos adaptacao}
+dadosfiltrado <- dados |>
+  filter(Inicial == 0)
 ```
+
+```{r boxplot dieta apos adaptacao}
+#| label: fig-boxplot-diet-adaptacao
+#| fig-cap: "Boxplot da quantidade de proteína para cada dieta após o período de adaptação de 4 semanas."
+ggplot(dadosfiltrado, aes(x = Diet, y = protein, fill = Diet)) +
+  geom_boxplot(show.legend = FALSE) +
+  theme_minimal() +
+  xlab("Dieta") +
+  ylab("Quantidade de Proteína") +
+  labs(fill = "Dieta")
+```
+
+O padrão na @fig-boxplot-diet se repete na @fig-boxplot-diet-adaptacao.
+Partiremos para uma análise com um modelo linear com apenas efeitos fixos.
 
 ## Modelo com apenas efeitos fixos
 
+
+Iniciamos com a suposição de um modelo de efeitos fixos completos, com
+intecepto, efeito do tempo, da variável "Inicial", da dieta e todas as
+interações entre essas variáveis.
+
 ```{r Modelo Fixo}
-modelo_fixo <- lm(protein ~ Time + Inicial + Time * Inicial + Diet + Diet * Time +
-  Inicial, data = dados)
+modelo_fixo <- lm(protein ~ Time + Inicial + Diet + Time:Inicial + Diet:Time + Inicial:Diet, data = dados)
 ```
 
-Vamos conferir um diagnóstico simples do modelo com os resíduos por vaca.
+Conferiremos um diagnóstico simples do modelo com os resíduos por vaca.
 
 ```{r Residuos Fixo}
+#| label: fig-residuos-fixo
+#| fig-cap: "Boxplot dos resíduos do modelo com efeitos fixos por vaca."
 residuos_fixo <- resid(modelo_fixo)
 dados_residuos_fixo <- tibble(Cow = dados$Cow, Residuos = residuos_fixo)
 ggplot(dados_residuos_fixo, aes(x = Cow, y = Residuos)) +
-  geom_boxplot() +
+  geom_boxplot(show.legend = FALSE) +
   theme_minimal() +
   xlab("Vaca") +
   ylab("Resíduos") +
   theme(axis.text.x = element_blank())
 ```
 
-Claramente, os resíduos autocorrelação não nula nas vacas. Verificaremos a homocedasticidade dos resíduos com os testes de Bartlett em @tbl-bartlett-fixo.
+Pelo gráfico da @fig-residuos-fixo, os resíduos possuem autocorrelação não nula
+nas vacas. Verificaremos a homocedasticidade com os testes de
+Bartlett em @tbl-bartlett-fixo.
 
 ```{r Teste Bartlett Fixo}
 #| label: tbl-bartlett-fixo
@@ -211,21 +251,245 @@ tibble(
 
 Pelo teste de Durbin-Watson, rejeitamos a hipótese nula de ausência de
 autocorrelação nos resíduos. Portanto, o modelo com efeitos fixos não é adequado
-para os dados por romper com as suposições do modelo linear clássico.
+para os dados por romper com as suposições do modelo linear clássico, no caso,
+da independência entre observações.
 
 
 ## Modelo com efeitos mistos
 
-Para modelarmos a variabilidade entre as vacas, ajustaremos um modelo com efeitos
-mistos considerando interceptos aleatórios para as vacas, como aponta O gráfico
-de perfis em @fig-perfis-vacas, mas verificaremos também presença.
+Para modelarmos a variabilidade entre as vacas e lidarmos com o aspecto
+longitudinal dos dados, ajustaremos um modelo com efeitos mistos considerando
+intercepto aleatório para as vacas, como aponta o gráfico de perfis em
+@fig-perfis-vacas, mas verificaremos também presença de efeito aleatório na
+inclinação. Usaremos o método da máxima verossimilhança restrita (REML) para 
+estimação.
+
+Escreveremos todos os efeitos mistos possíveis (Com e sem intercepto aleatório,
+com e sem inclinação, com e sem correlação entre intercepto e inclinação) e
+compararemos os modelos pelos critérios AIC e BIC, uma vez que alguns modelos
+podem não são aninhados, como os modelos com coeficiente angular, mas sem
+intercepto e vice-versa.
+
+Ademais, consideraremos modelos com ajuste para heterocedasticidade através da
+função de variância `varPower` do pacote `nlme`, buscando modelar melhor a
+autocorrelação de dados longitudinais.
 
 ```{r modelo completo com efeitos}
-modelo_misto <- lme(
-  protein ~ Time + Inicial + Time * Inicial + Diet + Diet * Time + Inicial,
+mod_completo_corr <- lme(
+  protein ~ Time + Inicial + Diet + Time:Inicial + Diet:Time + Inicial:Diet,
   random = ~ Time | Cow,
   data = dados,
   method = "REML"
 )
-summary(modelo_misto)
+
+mod_completo_corr_adj <- lme(
+  protein ~ Time + Inicial + Diet + Time:Inicial + Diet:Time + Inicial:Diet,
+  random = ~ Time | Cow,
+  weights = varPower(form = ~Time),
+  data = dados,
+  method = "REML"
+)
+
+mod_completo_semcorr <- lme(
+  protein ~ Time + Inicial + Diet + Time:Inicial + Diet:Time + Inicial:Diet,
+  random = list(Cow = pdDiag(~Time)),
+  data = dados,
+  method = "REML"
+)
+
+mod_completo_semcorr_adj <- lme(
+  protein ~ Time + Inicial + Diet + Time:Inicial + Diet:Time + Inicial:Diet,
+  random = list(Cow = pdDiag(~Time)),
+  weights = varPower(form = ~Time),
+  data = dados,
+  method = "REML"
+)
+
+mod_semincline <- lme(
+  protein ~ Time + Inicial + Diet + Time:Inicial + Diet:Time + Inicial:Diet,
+  random = ~ 1 | Cow,
+  data = dados,
+  method = "REML"
+)
+
+mod_semincline_adj <- lme(
+  protein ~ Time + Inicial + Diet + Time:Inicial + Diet:Time + Inicial:Diet,
+  random = ~ 1 | Cow,
+  weights = varPower(form = ~Time),
+  data = dados,
+  method = "REML"
+)
+
+mod_semintercepto <- lme(
+  protein ~ Time + Inicial + Diet + Time:Inicial + Diet:Time + Inicial:Diet,
+  random = ~ 0 + Time | Cow,
+  data = dados,
+  method = "REML"
+)
+
+mod_semintercepto_adj <- lme(
+  protein ~ Time + Inicial + Diet + Time:Inicial + Diet:Time + Inicial:Diet,
+  random = ~ 0 + Time | Cow,
+  weights = varPower(form = ~Time),
+  data = dados,
+  method = "REML"
+)
+
+mod_semaleatorio <- lm(
+  protein ~ Time + Inicial + Diet + Time:Inicial + Diet:Time + Inicial:Diet,
+  data = dados
+)
+
+mod_semaleatorio_adj <- gls(
+  protein ~ Time + Inicial + Diet + Time:Inicial + Diet:Time + Inicial:Diet,
+  weights = varPower(form = ~Time),
+  data = dados
+)
 ```
+
+```{r}
+#| label: tbl-comparacao
+#| tbl-cap: "Comparação dos modelos de efeitos aleatórios e ajuste de heterocedasticidade"
+modelos <- list(
+  "Completo com correlação" = mod_completo_corr,
+  "Completo com correlação e ajuste" = mod_completo_corr_adj,
+  "Completo sem correlação" = mod_completo_semcorr,
+  "Completo sem correlação com ajuste" = mod_completo_semcorr_adj,
+  "Sem inclinação" = mod_semincline,
+  "Sem inclinação com ajuste" = mod_semincline_adj,
+  "Sem intercepto" = mod_semintercepto,
+  "Sem intercepto com ajuste" = mod_semintercepto_adj,
+  "Sem efeito aleatório" = mod_semaleatorio,
+  "Sem efeito aleatório com ajuste" = mod_semaleatorio_adj
+)
+aic_values <- sapply(modelos, AIC)
+bic_values <- sapply(modelos, BIC)
+tbl_comparacao <- tibble(
+  Modelo = names(aic_values),
+  AIC = round(aic_values, digits = 2),
+  BIC = round(bic_values, digits = 2)
+)
+
+kable(tbl_comparacao)
+```
+
+O modelo completo com correlação e ajuste de heterocedasticidade apresentou
+melhor desempenho segundo os critérios AIC e BIC. 
+
+Através de testes $F$ parciais (*stepwise*), retiramos os efeitos fixos deste
+modelo completo. Terminamos com um modelo com apenas intercepto, efeito do
+tempo, da dieta, da variável "Inicial" e a interação entre tempo e "Inicial".
+
+```{r modelo final com efeitos}
+mod_final <- lme(
+  protein ~ Time + Inicial + Diet + Time:Inicial,
+  random = ~ Time | Cow,
+  weights = varPower(form = ~Time),
+  data = dados,
+  method = "REML"
+)
+```
+
+Partiremos para a análise diagnóstica desse modelo.
+
+```{r Residuos Mistos: Vaca Tempo Dieta e normalizados com patchwork}
+#| label: fig-residuos-mistos
+#| fig-cap: "Gráficos dos resíduos do modelo por vaca, tempo, dieta e contra ajustados."
+residuos_mistos <- resid(mod_final)
+dados_residuos_mistos <- tibble(
+  Vaca = dados$Cow, Dieta = dados$Diet, Tempo =
+    dados$Time, Residuos = residuos_mistos, Fit = fitted(mod_final)
+)
+# Vaca: Boxplot, tempo e dieta: scatter plots, normalizados: fit vs standardized
+p1 <- ggplot(dados_residuos_mistos, aes(x = Vaca, y = Residuos)) +
+  geom_boxplot(show.legend = FALSE) +
+  theme_minimal() +
+  xlab("Vaca") +
+  ylab("Resíduos") +
+  theme(axis.text.x = element_blank())
+p2 <- ggplot(dados_residuos_mistos, aes(x = Dieta, y = Residuos)) +
+  geom_point() +
+  theme_minimal() +
+  xlab("Dieta") +
+  ylab("Resíduos")
+p3 <- ggplot(dados_residuos_mistos, aes(x = Tempo, y = Residuos)) +
+  geom_point() +
+  theme_minimal() +
+  xlab("Tempo") +
+  ylab("Resíduos")
+p4 <- ggplot(dados_residuos_mistos, aes(x = Fit, y = Residuos)) +
+  geom_point(alpha = 0.6) +
+  geom_hline(yintercept = 0, color = "red", linetype = "dashed") +
+  labs(
+    x = "Valores Ajustados",
+    y = "Resíduos"
+  ) +
+  theme_minimal()
+
+p1 + p2 + p3 + p4 + plot_layout(ncol = 2)
+```
+
+
+Pelo gráfico da @fig-residuos-mistos, os resíduos parecem mais bem comportados
+em relação ao modelo com efeitos fixos. Verificaremos a homocedasticidade com o
+teste de Bartlett em @tbl-bartlett-mistos.
+
+```{r Teste Bartlett Mistos}
+#| label: tbl-bartlett-mistos
+#| tbl-cap: "Teste de Bartlett para homocedasticidade dos resíduos do modelo com efeitos mistos."
+teste_bm <- bartlett.test(residuos_mistos ~ dados$Cow)
+tibble(
+  Estatística = teste_bm$statistic,
+  `Valor-p` = teste_bm$p.value
+) |>
+  kable(digits = 4)
+```
+
+Não rejeitada a homocedasticidade, verificamos a normalidade pelo QQ-plot em
+@fig-qq-mistos.
+```{r QQ Mistos}
+#| label: fig-qq-mistos
+#| fig-cap: "QQ-Plot dos resíduos do modelo com efeitos mistos."
+ggplot(data = dados_residuos_mistos, aes(sample = Residuos)) +
+  stat_qq() +
+  stat_qq_line() +
+  theme_minimal() +
+  xlab("Quantis Teóricos") +
+  ylab("Quantis Amostrais")
+```
+
+E o teste de Shapiro-Wilk em @tbl-shapiro-mistos.
+```{r Teste Shapiro Mistos}
+#| label: tbl-shapiro-mistos
+#| tbl-cap: "Teste de Shapiro-Wilk para normalidade dos resíduos do modelo com efeitos mistos."
+teste_sm <- shapiro.test(residuos_mistos)
+tibble(
+  Estatística = teste_sm$statistic,
+  `Valor-p` = teste_sm$p.value
+) |>
+  kable(digits = 4)
+```
+
+Com normalidade não rejeitada, realizamos o teste de levene em
+@tbl-levene-mistos.
+```{r Teste Levene Mistos}
+#| label: tbl-levene-mistos
+#| tbl-cap: "Teste de Levene para homocedasticidade dos resíduos do modelo com efeitos mistos."
+teste_lm <- leveneTest(residuos_mistos ~ dados$Cow)
+tibble(
+  Estatística = teste_lm$`F value`[1],
+  `Valor-p` = teste_lm$`Pr(>F)`[1]
+) |>
+  kable(digits = 4)
+```
+
+Ainda precisamos verificar a autocorrelação dos resíduos. Faremos isso com o
+gráfico de autocorrelação em @fig-acf-mistos.
+```{r ACF Mistos}
+#| label: fig-acf-mistos
+#| fig-cap: "Função de autocorrelação dos resíduos do modelo com efeitos mistos."
+acf(residuos_mistos, main = "ACF dos Resíduos do Modelo com Efeitos Mistos")
+```
+
+Claramente, há autocorrelação significativa nos resíduos, mas confirmaremos com
+o teste de Durbin-Watson em @tbl-durbin-misto.
