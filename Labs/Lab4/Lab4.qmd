@@ -159,24 +159,49 @@ Conferiremos um diagnóstico simples do modelo com os resíduos por vaca.
 
 ```{r Residuos Fixo}
 #| label: fig-residuos-fixo
-#| fig-cap: "Boxplot dos resíduos do modelo com efeitos fixos por vaca."
+#| fig-cap: "Gráficos dos resíduos do modelo de efeitos fixos por vaca, tempo, dieta e contra ajustados."
 residuos_fixo <- resid(modelo_fixo)
-dados_residuos_fixo <- tibble(Cow = dados$Cow, Residuos = residuos_fixo)
-ggplot(dados_residuos_fixo, aes(x = Cow, y = Residuos)) +
+dados_residuos_fixo <- tibble(
+  Vaca = dados$Cow, Dieta = dados$Diet, Tempo =
+    dados$Time, Residuos = residuos_fixo, Fit = fitted(modelo_fixo)
+)
+# Vaca: Boxplot, tempo e dieta: scatter plots, normalizados: fit vs standardized
+p1 <- ggplot(dados_residuos_fixo, aes(x = Vaca, y = Residuos)) +
   geom_boxplot(show.legend = FALSE) +
   theme_minimal() +
   xlab("Vaca") +
   ylab("Resíduos") +
   theme(axis.text.x = element_blank())
+p2 <- ggplot(dados_residuos_fixo, aes(x = Dieta, y = Residuos)) +
+  geom_point() +
+  theme_minimal() +
+  xlab("Dieta") +
+  ylab("Resíduos")
+p3 <- ggplot(dados_residuos_fixo, aes(x = Tempo, y = Residuos)) +
+  geom_point() +
+  theme_minimal() +
+  xlab("Tempo") +
+  ylab("Resíduos")
+p4 <- ggplot(dados_residuos_fixo, aes(x = Fit, y = Residuos)) +
+  geom_point(alpha = 0.6) +
+  geom_hline(yintercept = 0, color = "red", linetype = "dashed") +
+  labs(
+    x = "Valores Ajustados",
+    y = "Resíduos"
+  ) +
+  theme_minimal()
+
+p1 + p2 + p3 + p4 + plot_layout(ncol = 2)
 ```
 
-Pelo gráfico da @fig-residuos-fixo, os resíduos possuem autocorrelação não nula
-nas vacas. Verificaremos a homocedasticidade com os testes de
-Bartlett em @tbl-bartlett-fixo.
+Pelos gráficos dos resíduos em @fig-residuos-fixo, os resíduos possuem
+autocorrelação não nula nas vacas e apresentam padrões na análise dos resíduos
+padronizados. Verificaremos a homocedasticidade com os testes de Bartlett na
+@tbl-bartlett-fixo.
 
 ```{r Teste Bartlett Fixo}
 #| label: tbl-bartlett-fixo
-#| tbl-cap: "Teste de Bartlett para homocedasticidade dos resíduos do modelo com efeitos fixos."
+#| tbl-cap: "Teste de Bartlett para homocedasticidade dos resíduos do modelo com efeitos fixos entre as vacas."
 teste_bf <- bartlett.test(residuos_fixo ~ dados$Cow)
 tibble(
   Estatística = teste_bf$statistic,
@@ -199,7 +224,7 @@ ggplot(data = dados_residuos_fixo, aes(sample = Residuos)) +
   ylab("Quantis Amostrais")
 ```
 
-E o teste de Shapiro-Wilk em @tbl-shapiro-fixo.
+E o teste de Shapiro-Wilk na @tbl-shapiro-fixo.
 
 ```{r Teste Shapiro Fixo}
 #| label: tbl-shapiro-fixo
@@ -212,11 +237,11 @@ tibble(
   kable(digits = 4)
 ```
 
-Com normalidade não rejeitada, realizamos o teste de levene em @tbl-levene-fixo.
+Com normalidade não rejeitada, realizamos o teste de levene na @tbl-levene-fixo.
 
 ```{r Teste Levene Fixo}
 #| label: tbl-levene-fixo
-#| tbl-cap: "Teste de Levene para homocedasticidade dos resíduos do modelo com efeitos fixos."
+#| tbl-cap: "Teste de Levene para homocedasticidade dos resíduos do modelo com efeitos fixos entre as vacas."
 teste_lf <- leveneTest(residuos_fixo ~ dados$Cow)
 tibble(
   Estatística = teste_lf$`F value`[1],
@@ -236,7 +261,7 @@ acf(residuos_fixo, main = "ACF dos Resíduos do Modelo com Efeitos Fixos")
 ```
 
 Claramente, há autocorrelação significativa nos resíduos, mas confirmaremos com
-o teste de Durbin-Watson em @tbl-durbin-fixo.
+o teste de Durbin-Watson na @tbl-durbin-fixo.
 
 ```{r Teste Durbin Fixo}
 #| label: tbl-durbin-fixo
@@ -390,7 +415,10 @@ mod_final <- lme(
 )
 ```
 
-Partiremos para a análise diagnóstica desse modelo.
+Partiremos para a análise diagnóstica desse modelo. Devemos considerar que não
+podemos utilizar os testes estatísticos que conhecemos, uma vez que os resíduos,
+propositalmente, não vão seguir a mesma distribuição por conta do modelo misto.
+Dessa forma, basearemos nossa análise diagnóstica principalmente em gráficos.
 
 ```{r Residuos Mistos: Vaca Tempo Dieta e normalizados com patchwork}
 #| label: fig-residuos-mistos
@@ -430,23 +458,11 @@ p1 + p2 + p3 + p4 + plot_layout(ncol = 2)
 ```
 
 
-Pelo gráfico da @fig-residuos-mistos, os resíduos parecem mais bem comportados
-em relação ao modelo com efeitos fixos. Verificaremos a homocedasticidade com o
-teste de Bartlett em @tbl-bartlett-mistos.
+Pelos gráficos da @fig-residuos-mistos, os resíduos parecem mais bem comportados
+em relação ao modelo com efeitos fixos, em relação ao tempo, dieta e vacas, sem
+padrões aparentes. Dessa forma, a homocedasticidade parece válida.
 
-```{r Teste Bartlett Mistos}
-#| label: tbl-bartlett-mistos
-#| tbl-cap: "Teste de Bartlett para homocedasticidade dos resíduos do modelo com efeitos mistos."
-teste_bm <- bartlett.test(residuos_mistos ~ dados$Cow)
-tibble(
-  Estatística = teste_bm$statistic,
-  `Valor-p` = teste_bm$p.value
-) |>
-  kable(digits = 4)
-```
-
-Não rejeitada a homocedasticidade, verificamos a normalidade pelo QQ-plot em
-@fig-qq-mistos.
+Verificamos a normalidade pelo QQ-plot na @fig-qq-mistos.
 ```{r QQ Mistos}
 #| label: fig-qq-mistos
 #| fig-cap: "QQ-Plot dos resíduos do modelo com efeitos mistos."
@@ -458,38 +474,20 @@ ggplot(data = dados_residuos_mistos, aes(sample = Residuos)) +
   ylab("Quantis Amostrais")
 ```
 
-E o teste de Shapiro-Wilk em @tbl-shapiro-mistos.
-```{r Teste Shapiro Mistos}
-#| label: tbl-shapiro-mistos
-#| tbl-cap: "Teste de Shapiro-Wilk para normalidade dos resíduos do modelo com efeitos mistos."
-teste_sm <- shapiro.test(residuos_mistos)
-tibble(
-  Estatística = teste_sm$statistic,
-  `Valor-p` = teste_sm$p.value
-) |>
-  kable(digits = 4)
-```
-
-Com normalidade não rejeitada, realizamos o teste de levene em
-@tbl-levene-mistos.
-```{r Teste Levene Mistos}
-#| label: tbl-levene-mistos
-#| tbl-cap: "Teste de Levene para homocedasticidade dos resíduos do modelo com efeitos mistos."
-teste_lm <- leveneTest(residuos_mistos ~ dados$Cow)
-tibble(
-  Estatística = teste_lm$`F value`[1],
-  `Valor-p` = teste_lm$`Pr(>F)`[1]
-) |>
-  kable(digits = 4)
-```
+Com poucos pontos fora da linha, a normalidade parece válida. Existe, contudo, a
+suspeita que a distribuição possua caudas mais pesadas que a normal.
 
 Ainda precisamos verificar a autocorrelação dos resíduos. Faremos isso com o
-gráfico de autocorrelação em @fig-acf-mistos.
+gráfico de autocorrelação na @fig-acf-mistos.
+
 ```{r ACF Mistos}
 #| label: fig-acf-mistos
 #| fig-cap: "Função de autocorrelação dos resíduos do modelo com efeitos mistos."
 acf(residuos_mistos, main = "ACF dos Resíduos do Modelo com Efeitos Mistos")
 ```
 
-Claramente, há autocorrelação significativa nos resíduos, mas confirmaremos com
-o teste de Durbin-Watson em @tbl-durbin-misto.
+Apesar de reduzida, ainda há autocorrelação significativa nos resíduos.
+Repetimos essa análise para todos os outros modelos, em ordem crescente do AIC,
+mas este padrão se repetiu. Isso pode indicar que precisaremos de técnicas mais
+avançadas para modelar os dados longitudinais, como estruturas de correlação
+mais complexas.
