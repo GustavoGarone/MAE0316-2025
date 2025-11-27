@@ -26,6 +26,8 @@ author:
 execute:
   echo: false
   keep-ipynb: true
+  warning: false
+  message: false
 fig-align: center
 fig-cap-location: top
 fig-pos: H
@@ -50,17 +52,18 @@ library(knitr)
 library(dplyr)
 library(ggplot2)
 library(patchwork)
-library(pander)
 library(readxl)
 library(vegan)
 library(npmv)
 library(lmPerm)
 library(devtools)
 library(car)
+library(readxl)
+# library(pairwiseAdonis)
 set.seed(123)
 ```
 
-Neste laboratório, usaremos "$.$" como separador decimal e quatro dígitos decimais.
+Neste laboratório, usaremos "$.$" como separador decimal, quatro dígitos decimais e a _seed_ 123.
 
 # Exercício 1
 
@@ -91,8 +94,6 @@ menos uma repetição de cada tratamento.
 modeloDCA <- lm(Obser ~ Trat, data = dados)
 modeloDABC <- lm(Obser ~ Planta + Trat, data = dados)
 ```
-
-<!-- TODO: bonitizar anova -->
 
 ```{r}
 #| label: tbl-DCA-anova
@@ -136,8 +137,15 @@ o teste de Shapiro-Wilk para normalidade dos resíduos, com resultados na
 
 ```{r}
 #| label: tbl-DABC-shapiro
+#| tbl-cap: "Teste de Shapiro-Wilk para os resíduos do modelo DABC"
 shapiroDABC <- shapiro.test(residuos)
-pander(shapiroDABC, digits = 4)
+
+tibleshapiroDABC <- tibble(
+  Estatística = shapiroDABC$statistic,
+  "Valor-p" = shapiroDABC$p.value
+)
+
+kable(tibleshapiroDABC, digits = 4)
 ```
 
 ```{r}
@@ -155,8 +163,13 @@ verificar homocedasticidade, com resultados na @tbl-DABC-bartlett.
 
 ```{r}
 #| label: tbl-DABC-bartlett
+#| tbl-cap: "Teste de Bartlett para os resíduos do modelo DABC"
 bartlettDABC <- bartlett.test(residuos ~ Trat, data = dados)
-pander(bartlettDABC, digits = 4)
+tiblebartlettDABC <- tibble(
+  Estatística = bartlettDABC$statistic,
+  "Valor-p" = bartlettDABC$p.value
+)
+kable(tiblebartlettDABC, digits = 4)
 ```
 
 Deste diagnóstico, concluímos que o modelo DABC satisfaz as assunções de
@@ -186,8 +199,13 @@ para visualização, na @fig-QQ-DCA.
 
 ```{r}
 #| label: tbl-DCA-shapiro
+#| tbl-cap: "Teste de Shapiro-Wilk para os resíduos do modelo DCA"
 shapiroDCA <- shapiro.test(residuosDCA)
-pander(shapiroDCA, digits = 4)
+tibleshapiroDCA <- tibble(
+  Estatística = shapiroDCA$statistic,
+  "Valor-p" = shapiroDCA$p.value
+)
+kable(tibleshapiroDCA, digits = 4)
 ```
 
 ```{r}
@@ -211,8 +229,13 @@ homocedasticidade, com resultados na @tbl-DCA-levene.
 
 ```{r}
 #| label: tbl-DCA-levene
+#| tbl-cap: "Teste de Levene para os resíduos do modelo DCA"
 leveneDCA <- leveneTest(residuosDCA ~ Trat, data = dados)
-pander(leveneDCA, digits = 4)
+tibleleveneDCA <- tibble(
+  Estatística = leveneDCA$`F value`[1],
+  "Valor-p" = leveneDCA$`Pr(>F)`[1]
+)
+kable(tibleleveneDCA, digits = 4)
 ```
 
 O teste de Levene na @tbl-DCA-levene não rejeita a homocedasticidade dos
@@ -237,7 +260,7 @@ kable(rsquared, digits = 4)
 ## Item c
 
 Realizaremos o teste de aleatorização para um modelo DABC, considerando que as
-assunções de normalidade e homocedasticidade podem foram satisfeitas.
+assunções de normalidade e homocedasticidade foram satisfeitas.
 
 ```{r}
 #| output: false
@@ -247,8 +270,7 @@ modeloDABCperm <- lmp(Obser ~ Planta + Trat, data = dados)
 ```{r}
 #| label: tbl-anova-DABC-perm
 #| tbl-cap: "ANOVA por permutação para o modelo DABC"
-anovaDABCperm <- anova(aov(modeloDABCperm))
-kable(anovaDABCperm, digits = 4)
+anovaDABCperm <- anova(modeloDABCperm)
 ```
 
 De acordo com a @tbl-anova-DABC-perm, o teste de aleatorização também indica
@@ -373,4 +395,267 @@ os obtidos pelo pacote `lmPerm`:
 #| label: tbl-rand-lmPerm
 #| tbl-cap: "Teste de aleatorização com lmPerm"
 modelo_perm <- lmp(y ~ bloco + trat, data = dados)
+anova_modelo_perm <- anova(modelo_perm)
+kable(anova_modelo_perm, digits = 4)
 ```
+
+\newpage
+# Exercício 3
+
+```{r}
+tabela_padronizada <- read_excel("Tabela_Padronizada.xlsx")
+
+tabela_padronizada_nona <- na.omit(tabela_padronizada)
+
+# Dividindo entre genes e miRNAs
+tabela_padronizada_nonag <- tabela_padronizada_nona[, c(1:8, 13)]
+tabela_padronizada_nonam <- tabela_padronizada_nona[, c(9:13)]
+```
+
+
+## Item a
+
+Vamos comparar os grupos do gene `EIF4` e do miRNA `miR_150` primeiramente por medidas-resumos. Abaixo temos as tabelas com as estatísticas.
+
+```{r}
+dados_EIF4 <- as.data.frame(cbind(tabela_padronizada_nonag$EIF4, tabela_padronizada_nonag$Fase))
+colnames(dados_EIF4) <- c("EIF4", "Fase")
+dados_EIF4$Fase <- factor(dados_EIF4$Fase, levels = c("CB", "DS", "FC"))
+dados_EIF4$EIF4 <- as.numeric(dados_EIF4$EIF4)
+EIF4_CB <- dados_EIF4[dados_EIF4$Fase == "CB", ]
+EIF4_DS <- dados_EIF4[dados_EIF4$Fase == "DS", ]
+EIF4_FC <- dados_EIF4[dados_EIF4$Fase == "FC", ]
+combinado_EIF4 <- list(EIF4_CB = EIF4_CB$EIF4, EIF4_DS = EIF4_DS$EIF4, EIF4_FC = EIF4_FC$EIF4)
+
+gene <- rep("EIF4", 3)
+grupo <- c("CB (n = 14)", "DS (n = 8)", "FC (n = 50)")
+minimo <- round(sapply(combinado_EIF4, min), digits = 4)
+mediana <- round(sapply(combinado_EIF4, median), digits = 4)
+media <- round(sapply(combinado_EIF4, mean), digits = 4)
+maximo <- round(sapply(combinado_EIF4, max), digits = 4)
+desvio_padrao <- round(sapply(combinado_EIF4, sd), digits = 4)
+erro_padrao <- round(sapply(combinado_EIF4, sd) / sqrt(sapply(combinado_EIF4, length)), digits = 4)
+
+tabela_EIF4 <- data.frame(
+  Gene = gene,
+  Grupo = grupo,
+  Min = minimo,
+  Med = mediana,
+  Mean = media,
+  Max = maximo,
+  DP = desvio_padrao,
+  EP = erro_padrao
+)
+
+
+dados_miR_150 <- as.data.frame(cbind(tabela_padronizada_nonam$miR_150, tabela_padronizada_nonam$Fase))
+colnames(dados_miR_150) <- c("miR_150", "Fase")
+dados_miR_150$Fase <- factor(dados_miR_150$Fase, levels = c("CB", "DS", "FC"))
+dados_miR_150$miR_150 <- as.numeric(dados_miR_150$miR_150)
+miR_150_CB <- dados_miR_150[dados_miR_150$Fase == "CB", ]
+miR_150_DS <- dados_miR_150[dados_miR_150$Fase == "DS", ]
+miR_150_FC <- dados_miR_150[dados_miR_150$Fase == "FC", ]
+combinado_miR_150 <- list(miR_150_CB = miR_150_CB$miR_150, miR_150_DS = miR_150_DS$miR_150, miR_150_FC = miR_150_FC$miR_150)
+
+gene <- rep("miR_150", 3)
+grupo <- c("CB (n = 14)", "DS (n = 8)", "FC (n = 50)")
+minimo <- round(sapply(combinado_miR_150, min), digits = 4)
+mediana <- round(sapply(combinado_miR_150, median), digits = 4)
+media <- round(sapply(combinado_miR_150, mean), digits = 4)
+maximo <- round(sapply(combinado_miR_150, max), digits = 4)
+desvio_padrao <- round(sapply(combinado_miR_150, sd), digits = 4)
+erro_padrao <- round(sapply(combinado_miR_150, sd) / sqrt(sapply(combinado_miR_150, length)), digits = 4)
+
+tabela_miR_150 <- data.frame(
+  Gene = gene,
+  Grupo = grupo,
+  Min = minimo,
+  Med = mediana,
+  Mean = media,
+  Max = maximo,
+  DP = desvio_padrao,
+  EP = erro_padrao
+)
+```
+
+```{r}
+#| label: tbl-resumo-eif4
+#| tbl-cap: "Medidas-resumo para o gene 'EIF4'"
+
+kable(tabela_EIF4, row.names = FALSE)
+```
+
+```{r}
+#| label: tbl-resumo-mir150
+#| tbl-cap: "Medidas-resumo para o gene 'miR_150'"
+
+kable(tabela_miR_150, row.names = FALSE)
+```
+
+Ao analisar a @tbl-resumo-eif4 e a @tbl-resumo-mir150, apesar do alto desvio-padrão, podemos perceber que tanto em `EIF4` e `miR_150`, as medidas quantílicas e a média amostral diferem entre si. Iremos testar a hipótese de que não há diferença entre os grupos usando um teste de permutação, com `maxIter` $= 1000$ para ser igual ao trabalho do CEA.
+
+```{r}
+#| label: tbl-anova-perm-eif4
+#| tbl-cap: "ANOVA por permutação para 'EIF4'"
+model_EIF4 <- lmp(EIF4 ~ Fase,
+  data = dados_EIF4,
+  maxIter = 1000
+)
+
+anova_perm_EIF4 <- anova(model_EIF4)
+```
+
+```{r}
+#| label: tbl-anova-perm-mir150
+#| tbl-cap: "ANOVA por permutação para 'miR_150'"
+model_miR_150 <- lmp(miR_150 ~ Fase,
+  data = dados_miR_150,
+  maxIter = 1000
+)
+anova_perm_miR_150 <- anova(model_miR_150)
+```
+
+Como podemos perceber pelas tabelas, ao nível de significância de $0.05$, há evidências para rejeitarmos ambas as hipóteses nulas iniciais, separadamente. Ou seja, há evidências para rejeitar que não há diferença entre os grupos para `EIF4` e `miR_150`.
+
+<!-- ## Item b -->
+<!---->
+<!-- ```{r} -->
+<!-- # Aplicação do adonis -->
+<!-- Y <- tabela_padronizada_nona[, c(1:12)] -->
+<!-- adonis_ambos <- adonis2(Y ~ tabela_padronizada_nona$Fase, method = "euclidean") -->
+<!-- post_hoc_ambos <- pairwise.adonis(Y, tabela_padronizada_nona$Fase, sim.method = "euclidean", p.adjust.m = "bonferroni") -->
+<!---->
+<!---->
+<!-- Y <- tabela_padronizada_nonag[, c(1:8)] -->
+<!-- adonis_genes <- adonis2(Y ~ tabela_padronizada_nonag$Fase, method = "euclidean") -->
+<!-- post_hoc_genes <- pairwise.adonis(Y, tabela_padronizada_nonag$Fase, sim.method = "euclidean", p.adjust.m = "bonferroni") -->
+<!---->
+<!---->
+<!-- Y <- tabela_padronizada_nonam[, c(1:4)] -->
+<!-- adonis_miRNAs <- adonis2(Y ~ tabela_padronizada_nonam$Fase, method = "euclidean") -->
+<!-- post_hoc_miRNAs <- pairwise.adonis(Y, tabela_padronizada_nonam$Fase, sim.method = "euclidean", p.adjust.m = "bonferroni") -->
+<!-- ``` -->
+<!---->
+<!-- ```{r} -->
+<!-- # Aplicação do nonpartest -->
+<!-- nonpartest_ambos <- nonpartest(TP53 | CDKN1A | PTEN | MDM4 | MYB | SHIP | EIF4 | CEBPB | miR_155 | miR_150 | miR_34a | miR_17_5p ~ Fase, data = tabela_padronizada_nona, permreps = 1000, plots = FALSE) -->
+<!---->
+<!-- nonpartest_genes <- nonpartest(TP53 | CDKN1A | PTEN | MDM4 | MYB | SHIP | EIF4 | CEBPB ~ Fase, data = tabela_padronizada_nonag, permreps = 1000, plots = FALSE) -->
+<!---->
+<!-- nonpartest_miRNAs <- nonpartest(miR_155 | miR_150 | miR_34a | miR_17_5p ~ Fase, data = tabela_padronizada_nonam, permreps = 1000, plots = FALSE) -->
+<!-- ``` -->
+<!---->
+<!-- Primeiramente, aplicaremos a PERMANOVA usando o pacote `adonis2` para as 3 situações: -->
+<!---->
+<!-- - Situação 1: 12 variáveis dependentes (os 8 genes e os 4 miRNAs) e 1 variável -->
+<!-- independente (classificação dos grupos DS, FC, e CB). -->
+<!-- - Situação 2: 8 variáveis dependentes (os 8 genes) e 1 variável independente (a -->
+<!-- classificação dos os grupos: DS, FC, e CB). -->
+<!-- - Situação 3: 4 variáveis dependentes (os 4 miRNAs) e 1 variável independente (a -->
+<!-- classificação dos grupos: DS, FC, e CB). -->
+<!---->
+<!-- Adotaremos um nível de significância $\alpha = 0.05$. -->
+<!---->
+<!-- Abaixo, mostramos as saídas da PERMANOVA para as 3 situações, respectivamente. -->
+<!---->
+<!-- ```{r} -->
+<!-- #| label: tbl-1-PERMANOVA -->
+<!-- #| tbl-cap: "PERMANOVA para a situação 1" -->
+<!-- kable(adonis_ambos, digits = 4) -->
+<!-- ``` -->
+<!---->
+<!-- ```{r} -->
+<!-- #| label: tbl-2-PERMANOVA -->
+<!-- #| tbl-cap: "PERMANOVA para a situação 2" -->
+<!-- kable(adonis_genes, digits = 4) -->
+<!-- ``` -->
+<!---->
+<!-- ```{r} -->
+<!-- #| label: tbl-3-PERMANOVA -->
+<!-- #| tbl-cap: "PERMANOVA para a situação 3" -->
+<!-- kable(adonis_miRNAs, digits = 4) -->
+<!-- ``` -->
+<!---->
+<!-- No teste, a hipótese nula é de igualdade dos grupos por variável dependente (a depender das 3 situações acima mencionadas), para todas variáveis dependentes.  -->
+<!---->
+<!-- Para as 3 situações, a um nível de significância $\alpha$, há evidências para rejeitar a hipótese nula, ou seja, caso considerarmos um espaço de hipóteses fechado, há evidências de que existe diferença em pelo menos um grupo dentro de uma variável dependente, pelo menos em uma variável dependente. -->
+<!---->
+<!-- Aplicaremos testes post hoc para entendermos quais grupos diferem, em especial, o post hoc de Bonferroni. Usaremos a função `pairwise.adonis`. -->
+<!---->
+<!-- Abaixo, mostramos as saídas do post hoc para as 3 situações, respectivamente. -->
+<!---->
+<!-- ```{r} -->
+<!-- #| label: tbl-1-posthoc -->
+<!-- #| tbl-cap: "Post Hoc para a situação 1" -->
+<!-- kable(post_hoc_ambos, digits = 4) -->
+<!-- ``` -->
+<!---->
+<!-- ```{r} -->
+<!-- #| label: tbl-2-posthoc -->
+<!-- #| tbl-cap: "Post Hoc para a situação 2" -->
+<!-- kable(post_hoc_genes, digits = 4) -->
+<!-- ``` -->
+<!---->
+<!-- ```{r} -->
+<!-- #| label: tbl-3-posthoc -->
+<!-- #| tbl-cap: "Post Hoc para a situação 3" -->
+<!-- kable(post_hoc_miRNAs, digits = 4) -->
+<!-- ``` -->
+<!---->
+<!-- Para a situação 1 (@tbl-1-posthoc) as comparações entre os pares FC vs CB (valor-p = $0.001$, valor=p ajustado = $0.003$), FC vs DS (valor-p = $0.001$, valor-p ajustado = $0.003$) e CB vs DS (valor-p = $0.005$, valor=p ajustado = $0.015$) foram todas significativas estaticamente, portanto havendo evidências de que os grupos apresentam diferenças entre si. -->
+<!---->
+<!-- Para a situação 2 (@tbl-2-posthoc) as comparações entre os pares FC vs CB (valor-p = $0.001$, valor=p ajustado = $0.003$) e FC vs DS (valor-p = $0.004$, valor-p ajustado = $0.012$) foram significativas estaticamente, portanto havendo evidências de que o grupo FC difere de CB e que o grupo FC difere de DS. A comparação CB vs DS (valor-p = $0.055$, valor=p ajustado = $0.165$) não foi estatisticamente significante, não havendo evidências para rejeitar que os grupos CB e DS possuam igualdades. -->
+<!---->
+<!-- Para a situação 3 (@tbl-3-posthoc) as comparações entre os pares FC vs CB (valor-p = $0.001$, valor-p ajustado = $0.003$), FC vs DS (valor-p = $0.001$, valor=p ajustado = $0.003$) e CB vs DS (valor-p = $0.007$, valor=p ajustado = $0.021$) foram todas significativas estaticamente, portanto havendo evidências de que os grupos apresentam diferenças entre si. -->
+<!---->
+<!---->
+<!-- Adicionalmente, iremos aplicar os testes `nonpartest` sobre os dados. É uma coleção de testes não-paramétricos multivariados, que, especialmente, tem uma interpretação bem mais fácil do que o `adonis`: adquire-se o efeito de tratamento "k" caso o que pode ser definido como a probabilidade de que um sujeito escolhido aleatoriamente do tratamento “k”, que neste estudo não é outra coisa que o grupo, exiba um nível de expressão mais alto do que um sujeito escolhido aleatoriamente de qualquer um dos grupos de tratamento, -->
+<!-- incluindo o tratamento “k”. Essa probabilidade é mostrada nas tabelas 'releffects' a seguir. -->
+<!---->
+<!-- Abaixo, mostramos as saídas do `nonpartest` para as 3 situações, respectivamente, com 2 tabelas por situação. -->
+<!---->
+<!-- ```{r} -->
+<!-- #| label: tbl-1.1-nonpartest -->
+<!-- #| tbl-cap: "Tabela 'results': nonpartest para a situação 1" -->
+<!-- kable(nonpartest_ambos$results, digits = 4) -->
+<!-- ``` -->
+<!---->
+<!-- ```{r} -->
+<!-- #| label: tbl-1.2-nonpartest -->
+<!-- #| tbl-cap: "Tabela 'releffects': nonpartest para a situação 1" -->
+<!-- colnames(nonpartest_ambos$releffects) <- gsub("miR|_", "", colnames(nonpartest_ambos$releffects)) -->
+<!-- colnames(nonpartest_ambos$releffects)[2] <- "CDK" -->
+<!-- kable(nonpartest_ambos$releffects, digits = 4) -->
+<!-- ``` -->
+<!---->
+<!-- Obs: a @tbl-1.2-nonpartest tem alguns nomes de coluna alterados para a visualização. A 2ª coluna corresponde ao gene CDKN1A e as últimas 4 colunas correspondem aos miRNAs, respectivamente: miR_155, miR_150, miR_34a, miR_17_5p -->
+<!---->
+<!-- ```{r} -->
+<!-- #| label: tbl-2.1-nonpartest -->
+<!-- #| tbl-cap: "Tabela 'results': nonpartest para a situação 2" -->
+<!-- kable(nonpartest_genes$results, digits = 4) -->
+<!-- ``` -->
+<!---->
+<!-- ```{r} -->
+<!-- #| label: tbl-2.2-nonpartest -->
+<!-- #| tbl-cap: "Tabela 'releffects': nonpartest para a situação 2" -->
+<!-- kable(nonpartest_genes$releffects, digits = 4) -->
+<!-- ``` -->
+<!---->
+<!-- ```{r} -->
+<!-- #| label: tbl-3.1-nonpartest -->
+<!-- #| tbl-cap: "Tabela 'results': nonpartest para a situação 3" -->
+<!-- kable(nonpartest_miRNAs$results, digits = 4) -->
+<!-- ``` -->
+<!---->
+<!-- ```{r} -->
+<!-- #| label: tbl-3.2-nonpartest -->
+<!-- #| tbl-cap: "Tabela 'releffects': nonpartest para a situação 3" -->
+<!-- kable(nonpartest_miRNAs$releffects, digits = 4) -->
+<!-- ``` -->
+<!---->
+<!-- Ao olhar a @tbl-1.1-nonpartest, a @tbl-2.1-nonpartest e a @tbl-3.1-nonpartest, podemos perceber que em todas as situações o valor-p e o valor-p de permutação foram iguais a $0$ entre os grupos, para todos os testes multivariados de igualdade de grupos. Ou seja, nas 1000 permutações, nenhuma contribuiu para $H_0$. -->
+<!---->
+<!-- Se desejarmos, podemos também analisar a @tbl-1.2-nonpartest, a @tbl-2.2-nonpartest e a @tbl-3.2-nonpartest para avaliar os efeitos relativos entre cada variável dependente e seus grupos. Acreditamos que os testes anteriores já são suficientes. -->
+<!---->
+<!-- **Conclusão:** Foi possível verificar que as expressões dos genes e dos miRNAs apresentaram diferenças significativas entre os grupos estudados. -->
