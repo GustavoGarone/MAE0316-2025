@@ -1,0 +1,23 @@
+﻿data1;hora1;Email;Nome;Sexo;Idade;Curso;Grupo;diag1;diag2;diag3;diag4;que1;que2;que3;que4;que5;mean1;data2;hora2;que12;que22;que32;que42;que52;mean2;Resultados
+17/11/2025;10:40:49;anahuziwara@usp.br;Ana Carolina Cassiano Huziwara;Feminino;22;Bacharelado em Estatística;bio1;Não sei;0;1;0;1;1;1;0;1;0,8;24/11/2025;13:47:52;1;1;1;0;1;0,8;QUERO
+17/11/2025;10:41:35;ana.ohashi@usp.br;Ana Paula Ohashi;Feminino;20;Bacharelado em Estatística;bio1;Não sei;1;1;1;1;1;1;1;1;1;24/11/2025;12:42:29;1;1;1;1;1;1;NÃO
+17/11/2025;10:42:49;annehirata@usp.br;Anne Tiemi Hirata;Feminino;21;Bacharelado em Estatística;bio1;Não sei;Não sei;1;1;1;1;1;1;1;1;24/11/2025;16:31:00;1;1;1;1;1;1;QUERO
+17/11/2025;10:42:56;brunohasantos@usp.br;Bruno Henrique Alves Santos;Masculino;19;Bacharelado em Estatística;bio1;0;1;Não sei;1;1;1;1;0;1;0,8;24/11/2025;10:49:33;1;1;1;0;1;0,8;QUERO
+17/11/2025;10:42:57;carolinap.oliver@usp.br;Carol Paixão;Feminino;21;Bacharelado em Estatística;bio1;1;Não sei;0;0;1;0;0;1;1;0,6;24/11/2025;12:50:24;1;1;0;1;0;0,6;QUERO
+17/11/2025;11:03:24;felipe.segantine@usp.br;Felipe faria;Masculino;19;Bacharelado em Estatística;bio1;Não sei;1;Não sei;Não sei;1;1;1;0;1;0,8;24/11/2025;10:04:05;1;1;1;0;1;0,8;QUERO
+17/11/2025;11:03:49;kadubarrille@usp.br;Kadu de Almeida Barrille;Masculino;19;Bacharelado em Estatística;bio1;0;Não sei;1;1;1;1;1;1;1;1;24/11/2025;10:06:05;1;1;1;1;1;1;QUERO
+17/11/2025;11:03:49;jpfbosco2004@usp.br;João Bosck;Masculino;21;Bacharelado em Estatística;bio2;Não sei;0;0;1;1;1;1;0;1;0,8;24/11/2025;13:48:15;Não sei;0;1;1;1;0,75;QUERO
+17/11/2025;11:04:10;josefernandovianalima@usp.br;José Fernando Viana Lima;Masculino;20;Bacharelado em Estatística;bio2;0;1;0;Não sei;1;1;1;1;0;0,8;24/11/2025;10:15:09;1;1;0;1;0;0,6;QUERO
+17/11/2025;11:04:34;kayo.cpereira2003@usp.br;Kayo Candido Pereira;Masculino;22;Bacharelado em Estatística;bio2;Não sei;0;0;1;Não sei;0;1;1;Não sei;0,666666667;25/11/2025;13:29:21;Não sei;0;1;0;Não sei;0,333333333;QUERO
+17/11/2025;11:30:13;luis.bebber@usp.br;Luis;Masculino;23;Bacharelado em Estatística;bio2;1;1;0;Não sei;1;1;1;1;0;0,8;25/11/2025;00:07:40;1;1;1;1;1;1;NÃO
+17/11/2025;11:30:38;matheus_rios_kunimura@usp.br;Matheus Rios;Masculino;20;Bacharelado em Estatística;bio2;Não sei;0;1;1;1;1;1;1;1;1;24/11/2025;13:23:40;1;1;1;1;1;1;QUERO
+17/11/2025;11:30:49;iwa1chi.es@usp.br;Chiki;Feminino;21;Bacharelado em Estatística;mat1;Não sei;Não sei;Não sei;Não sei;1;1;0;1;1;0,8;24/11/2025;11:47:10;1;1;1;1;1;1;QUERO
+17/11/2025;11:31:13;felipedobner@usp.br;Felipe Dobner;Masculino;26;Bacharelado em Estatística;mat1;1;Não sei;Não sei;Não sei;1;1;Não sei;Não sei;Não sei;1;24/11/2025;10:20:41;1;Não sei;0;Não sei;Não sei;0,5;NÃO
+17/11/2025;11:31:39;felipekf746@usp.br;Felipe K;Masculino;26;Bacharelado em Estatística;mat1;1;Não sei;1;Não sei;1;1;1;1;1;1;24/11/2025;13:34:28;1;1;1;1;1;1;QUERO
+17/11/2025;11:31:51;felipepinho@usp.br;Felipe Pinho;Masculino;20;Bacharelado em Estatística;mat1;Não sei;Não sei;Não sei;Não sei;1;1;1;0;1;0,8;24/11/2025;10:06:12;1;1;1;0;1;0,8;QUERO
+17/11/2025;11:32:31;mateusbavaresco@usp.br;Mateus C;Masculino;23;Bacharelado em Estatística;mat1;Não sei;Não sei;Não sei;Não sei;1;1;1;1;Não sei;1;24/11/2025;19:46:51;1;1;1;Não sei;0;0,75;NÃO
+17/11/2025;11:58:13;alicehungria@usp.br;Alice;Feminino;20;Bacharelado em Estatística;mat2;Não sei;Não sei;1;Não sei;1;1;1;1;0;0,8;24/11/2025;18:05:22;1;1;1;1;1;1;QUERO
+17/11/2025;11:58:56;brunorsilva@usp.br;Bruno Ribeiro;Masculino;23;Bacharelado em Estatística;mat2;1;Não sei;1;0;1;1;0;Não sei;Não sei;0,666666667;25/11/2025;07:28:06;1;1;1;1;Não sei;1;QUERO
+17/11/2025;12:00:34;grmsanches@usp.br;Gabriel Rodrigues Martins Sanches;Masculino;19;Bacharelado em Estatística;mat2;0;Não sei;1;Não sei;1;1;1;1;1;1;24/11/2025;10:10:35;1;1;1;1;1;1;QUERO
+17/11/2025;12:00:45;guidomendonca@usp.br;Guido Lages Mendonça;Masculino;20;Bacharelado em Estatística;mat2;1;Não sei;Não sei;Não sei;1;1;Não sei;0;1;0,75;24/11/2025;23:40:16;1;1;Não sei;0;1;0,75;QUERO
+17/11/2025;12:02:25;marcusnascimento1310@usp.br;Marcus;Masculino;21;Bacharelado em Estatística;mat2;Não sei;Não sei;Não sei;Não sei;1;1;Não sei;Não sei;Não sei;1;24/11/2025;19:53:40;1;1;Não sei;0;1;0,75;QUERO

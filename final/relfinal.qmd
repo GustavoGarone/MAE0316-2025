@@ -1,0 +1,278 @@
+---
+forMat:
+  pdf:
+    documentclass: article
+    fontsize: 12pt
+    monofont: "Consolas"
+    extra-dependencies:
+      - float
+  html: 
+    theme: cosmo
+title: Laboratório 04 - Planejamento e Análise de Experimentos (MAE0316)
+date: last-modified
+date-forMat: long
+lang: pt-BR
+geometry:
+    - left=2cm
+    - top=2cm
+    - bottom=2cm
+    - right=2cm
+author: 
+    - name: Caio M. de Almeida - 15444560
+    - name: Eduardo Yukio G. Ishihara - 15449012
+    - name: Gustavo S. Garone - 15458155
+    - name: Ian B. Loures - 15459667
+    - name: João Victor G. de Sousa - 15463912
+execute:
+  echo: false
+  keep-ipynb: true
+fig-align: center
+fig-cap-location: top
+fig-pos: H
+tbl-pos: H
+engine: knitr
+---
+
+```{r Carrega Bibliotecas}
+#| output: false
+library(dplyr)
+library(patchwork)
+library(tidyr)
+library(stringr)
+library(ggplot2)
+library(lme4)
+library(lmerTest)
+library(car)
+library(knitr)
+```
+
+`\vspace{-0.5cm}\noindent\rule{\textwidth}{1pt}`{=latex}
+
+# Tratamento de Dados
+
+Transformamos nossos dados em uma tabela longa para facilitar a análise
+longitudinal.
+
+```{r Carrega Dados}
+#| output: false
+df <- read.csv2("./Book1.csv", nrows = 22)
+
+df[df == "Não sei"] <- 0
+df$media1 <- (as.numeric(df$que1) + as.numeric(df$que2) + as.numeric(df$que3) +
+  as.numeric(df$que4) + as.numeric(df$que5)) / 5
+
+df$media2 <- (as.numeric(df$que12) + as.numeric(df$que22) + as.numeric(df$que32) +
+  as.numeric(df$que42) + as.numeric(df$que52)) / 5
+
+df$meand <- (as.numeric(df$diag1) + as.numeric(df$diag2) + as.numeric(df$diag3) +
+  as.numeric(df$diag4)) / 4
+
+df$Topico <- ifelse(df$Grupo %in% c("bio1", "bio2"), "Bio", "Mat")
+```
+
+
+```{r Transformação dos dados}
+#| output: false
+df <- df |>
+  mutate(
+    Media_Imed = media1 * 5,
+    Media_Semn = media2 * 5,
+    Diagn = meand * 4,
+    Retencao = 1 + ((Media_Semn - Media_Imed) / 5),
+    Velocidade = if_else(str_detect(tolower(Grupo), "2$"), "X2", "X1"),
+    Participante = as.factor(seq(1, 22))
+  )
+
+
+df_long <- df |>
+  select(Participante, Idade, Sexo, Topico, Velocidade, Diagn, Media_Imed, Media_Semn) |>
+  pivot_longer(cols = c(Diagn, Media_Imed, Media_Semn), names_to = "Aplicação", values_to = "Nota") |>
+  mutate(Aplicação = case_when(
+    Aplicação == "Diagn" ~ "Diagn",
+    Aplicação == "Media_Imed" ~ "Imed",
+    Aplicação == "Media_Semn" ~ "Semn"
+  ))
+```
+
+```{r Exibe dados}
+#| label: tbl-dados
+#| tbl-cap: "Dados transformados em tabela longa para análise"
+kable(df_long)
+```
+
+# Análise Exploratória
+
+
+```{r sumario estatistico por aplicacao}
+#| label: tbl-sumario-estatistico-aplicacao
+#| tbl-cap: "Sumário estatístico das notas por aplicação"
+df_long |>
+  group_by(Aplicação) |>
+  summarise(
+    media = mean(Nota),
+    dp = sd(Nota),
+    min = min(Nota),
+    Q1 = quantile(Nota, 0.25),
+    mediana = median(Nota),
+    Q3 = quantile(Nota, 0.75),
+    max = max(Nota)
+  ) |>
+  kable()
+```
+
+```{r sumario estatistico por tratamento}
+#| label: tbl-sumario-estatistico-trat
+#| tbl-cap: "Sumário estatístico da retenção por tratamento"
+df_temp <- df
+df_temp$Grupo <- paste(df_temp$Topico, df_temp$Velocidade, sep = "-")
+df_temp |>
+  group_by(Grupo) |>
+  summarise(
+    n = n(),
+    media = mean(Retencao),
+    dp = sd(Retencao),
+    min = min(Retencao),
+    Q1 = quantile(Retencao, 0.25),
+    mediana = median(Retencao),
+    Q3 = quantile(Retencao, 0.75),
+    max = max(Retencao)
+  ) |>
+  kable()
+```
+
+```{r sumario estatistico por tratemento e aplicacao}
+#| label: tbl-sumario-estatistico-trat-aplic
+#| tbl-cap: "Sumário estatístico das notas por tratamento e aplicação"
+df_long_temp <- df_long
+df_long_temp$Grupo <- paste(df_long_temp$Topico, df_long_temp$Velocidade,
+  df_long_temp$Aplicação,
+  sep = "-"
+)
+
+df_long_temp |>
+  group_by(Grupo) |>
+  summarise(
+    media = mean(Nota),
+    dp = sd(Nota),
+    min = min(Nota),
+    Q1 = quantile(Nota, 0.25),
+    mediana = median(Nota),
+    Q3 = quantile(Nota, 0.75),
+    max = max(Nota)
+  ) |>
+  kable()
+```
+
+```{r boxplots retencao por velocidade}
+#| label: fig-boxplot-retencao-velocidade
+#| fig-cap: "Boxplots da retenção por velocidade de apresentação"
+ggplot(df, aes(x = Velocidade, y = Retencao, fill = Velocidade)) +
+  geom_boxplot(show.legend = FALSE) +
+  labs(x = "Velocidade de Apresentação", y = "Retenção") +
+  theme_minimal()
+```
+
+```{r boxplots retencao por topico}
+#| label: fig-boxplot-retencao-topico
+#| fig-cap: "Boxplots da retenção por tópico"
+ggplot(df, aes(
+  x = Topico, y = Retencao, fill =
+    Topico
+)) +
+  geom_boxplot(show.legend = FALSE) +
+  labs(x = "Tópico", y = "Retenção") +
+  theme_minimal()
+```
+
+```{r boxplot retencao por tratamento}
+#| label: fig-boxplot-retencao-tratamento
+#| fig-cap: "Boxplots da retenção por tratamento"
+ggplot(df, aes(
+  x = interaction(Topico, Velocidade), y =
+    Retencao, fill = interaction(Topico, Velocidade)
+)) +
+  geom_boxplot(show.legend = FALSE) +
+  labs(x = "Tratamento", y = "Retenção") +
+  theme_minimal()
+```
+
+```{r violin plot}
+#| label: fig-violin-retencao-tratamento
+#| fig-cap: "Violin plots da retenção por tratamento"
+ggplot(df, aes(
+  x = interaction(Topico, Velocidade), y =
+    Retencao, fill = interaction(Topico, Velocidade)
+)) +
+  geom_violin(show.legend = FALSE, alpha = 0.7) +
+  geom_point(size = 1, alpha = 0.3, color = "black", show.legend = FALSE) +
+  labs(x = "Tratamento", y = "Retenção") +
+  theme_minimal()
+```
+
+Observamos destes gráficos que pode haver diferença entre os tratamentos, apesar
+de, individualmente, o boxplot de velocidades apresenta pouca variação na
+retenção.
+
+Precisamos analisar o gráfico de perfis das notas da primeira e segunda
+aplicação por indivíduo para analisarmos a existência de heteroscedasticidade
+entre os participantes.
+
+```{r grafico de perfis com patchwork}
+#| label: fig-grafico-perfis
+#| fig-cap: "Gráficos de perfis das notas por participante por tratamento"
+p1 <- ggplot(
+  df_long |> filter(Topico == "Bio", Velocidade == "X1"),
+  aes(x = Aplicação, y = Nota, group = Participante)
+) +
+  geom_line(aes(color = Participante), show.legend = FALSE) +
+  geom_point(aes(color = Participante), show.legend = FALSE) +
+  labs(
+    title = "Biologia X1",
+    x = "Aplicação",
+    y = "Nota"
+  ) +
+  theme_minimal()
+p2 <- ggplot(
+  df_long |> filter(Topico == "Bio", Velocidade == "X2"),
+  aes(x = Aplicação, y = Nota, group = Participante)
+) +
+  geom_line(aes(color = Participante), show.legend = FALSE) +
+  geom_point(aes(color = Participante), show.legend = FALSE) +
+  labs(
+    title = "Biologia X2",
+    x = "Aplicação",
+    y = "Nota"
+  ) +
+  theme_minimal()
+p3 <- ggplot(
+  df_long |> filter(Topico == "Mat", Velocidade == "X1"),
+  aes(x = Aplicação, y = Nota, group = Participante)
+) +
+  geom_line(aes(color = Participante), show.legend = FALSE) +
+  geom_point(aes(color = Participante), show.legend = FALSE) +
+  labs(
+    title = "Matemática X1",
+    x = "Aplicação",
+    y = "Nota"
+  ) +
+  theme_minimal()
+p4 <- ggplot(
+  df_long |> filter(Topico == "Mat", Velocidade == "X2"),
+  aes(x = Aplicação, y = Nota, group = Participante)
+) +
+  geom_line(aes(color = Participante), show.legend = FALSE) +
+  geom_point(aes(color = Participante), show.legend = FALSE) +
+  labs(
+    title = "Matemática X2",
+    x = "Aplicação",
+    y = "Nota"
+  ) +
+  theme_minimal()
+p1 + p2 + p3 + p4 + plot_layout(ncol = 2)
+```
+
+Analisamos a partir da primeira aplicação do teste (`Imed`), uma vez que estamos
+preocupados em modelar a retenção. Além da interpretação Biológica-social,
+esperamos pelos gráficos na @fig-grafico-perfis que há efeito aleatório no
+intercepto e coeficiente angular. Os gráficos apontam, porém, que esses valores
+podem não estar correlacionados.
