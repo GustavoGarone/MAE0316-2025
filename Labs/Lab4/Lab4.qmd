@@ -155,6 +155,16 @@ interações entre essas variáveis.
 modelo_fixo <- lm(protein ~ Time + Inicial + Diet + Time:Inicial + Diet:Time + Inicial:Diet, data = dados)
 ```
 
+```{r sumario modelo fixo}
+#| label: tbl-sumario-fixo
+summary(modelo_fixo) |> pander::pander(caption = "Sumário do modelo de efeitos fixos completo.")
+```
+
+Nota-se na @tbl-sumario-fixo um baixíssimo valor de R² ajustado, indicando que o
+modelo não explica bem a variabilidade dos dados. Além disso, vários
+coeficientes não são significativos. Faremos uma análise diagnóstica do modelo
+para verificar se as suposições do modelo linear clássico são válidas.
+
 Conferiremos um diagnóstico simples do modelo com os resíduos por vaca.
 
 ```{r Residuos Fixo}
@@ -194,23 +204,11 @@ p4 <- ggplot(dados_residuos_fixo, aes(x = Fit, y = Residuos)) +
 p1 + p2 + p3 + p4 + plot_layout(ncol = 2)
 ```
 
-Pelos gráficos dos resíduos em @fig-residuos-fixo, os resíduos possuem
+Pelos gráficos dos resíduos na @fig-residuos-fixo, os resíduos possuem
 autocorrelação não nula nas vacas e apresentam padrões na análise dos resíduos
-padronizados. Verificaremos a homocedasticidade com os testes de Bartlett na
-@tbl-bartlett-fixo.
+padronizados. ```
 
-```{r Teste Bartlett Fixo}
-#| label: tbl-bartlett-fixo
-#| tbl-cap: "Teste de Bartlett para homocedasticidade dos resíduos do modelo com efeitos fixos entre as vacas."
-teste_bf <- bartlett.test(residuos_fixo ~ dados$Cow)
-tibble(
-  Estatística = teste_bf$statistic,
-  `Valor-p` = teste_bf$p.value
-) |>
-  kable(digits = 4)
-```
-
-Não rejeitada a homocedasticidade, verificamos a normalidade pelo QQ-plot em
+Verificamos a normalidade pelo QQ-plot em
 @fig-qq-fixo.
 
 ```{r QQ Fixo}
@@ -224,7 +222,7 @@ ggplot(data = dados_residuos_fixo, aes(sample = Residuos)) +
   ylab("Quantis Amostrais")
 ```
 
-E o teste de Shapiro-Wilk na @tbl-shapiro-fixo.
+E numericamente com o teste de Shapiro-Wilk na @tbl-shapiro-fixo.
 
 ```{r Teste Shapiro Fixo}
 #| label: tbl-shapiro-fixo
@@ -237,18 +235,20 @@ tibble(
   kable(digits = 4)
 ```
 
-Com normalidade não rejeitada, realizamos o teste de levene na @tbl-levene-fixo.
+Não rejeitada a normalidade, verificaremos a homocedasticidade com o teste de Bartlett na
+@tbl-bartlett-fixo.
 
-```{r Teste Levene Fixo}
-#| label: tbl-levene-fixo
-#| tbl-cap: "Teste de Levene para homocedasticidade dos resíduos do modelo com efeitos fixos entre as vacas."
-teste_lf <- leveneTest(residuos_fixo ~ dados$Cow)
+```{r Teste Bartlett Fixo}
+#| label: tbl-bartlett-fixo
+#| tbl-cap: "Teste de Bartlett para homocedasticidade dos resíduos do modelo com efeitos fixos entre as vacas."
+teste_bf <- bartlett.test(residuos_fixo ~ dados$Cow)
 tibble(
-  Estatística = teste_lf$`F value`[1],
-  `Valor-p` = teste_lf$`Pr(>F)`[1]
+  Estatística = teste_bf$statistic,
+  `Valor-p` = teste_bf$p.value
 ) |>
   kable(digits = 4)
 ```
+
 
 Ainda precisamos verificar a autocorrelação dos resíduos que observamos no
 gráfico de resíduos por vaca. Faremos isso com o gráfico de autocorrelação em
@@ -415,6 +415,17 @@ mod_final <- lme(
 )
 ```
 
+
+Conferimos o sumário do modelo final na @tbl-sumario-final.
+
+```{r sumario modelo final}
+#| label: tbl-sumario-final
+summary(mod_final) |> pander::pander(caption = "Sumário do modelo misto.")
+```
+
+Pelo critério AIC, com valor de $163.76$, o modelo de efetios mistos final é
+bastante superior ao modelo de efeitos fixos, com AIC de $577.70$.
+
 Partiremos para a análise diagnóstica desse modelo. Devemos considerar que não
 podemos utilizar os testes estatísticos que conhecemos, uma vez que os resíduos,
 propositalmente, não vão seguir a mesma distribuição por conta do modelo misto.
@@ -456,7 +467,6 @@ p4 <- ggplot(dados_residuos_mistos, aes(x = Fit, y = Residuos)) +
 
 p1 + p2 + p3 + p4 + plot_layout(ncol = 2)
 ```
-
 
 Pelos gráficos da @fig-residuos-mistos, os resíduos parecem mais bem comportados
 em relação ao modelo com efeitos fixos, em relação ao tempo, dieta e vacas, sem
