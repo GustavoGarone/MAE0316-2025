@@ -556,7 +556,7 @@ efeito do grupo no valor médio da retenção
 ```{r modelo nao parametrico de permutacao}
 #| label: tbl-modelo-nao-parametrico-permutacao
 #| tbl-cap: "Resumo do modelo não paramétrico de permutação com grupos"
-modelo_permutacao <- lmp(Retencao ~ Grupo, data = df_grupos)
+modelo_permutacao <- lmp(Retencao ~ 0 + Grupo, data = df_grupos)
 summary(modelo_permutacao)
 ```
 
@@ -586,7 +586,10 @@ O teste de Kruskal-Wallis não rejeita a hipótese nula de que as amostras entre
 os grupos se originam da mesma distribuição. Dessa forma, pode ser que pela
 variabilidade distinta entre os grupos observadas na análise descritiva
 (@tbl-sumario-estatistico-trat), a análise do modelo com permutação seja
-inválida. Prosseguiremos mesmo assim com a análise post-hoc.
+inválida. Pode ser também que o teste de KW tenha pouca adequação pela grande
+quantidade de empates na variável resposta.
+
+Prosseguiremos mesmo assim com a análise post-hoc.
 
 Usaremos o teste post-hoc de Dunn para identificar quais grupos diferem entre
 si.
@@ -603,17 +606,18 @@ tibble_dunn <- tibble(
 kable(tibble_dunn, digits = 4)
 ```
 
-Corroborando resultados anteriores, o teste de Dunn não aponta diferenças
-significativas entre os grupos.
+Corroborando o resultado do teste KW, o teste de Dunn não aponta diferenças
+significativas entre os grupos, mas, como dito, a análise pode ser prejudicada
+pela grande quantidade de empates na variável resposta.
 
 ## Conclusões da modelagem sobre a retenção
 
-A partir dos modelos ajustados, não conseguimos identificar diferenças
-significativas na retenção de informação entre os diferentes tratamentos com os
-métodos utilizados. Isso ocorre devido à forma discreta da variável resposta e a
-pequena amostra, que dificultam o ajuste de modelos adequados.
+A partir dos modelos ajustados, é inconclusivo se há diferenças significativas
+na retenção de informação entre os diferentes tratamentos com os métodos
+utilizados. Isso ocorre devido à forma discreta da variável resposta e a pequena
+amostra, que dificultam o ajuste de modelos adequados.
 
 Nesse contexto, seguiriamos com a análise através de transformações, como a
-tranformação `Logit`, ou o uso de modelos lineares generalizados, como o modelo
-logístico para uma outra forma da variável retenção, ou até mesmo modelos
-binomiais.
+tranformação `Logit` com a probabilidade de retenção, ou o uso de modelos
+lineares generalizados, como o modelo logístico para uma outra forma da variável
+retenção, ou até mesmo modelos binomiais.

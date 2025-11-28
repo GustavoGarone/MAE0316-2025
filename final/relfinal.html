@@ -1623,23 +1623,24 @@ Tabela&nbsp;11: Resumo do modelo não paramétrico de permutação com grupos
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
-lmp(formula = Retencao ~ Grupo, data = df_grupos)
+lmp(formula = Retencao ~ 0 + Grupo, data = df_grupos)
 
 Residuals:
        Min         1Q     Median         3Q        Max 
--1.600e-01 -1.200e-01  2.989e-16  4.000e-02  2.800e-01 
+-1.600e-01 -1.200e-01  1.101e-16  4.000e-02  2.800e-01 
 
 Coefficients:
-       Estimate Iter Pr(Prob)    
-Grupo1    -0.01 5000   0.0014 ** 
-Grupo2    -0.09 5000   0.0010 ***
-Grupo3    -0.05  243   0.2922    
+            Estimate Iter Pr(Prob)    
+GrupoBio-X1     1.00 5000   0.0066 ** 
+GrupoBio-X2     0.92 5000   0.0088 ** 
+GrupoMat-X1     0.96  177   0.3616    
+GrupoMat-X2     1.16 5000   0.0010 ***
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
 Residual standard error: 0.1398 on 18 degrees of freedom
-Multiple R-Squared: 0.3207, Adjusted R-squared: 0.2075 
-F-statistic: 2.833 on 3 and 18 DF,  p-value: 0.06747 </code></pre>
+Multiple R-Squared: 0.9846, Adjusted R-squared: 0.9812 
+F-statistic: 288.5 on 4 and 18 DF,  p-value: 4.687e-16 </code></pre>
 </div>
 </div>
 </figure>
@@ -1654,9 +1655,9 @@ Tabela&nbsp;12: ANOVA do modelo não paramétrico de permutação com grupos
 <pre><code>Analysis of Variance Table
 
 Response: Retencao
-          Df R Sum Sq R Mean Sq Iter Pr(Prob)   
-Grupo      3  0.16618  0.055394 5000   0.0024 **
-Residuals 18  0.35200  0.019556                 
+            Df R Sum Sq R Mean Sq Iter Pr(Prob)   
+(Intercept)  4   22.568    5.6420 5000   0.0044 **
+Residuals   18    0.352    0.0196                 
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 </div>
@@ -1691,7 +1692,8 @@ Tabela&nbsp;13: Teste de Kruskal-Wallis para o modelo não paramétrico de permu
 </figure>
 </div>
 </div>
-<p>O teste de Kruskal-Wallis não rejeita a hipótese nula de que as amostras entre os grupos se originam da mesma distribuição. Dessa forma, pode ser que pela variabilidade distinta entre os grupos observadas na análise descritiva (<a href="#tbl-sumario-estatistico-trat" class="quarto-xref">Tabela&nbsp;3</a>), a análise do modelo com permutação seja inválida. Prosseguiremos mesmo assim com a análise post-hoc.</p>
+<p>O teste de Kruskal-Wallis não rejeita a hipótese nula de que as amostras entre os grupos se originam da mesma distribuição. Dessa forma, pode ser que pela variabilidade distinta entre os grupos observadas na análise descritiva (<a href="#tbl-sumario-estatistico-trat" class="quarto-xref">Tabela&nbsp;3</a>), a análise do modelo com permutação seja inválida. Pode ser também que o teste de KW tenha pouca adequação pela grande quantidade de empates na variável resposta.</p>
+<p>Prosseguiremos mesmo assim com a análise post-hoc.</p>
 <p>Usaremos o teste post-hoc de Dunn para identificar quais grupos diferem entre si.</p>
 <div class="cell">
 <div id="tbl-teste-dunn-modelo-nao-parametrico" class="cell quarto-float quarto-figure quarto-figure-center anchored">
@@ -1740,12 +1742,12 @@ Tabela&nbsp;14: Teste de Dunn para comparações múltiplas entre os grupos do m
 </figure>
 </div>
 </div>
-<p>Corroborando resultados anteriores, o teste de Dunn não aponta diferenças significativas entre os grupos.</p>
+<p>Corroborando o resultado do teste KW, o teste de Dunn não aponta diferenças significativas entre os grupos, mas, como dito, a análise pode ser prejudicada pela grande quantidade de empates na variável resposta.</p>
 </section>
 <section id="conclusões-da-modelagem-sobre-a-retenção" class="level2">
 <h2 class="anchored" data-anchor-id="conclusões-da-modelagem-sobre-a-retenção">Conclusões da modelagem sobre a retenção</h2>
-<p>A partir dos modelos ajustados, não conseguimos identificar diferenças significativas na retenção de informação entre os diferentes tratamentos com os métodos utilizados. Isso ocorre devido à forma discreta da variável resposta e a pequena amostra, que dificultam o ajuste de modelos adequados.</p>
-<p>Nesse contexto, seguiriamos com a análise através de transformações, como a tranformação <code>Logit</code>, ou o uso de modelos lineares generalizados, como o modelo logístico para uma outra forma da variável retenção, ou até mesmo modelos binomiais.</p>
+<p>A partir dos modelos ajustados, é inconclusivo se há diferenças significativas na retenção de informação entre os diferentes tratamentos com os métodos utilizados. Isso ocorre devido à forma discreta da variável resposta e a pequena amostra, que dificultam o ajuste de modelos adequados.</p>
+<p>Nesse contexto, seguiriamos com a análise através de transformações, como a tranformação <code>Logit</code> com a probabilidade de retenção, ou o uso de modelos lineares generalizados, como o modelo logístico para uma outra forma da variável retenção, ou até mesmo modelos binomiais.</p>
 </section>
 </section>
 
