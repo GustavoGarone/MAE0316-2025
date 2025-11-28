@@ -31,6 +31,7 @@
         buildInputs = with pkgs; [
           R
           rPackages.ggplot2
+          rPackages.GGally
           rPackages.dplyr
           rPackages.tidyr
           rPackages.broom
@@ -48,6 +49,7 @@
           rPackages.devtools
           rPackages.lava
           rPackages.lmPerm
+          rPackages.FSA
           # radonis
           blas
           gcc

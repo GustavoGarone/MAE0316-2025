@@ -240,7 +240,7 @@ kable(tibleleveneDCA, digits = 4)
 
 O teste de Levene na @tbl-DCA-levene não rejeita a homocedasticidade dos
 resíduos. Ainda assim, o modelo DCA apresenta mais indícios de violação da
-normalidaed que o modelo DABC, que também modela melhor os dados. Desta forma,
+normalidade que o modelo DABC, que também modela melhor os dados. Desta forma,
 escolheríamos o modelo DABC para descrever esses dados. Por curiosidade,
 verificamos também os $R^2$ ajustados dos dois modelos, na @tbl-rsquared.
 
