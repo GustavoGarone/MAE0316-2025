@@ -1,5 +1,5 @@
 ---
-forMat:
+format:
   pdf:
     documentclass: article
     fontsize: 12pt
@@ -8,7 +8,8 @@ forMat:
       - float
   html: 
     theme: cosmo
-title: Laboratório 04 - Planejamento e Análise de Experimentos (MAE0316)
+  latex: default
+title: Relatório Final do Projeto - Planejamento e Análise de Experimentos (MAE0316)
 date: last-modified
 date-forMat: long
 lang: pt-BR
@@ -24,8 +25,9 @@ author:
     - name: Ian B. Loures - 15459667
     - name: João Victor G. de Sousa - 15463912
 execute:
-  echo: false
-  keep-ipynb: true
+    echo: false
+    keep-ipynb: true
+    # cache: true
 fig-align: center
 fig-cap-location: top
 fig-pos: H
@@ -40,10 +42,12 @@ library(patchwork)
 library(tidyr)
 library(stringr)
 library(ggplot2)
-library(lme4)
-library(lmerTest)
+library(GGally)
+library(lmPerm)
+library(FSA)
 library(car)
 library(knitr)
+library(pander)
 ```
 
 `\vspace{-0.5cm}\noindent\rule{\textwidth}{1pt}`{=latex}
@@ -51,7 +55,21 @@ library(knitr)
 # Tratamento de Dados
 
 Transformamos nossos dados em uma tabela longa para facilitar a análise
-longitudinal.
+longitudinal. Criamos a variável "Retenção", que mede relativamente a retenção
+de informação dos participantes entre a primeira e segunda aplicação do teste.
+Sua forma está dada na @eq-retencao.
+
+$$
+\mathrm{Retenção} = 1 + \frac{\text{Nota na reaplicação} - \text{Nota na aplicação}}{5}
+$$ {#eq-retencao}
+
+Disso, segue que uma retenção de $0$ indica que o participante acertou tudo na
+aplicação, e errou todas as questões na reaplicação, indiciando perda total do
+que aprendeu com os vídeos. Por outro lado, uma retenção de 1 indica que o
+participante acertou o mesmo número de questões, enquanto uma retenção maior que
+1 indica que o participante teve um desempenho melhor na reaplicação, o que pode
+indicar efeito de aprendizagem tardio, exposição ao conteúdo fora do
+experimento, ou acaso.
 
 ```{r Carrega Dados}
 #| output: false
@@ -97,7 +115,7 @@ df_long <- df |>
 ```{r Exibe dados}
 #| label: tbl-dados
 #| tbl-cap: "Dados transformados em tabela longa para análise"
-kable(df_long)
+kable(df_long, digits = 4)
 ```
 
 # Análise Exploratória
@@ -117,7 +135,7 @@ df_long |>
     Q3 = quantile(Nota, 0.75),
     max = max(Nota)
   ) |>
-  kable()
+  kable(digits = 4)
 ```
 
 ```{r sumario estatistico por tratamento}
@@ -137,7 +155,7 @@ df_temp |>
     Q3 = quantile(Retencao, 0.75),
     max = max(Retencao)
   ) |>
-  kable()
+  kable(digits = 4)
 ```
 
 ```{r sumario estatistico por tratemento e aplicacao}
@@ -160,7 +178,7 @@ df_long_temp |>
     Q3 = quantile(Nota, 0.75),
     max = max(Nota)
   ) |>
-  kable()
+  kable(digits = 4)
 ```
 
 ```{r boxplots retencao por velocidade}
@@ -170,6 +188,11 @@ ggplot(df, aes(x = Velocidade, y = Retencao, fill = Velocidade)) +
   geom_boxplot(show.legend = FALSE) +
   labs(x = "Velocidade de Apresentação", y = "Retenção") +
   theme_minimal()
+```
+
+```{r salva grafico boxplot velocidade}
+#| output: false
+ggsave("imagens/aed/fig-boxplot-retencao-velocidade.png", width = 6, height = 4)
 ```
 
 ```{r boxplots retencao por topico}
@@ -184,6 +207,12 @@ ggplot(df, aes(
   theme_minimal()
 ```
 
+```{r salva grafico boxplot topico}
+#| output: false
+ggsave("imagens/aed/fig-boxplot-retencao-topico.png", width = 6, height = 4)
+```
+
+
 ```{r boxplot retencao por tratamento}
 #| label: fig-boxplot-retencao-tratamento
 #| fig-cap: "Boxplots da retenção por tratamento"
@@ -194,6 +223,12 @@ ggplot(df, aes(
   geom_boxplot(show.legend = FALSE) +
   labs(x = "Tratamento", y = "Retenção") +
   theme_minimal()
+```
+
+
+```{r salva grafico boxplot tratamento}
+#| output: false
+ggsave("imagens/aed/fig-boxplot-retencao-tratamento.png", width = 6, height = 4)
 ```
 
 ```{r violin plot}
@@ -209,8 +244,14 @@ ggplot(df, aes(
   theme_minimal()
 ```
 
+
+```{r salva grafico violino}
+#| output: false
+ggsave("imagens/aed/fig-violin-retencao-tratamento.png", width = 6, height = 4)
+```
+
 Observamos destes gráficos que pode haver diferença entre os tratamentos, apesar
-de, individualmente, o boxplot de velocidades apresenta pouca variação na
+de, individualmente, o *boxplot* de velocidades apresenta pouca variação na
 retenção.
 
 Precisamos analisar o gráfico de perfis das notas da primeira e segunda
@@ -268,11 +309,311 @@ p4 <- ggplot(
     y = "Nota"
   ) +
   theme_minimal()
-p1 + p2 + p3 + p4 + plot_layout(ncol = 2)
+pmany <- p1 + p2 + p3 + p4 + plot_layout(ncol = 2)
+pmany
+```
+
+```{r salva graficos}
+#| output: false
+ggsave("imagens/aed/fig-grafico-perfis.png", pmany, width = 10, height = 8)
+ggsave("imagens/aed/fig-grafico-perfis1.png", p1, width = 5, height = 4)
+ggsave("imagens/aed/fig-grafico-perfis2.png", p2, width = 5, height = 4)
+ggsave("imagens/aed/fig-grafico-perfis3.png", p3, width = 5, height = 4)
+ggsave("imagens/aed/fig-grafico-perfis4.png", p4, width = 5, height = 4)
 ```
 
 Analisamos a partir da primeira aplicação do teste (`Imed`), uma vez que estamos
-preocupados em modelar a retenção. Além da interpretação Biológica-social,
+preocupados em modelar a retenção. Além da interpretação biológica e social,
 esperamos pelos gráficos na @fig-grafico-perfis que há efeito aleatório no
 intercepto e coeficiente angular. Os gráficos apontam, porém, que esses valores
 podem não estar correlacionados.
+
+Também é interessante observar a covariância entre as variáveis
+explicativas.
+
+```{r matriz de correlacao grupo}
+#| label: fig-correlacao-grupo
+#| fig-cap: "Correlação entre as variáveis (Tratamentos)"
+#| warning: false
+df_grupos <- df
+df_grupos$Grupo <- as.factor(paste(df_grupos$Topico, df_grupos$Velocidade, sep = "-"))
+
+df_corr <- df_grupos |>
+  select(Idade, Diagn, Sexo, Grupo, Retencao)
+ggpairs(df_corr, aes(alpha = 0.7)) +
+  theme_minimal()
+```
+
+```{r salva plot de correlacao grupo}
+#| output: false
+ggsave("imagens/aed/fig-correlacao-grupo.png",
+  width = 8,
+  height = 6
+)
+```
+
+```{r matriz de correlacao fatores}
+#| label: fig-correlacao-fatores
+#| fig-cap: "Correlação entre as variáveis com fatores separados"
+#| warning: false
+df_corr <- df_grupos |>
+  select(Idade, Diagn, Sexo, Topico, Velocidade, Retencao)
+ggpairs(df_corr, aes(alpha = 0.7)) +
+  theme_minimal()
+```
+
+```{r salva plot de correlacao fatores}
+#| output: false
+ggsave("imagens/aed/fig-correlacao-fatores.png",
+  width = 8,
+  height = 6
+)
+```
+
+# Modelagem da Retenção
+
+Temos como objetivo modelar a retenção de informação dos participantes a partir
+das variáveis explicativas disponíveis: idade, sexo, e grupo/tratamento (tópico
+e velocidade).
+
+Devido ao caráter discreto da variável resposta, provavelmente um modelo linear
+clássico não será adequado na modelagem. Ainda assim, tentaremos ajustar um
+modelo linear só com efeitos fixos, depois, prosseguirmos para métodos não
+paramétricos, se necessário.
+
+##  Modelo linear simples
+
+Ajustamos um modelo linear simples com efeitos fixos para a retenção da idade,
+tópico, velocidade da apresentação e a nota na aplicação diagnóstica.
+Iniciaremos por um modelo envolvendo idade, nota na avaliação diagnóstica e o
+tratamento (grupo), assim como a interação entre idade e grupo e entre
+diagnóstico e idade.
+
+```{r modelo linear simples}
+#| label: tbl-modelo-linear-simples-grupos
+modelo_fixo_grupos <- lm(Retencao ~ Diagn + Idade + Grupo + Idade:Grupo +
+  Diagn:Idade, data = df_grupos)
+summary(modelo_fixo_grupos) |>
+  pander(caption = "Resumo do modelo linear simples com grupos")
+```
+
+Após seleção das variáveis por *stepwise*, terminamos com o modelo sem
+intercepto, com os efeitos fixos dos grupos e a interação entre idade e grupo.
+
+```{r modelo linear simples selecionado}
+#| label: tbl-modelo-linear-simples-grupos-selecionado
+modelo_fixo_final <- lm(Retencao ~ 0 + Grupo + Idade:Grupo, data = df_grupos)
+summary(modelo_fixo_final) |>
+  pander(caption = "Resumo do modelo linear simples selecionado com grupos")
+```
+
+Devido aos altos valores $p$ para os coeficientes ajustados, decidimos também
+por comparar esse modelo com uma forma reduzida (sem interação) por ANOVA.
+
+```{r anova modelo linear simples}
+#| label: tbl-anova-modelo-linear-simples
+modelo_fixo_reduzido <- lm(Retencao ~ 0 + Grupo,
+  data = df_grupos
+)
+anova(modelo_fixo_reduzido, modelo_fixo_final) |>
+  pander(caption = "Comparação entre modelos lineares simples com e sem
+interação")
+```
+
+Com diferença não significativa entre os modelos, optamos por seguir com o
+modelo reduzido pelo princípio da parcimônia. Dessa forma, nos resta o modelo
+apenas com os efeitos fixos dos grupos. Apresentamos um sumário na
+@tbl-modelo-linear-simples-grupos-reduzido.
+
+```{r modelo linear simples reduzido}
+#| label: tbl-modelo-linear-simples-grupos-reduzido
+summary(modelo_fixo_reduzido) |>
+  pander(caption = "Resumo do modelo linear simples reduzido com grupos")
+```
+
+Apesar de apresentar um grande valor de $\bar{R}^2$, precisamos realizar um
+diagnóstico do modelo para verificar as suposições do modelo linear clássico.
+
+### Diagnóstico do modelo linear simples
+
+```{r diagnostico modelo linear simples com ggplot}
+#| label: fig-diagnostico-modelo-linear-simples
+#| fig-cap: "Diagnóstico do modelo linear simples reduzido com grupos"
+residuos_modelo_fixo <- residuals(modelo_fixo_reduzido)
+fitted_modelo_fixo <- fitted.values(modelo_fixo_reduzido)
+dfresiduos <- tibble(
+  Fitted = fitted_modelo_fixo,
+  Residuals = residuos_modelo_fixo
+)
+p1 <- ggplot(dfresiduos, aes(x = Fitted, y = Residuals)) +
+  geom_point() +
+  geom_hline(yintercept = 0, linetype = "dashed", color = "red") +
+  labs(
+    title = "A",
+    x = "Valores Ajustados",
+    y = "Resíduos"
+  ) +
+  theme_minimal()
+p2 <- ggplot(dfresiduos, aes(x = Residuals)) +
+  geom_histogram(aes(y = after_stat(density)), bins = 10, fill = "lightblue", color = "black") +
+  geom_density(color = "red", linewidth = 1) +
+  labs(
+    title = "B",
+    x = "Resíduos",
+    y = "Densidade"
+  ) +
+  theme_minimal()
+pjunto <- p1 + p2 + plot_layout(ncol = 2)
+pjunto
+```
+
+```{r salva diagnostico modelo linear simples}
+#| output: false
+ggsave("imagens/linear/fig-diagnostico-modelo-linear-simples.png",
+  p1,
+  width = 5,
+  height = 4
+)
+ggsave("imagens/linear/fig-histograma-residuos-modelo-linear-simples.png",
+  p2,
+  width = 5,
+  height = 4
+)
+ggsave("imagens/linear/fig-diagnostico-modelo-linear-simples-junto.png",
+  pjunto,
+  width = 10,
+  height = 4
+)
+```
+
+Os resíduos não mostram padrão claro no gráfico A da
+@fig-diagnostico-modelo-linear-simples, enquanto o histograma do gráfico B
+aponta certa irregularidade, partiremos para análise numérica.
+
+```{r teste levene modelo linear simples}
+#| label: tbl-levene-modelo-linear-simples
+#| tbl-cap: "Teste de Levene para homocedasticidade dos resíduos do modelo linear simples reduzido com grupos"
+levene_test <- leveneTest(resid(modelo_fixo_reduzido) ~ df_grupos$Grupo)
+
+tibble_levene_simples <- tibble(
+  Estatística = levene_test$`F value`[1],
+  "Valor-p" = levene_test$`Pr(>F)`[1]
+)
+kable(tibble_levene_simples, digits = 4)
+```
+
+```{r qqplot modelo linear simples}
+#| label: fig-qqplot-modelo-linear-simples
+#| fig-cap: "QQ-Plot dos resíduos do modelo linear simples reduzido com grupos"
+p3 <- ggplot(dfresiduos, aes(sample = Residuals)) +
+  stat_qq() +
+  stat_qq_line(color = "red") +
+  labs(
+    x = "Quantis Teóricos",
+    y = "Quantis Amostrais"
+  ) +
+  theme_minimal()
+p3
+```
+
+```{r salva qqplot modelo linear simples}
+#| output: false
+ggsave("imagens/linear/fig-qqplot-modelo-linear-simples.png",
+  p3,
+  width = 5,
+  height = 4
+)
+```
+
+Pelo gráfico na @fig-qqplot-modelo-linear-simples, os resíduos, claramente, não
+seguem distribuição normal. Isso é esperado pela natureza discreta da variável
+resposta somado a uma amostra pequena. Vamos, ainda assim, realizar o teste de
+Shapiro-Wilk para fins exploratórios.
+
+```{r teste shapiro modelo linear simples}
+#| label: tbl-shapiro-modelo-linear-simples
+#| tbl-cap: "Teste de Shapiro-Wilk para normalidade dos resíduos do modelo linear simples reduzido com grupos"
+shapiro_test <- shapiro.test(resid(modelo_fixo_reduzido))
+tibble_shapiro_simples <- tibble(
+  Estatística = shapiro_test$statistic,
+  "Valor-p" = shapiro_test$p.value
+)
+kable(tibble_shapiro_simples, digits = 4)
+```
+
+Curiosamente, não rejeitaríamos a uma confiança de $99\%$. Ainda assim, sob
+nossos critérios ($\alpha = 5\%$), e a análise da forma dos dados, rejeitamos a
+normalidade dos resíduos e descartamos este modelo.
+
+## Modelo não paramétrico
+
+Dado o diagnóstico do modelo linear simples, optamos por ajustar um modelo
+não paramétrico para os dados através da permutação, considerando que temos um
+modelo com delineamento completamente aleatorizado (pela querida professora),
+usaremos um teste de aleatorização (permutação) para testar a hipótese de que há
+efeito do grupo no valor médio da retenção
+
+```{r modelo nao parametrico de permutacao}
+#| label: tbl-modelo-nao-parametrico-permutacao
+#| tbl-cap: "Resumo do modelo não paramétrico de permutação com grupos"
+modelo_permutacao <- lmp(Retencao ~ Grupo, data = df_grupos)
+summary(modelo_permutacao)
+```
+
+```{r anova modelo nao parametrico de permutacao}
+#| label: tbl-anova-modelo-nao-parametrico-permutacao
+#| tbl-cap: "ANOVA do modelo não paramétrico de permutação com grupos"
+anova(modelo_permutacao)
+```
+
+Vemos pelas @tbl-modelo-nao-parametrico-permutacao e
+@tbl-anova-modelo-nao-parametrico-permutacao que há efeito significativo do
+grupo na retenção dos participantes. Prosseguiremos com a análise pelo teste de
+Kruskal-Wallis para confirmar esse resultado.
+
+```{r teste kruskal wallis modelo nao parametrico}
+#| label: tbl-teste-kruskal-wallis-modelo-nao-parametr
+#| tbl-cap: "Teste de Kruskal-Wallis para o modelo não paramétrico de permutação com grupos"
+kruskal_test <- kruskal.test(Retencao ~ Grupo, data = df_grupos)
+tibble_kruskal <- tibble(
+  Estatística = kruskal_test$statistic,
+  "Valor-p" = kruskal_test$p.value
+)
+kable(tibble_kruskal, digits = 4)
+```
+
+O teste de Kruskal-Wallis não rejeita a hipótese nula de que as amostras entre
+os grupos se originam da mesma distribuição. Dessa forma, pode ser que pela
+variabilidade distinta entre os grupos observadas na análise descritiva
+(@tbl-sumario-estatistico-trat), a análise do modelo com permutação seja
+inválida. Prosseguiremos mesmo assim com a análise post-hoc.
+
+Usaremos o teste post-hoc de Dunn para identificar quais grupos diferem entre
+si.
+
+```{r teste dunn modelo nao parametrico}
+#| label: tbl-teste-dunn-modelo-nao-parametrico
+#| tbl-cap: "Teste de Dunn para comparações múltiplas entre os grupos do modelo não paramétrico de permutação"
+dunn_test <- dunnTest(Retencao ~ Grupo, data = df_grupos, method = "bonferroni")
+tibble_dunn <- tibble(
+  Comparação = rownames(dunn_test$res$Comparison),
+  Estatística = dunn_test$res$Z,
+  "Valor-p ajustado" = dunn_test$res$P.adj
+)
+kable(tibble_dunn, digits = 4)
+```
+
+Corroborando resultados anteriores, o teste de Dunn não aponta diferenças
+significativas entre os grupos.
+
+## Conclusões da modelagem sobre a retenção
+
+A partir dos modelos ajustados, não conseguimos identificar diferenças
+significativas na retenção de informação entre os diferentes tratamentos com os
+métodos utilizados. Isso ocorre devido à forma discreta da variável resposta e a
+pequena amostra, que dificultam o ajuste de modelos adequados.
+
+Nesse contexto, seguiriamos com a análise através de transformações, como a
+tranformação `Logit`, ou o uso de modelos lineares generalizados, como o modelo
+logístico para uma outra forma da variável retenção, ou até mesmo modelos
+binomiais.
