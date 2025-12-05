@@ -997,14 +997,14 @@ grupo no valor médio da retenção.
 
 ```{r modelo nao parametrico de permutacao}
 #| label: tbl-modelo-nao-parametrico-permutacao
-#| tbl-cap: "Resumo do modelo não paramétrico de permutação com grupos"
+#| tbl-cap: "Resumo do modelo por permutação com grupos"
 modelo_permutacao <- lmp(Retencao ~ 0 + Grupo, data = df_grupos)
 summary(modelo_permutacao)
 ```
 
 ```{r anova modelo nao parametrico de permutacao}
 #| label: tbl-anova-modelo-nao-parametrico-permutacao
-#| tbl-cap: "ANOVA do modelo não paramétrico de permutação com grupos"
+#| tbl-cap: "ANOVA do modelo por permutação com grupos"
 anova(modelo_permutacao)
 ```
 
@@ -1015,7 +1015,7 @@ pelo teste de Kruskal-Wallis para detectar diferença entre o efeito desses grup
 
 ```{r teste kruskal wallis modelo nao parametrico}
 #| label: tbl-teste-kruskal-wallis-modelo-nao-parametr
-#| tbl-cap: "Teste de Kruskal-Wallis para o modelo não paramétrico de permutação com grupos"
+#| tbl-cap: "Teste de Kruskal-Wallis para grupos"
 kruskal_test <- kruskal.test(Retencao ~ Grupo, data = df_grupos)
 tibble_kruskal <- tibble(
   Estatística = kruskal_test$statistic,
@@ -1036,9 +1036,9 @@ Prosseguiremos mesmo assim com a análise post-hoc, por curiosidade.
 Usaremos o teste post-hoc de Dunn para identificar quais grupos diferem entre
 si.
 
-```{r teste dunn modelo nao parametrico}
+```{r teste dunn analiase nao parametrica}
 #| label: tbl-teste-dunn-modelo-nao-parametrico
-#| tbl-cap: "Teste de Dunn para comparações múltiplas entre os grupos do modelo não paramétrico de permutação"
+#| tbl-cap: "Teste de Dunn para comparações múltiplas entre os grupos"
 dunn_test <- dunnTest(Retencao ~ Grupo, data = df_grupos, method = "bonferroni")
 tibble_dunn <- tibble(
   Comparação = dunn_test$res$Comparison,
