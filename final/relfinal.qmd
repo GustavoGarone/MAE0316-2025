@@ -1,7 +1,7 @@
 ---
 format:
   pdf:
-    documentclass: article
+    documentclass: scrarticle
     fontsize: 12pt
     monofont: "Consolas"
     extra-dependencies:
@@ -9,8 +9,11 @@ format:
   html: 
     theme: cosmo
   latex: default
-title: Relatório Final do Projeto - Planejamento e Análise de Experimentos (MAE0316)
+title: Impacto do conteúdo e da velocidade de vídeos na retenção de informação a curto e a longo prazo - Planejamento e análise do experimento
 date: last-modified
+bibliography: references.bib
+# csl: associacao-brasileira-de-normas-tecnicas.csl
+csl: ieee-with-url.csl
 date-forMat: long
 lang: pt-BR
 geometry:
@@ -24,6 +27,18 @@ author:
     - name: Gustavo S. Garone - 15458155
     - name: Ian B. Loures - 15459667
     - name: João Victor G. de Sousa - 15463912
+abstract: > 
+            Este projeto descreve um experimento randomizado para avaliar o
+            efeito da velocidade de reprodução (VR) de vídeos educativos e do conteúdo do
+            vídeo (CV) sobre a retenção imediata e tardia (memória de prazo intermediário e
+            de longo prazo) de informação em estudantes de graduação da área de exatas. O
+            delineamento combina dois fatores fixos (CV: Matemática ou Biologia; VR: 1x ou
+            2x) e prevê medidas repetidas (teste imediato e reteste após 1 semana).
+            Apresentam-se neste documento os objetivos, justificativa teórica, desenho
+            experimental, plano de coleta e procedimentos de análise estatística, além de
+            considerações éticas e orçamento estimado. São apresentadas as
+            conclusões da análise e considerações importantes sorbe os métodos
+            utilizados, suas limitações e passos futuros.
 execute:
     echo: false
     keep-ipynb: true
@@ -45,12 +60,198 @@ library(ggplot2)
 library(GGally)
 library(lmPerm)
 library(FSA)
+library(emmeans)
 library(car)
 library(knitr)
 library(pander)
 ```
 
 `\vspace{-0.5cm}\noindent\rule{\textwidth}{1pt}`{=latex}
+
+# Introdução
+A educação mediada por vídeos (videoaulas) tornou-se uma prática central no
+ensino superior. Estudantes comumente recorrem ao aumento na velocidade de
+reprodução (VR) como estratégia para economizar tempo @murphy_learning_2022.
+A literatura sugere efeitos variados: enquanto
+aumentos moderados (e.g. até 1.5x) frequentemente não prejudicam a compreensão,
+velocidades mais altas (e.g. 2x) podem reduzir o desempenho em testes imediatos
+e/ou retardados, possivelmente por aumentar a carga cognitiva ou comprometer a
+codificação profunda do material [@murphy_learning_2022; @murphy_effect_2023;
+@tharumalingam_increasing_2025].
+
+Além da VR, o conteúdo do vídeo (CV) e o interesse do aprendiz pelo tópico podem
+modular a atenção e a retenção @mcintyre_liking_2021. Nosso estudo investiga se
+a interação entre VR e CV afeta a retenção imediata e tardia — isto é, retenção
+na memória de prazo intermediário e de longo prazo, respectivamente — em
+estudantes de exatas, com atenção especial ao fato de que conteúdos mais
+alinhados ao interesse dos estudantes (conteúdos voltados a ciências exatas)
+podem mitigar os efeitos negativos da aceleração.
+
+## Objetivo Geral
+
+Avaliar o efeito da velocidade de reprodução (1x ou 2x) e do conteúdo do
+vídeo (Matemática ou Biologia) na retenção imediata e tardia (após uma semana)
+de informações em estudantes de graduação da área de ciências exatas.
+
+## Objetivos Específicos
+
+-  Avaliar o efeito da velocidade de reprodução elevada (2x) na retenção,
+   comparando-o com a velocidade normal (1x).
+-  Investigar a influência do conteúdo do vídeo (Matemática ou Biologia) na
+   retenção da informação.
+-  Verificar a existência de efeito de interação entre o conteúdo do vídeo e a
+   velocidade de reprodução sobre a retenção.
+-  Testar a hipótese de que o conteúdo de Matemática (mais alinhado ao perfil
+   dos participantes) atenua o eventual efeito negativo da velocidade de
+   reprodução acelerada (2x) na retenção.
+
+# Metodologia
+
+Optamos por um delineamento experimental inteiramente causalizado e fatorial
+completo: $2\times 2$ com medidas repetidas no tempo (teste imediato e reteste
+uma semana depois). As unidades experimentais são participantes individuais,
+cada participante é alocado a uma única combinação (tratamento) dos fatores CV e
+VR e realiza o teste em dois tempos. Será utilizada como variável resposta o
+desempenho em um teste, medido como pontuação de 0 até 5 acertos, aplicado nos
+estudantes sobre o CV, e uma medida da retenção, calculada a partir da diferença
+entre as pontuações no teste imediato e no reteste. Dois formulários serão
+utilizados para cada CV, totalizando quatro formulários. Covariáveis como idade,
+sexo e nota em uma avaliação diagnóstica preliminar serão coletadas para
+enriquecer a análise.
+
+Os indivíduos selecionados para o experimento são todos os estudantes
+matriculados na disciplina MAE0316 - Planejamento e Análise de Experimentos,
+oferecida no segundo semestre de 2025 no Instituto de Matemática e Estatística
+da Universidade de São Paulo (IME-USP) que não são autores ou estiveram
+envolvidos no planejamento deste experimento. Por estarem matriculados na
+matéria, não será necessário que assinem um termo de consentimento ou um aval do
+Comitê de Ética em Pesquisa (CEP), como acordado em sala.
+
+A coleta ocorrerá em sala de aula para o primeiro formulário e via e-mail para
+o segundo formulário, uma semana depois.
+
+## Formulário 1
+O primeiro formulário consistirá de três seções: triagem, vídeo e teste.
+    
+Na primeira seção, será perguntado a idade, sexo, curso do participante e e-mail
+para identificação e contato durante todo o experimento. Os participantes serão
+orientados a anotarem o e-mail inserido. Ademais, será apresentado o tópico do
+vídeo, escolhido aleatoriamente entre "Matemática: Potência de Ponto" e
+"Biologia: Transcrição e Tradução". Será mensurado o grau de conhecimento
+prévio do participante com um pré-teste, contendo duas questões relacionadas
+ao tema do vídeo e outras duas questões distratoras.
+
+A segunda seção é composta pelo vídeo e instruções de como assisti-lo (sem
+realizar anotações, evitando pausas, sem assisti-lo novamente e na velocidade
+indicada). O vídeo será passado em sala por projetor e sobre supervisão dos
+coletores.
+        
+A terceira seção consiste num teste de múltipla escolha (5 (cinco) alternativas)
+e 5 (cinco) questões em ordem aleatorizada para cada respondente para avaliar a
+proporção de acertos. Os participantes são informados que um segundo teste será
+aplicado em uma semana, é solicitado que não busquem mais informações sobre o
+assunto no meio tempo. Não será informado que se tratará do mesmo teste.
+
+## Formulário 2
+
+O segundo formulário consistirá apenas de duas seções: triagem e teste. Será
+enviado aos participantes via e-mail uma semana após a aplicação do primeiro.
+
+Na primeira seção, será perguntando o e-mail usado no primeiro formulário para
+identificação das respostas. Também será perguntado se o participante viu algum
+material sobre o vídeo assistido desde então.
+        
+A segunda seção consistirá do mesmo teste aplicado no formulário 1, com questões
+em ordem mais uma vez aleatorizada. O participante será orientado a não buscar
+manter consistência entre as respostas dos formulários, apenas a marcar o que
+acredita ser verdade.
+
+## Técnicas e procedimentos
+
+As questões dos testes e dos pré-testes serão retiradas dos vestibulares de
+ingresso em universidades públicas estaduais e federais que mantiveram o sistema
+de ingresso com vestibular próprio (e.g. Universidade Estadual do Rio de
+Janeiro, Universidade Federal do Rio Grande do Sul, Universidade Federal de
+Santa Catarina, Universidade Estadual do Ceará) ou produzidas conforme os moldes
+das questões dos vestibulares supracitados. Cada pergunta possui apenas uma
+alternativa correta.
+
+Os vídeos foram selecionados, pois apresentam tempo de duração semelhantes (8
+minutos e 32 segundos para o vídeo de Matemática e 9 minutos e 58 segundos para
+o vídeo de Biologia) e tiveram avaliações muito positivas nos comentários e no
+sistema de avaliação nativo da plataforma de vídeos *Youtube*, os
+*likes*.
+        
+Serão excluídas as observações dos participantes que relatarem pausa ou consulta
+externa durante o vídeo, os que foram expostos a conteúdos relacionados ao teste
+no período entre testes ou não completarem o reteste no prazo de 48h.
+    
+Levando-se em consideração que todos os participantes do experimento são
+voluntários e os softwares usados para aplicar o formulário e a análise de dados
+(*software estatístico R*) são gratuitos, não se prevê custo associado à
+realização do experimento. Preliminarmente, será realizada uma análise
+exploratória e descritiva dos dados, com a construção de *boxplots* das
+variáveis envolvidas e outros gráficos pertinentes, como o gráfico de perfis de
+médias, e o cálculo de medidas de dispersão e de tendência central.
+
+Analisaremos a retenção, definida a partir da diferença entre as notas na
+primeira e segunda aplicação. Também, analisaremos individualmente o
+desempenho na primeira e na segunda aplicação por tratamento).
+        
+Para cada uma das três análises (retenção, nota na primeira aplicação e nota na
+segunda aplicação), será ajustado um modelo linear simples com efeitos fixos
+para fatores CV e VR, além de variáveis como idade, sexo e nota na avaliação
+diagnóstica. Com nossas variáveis respostas, não será possível que ajustemos
+modelos de efeito misto para considerar variações intrínsecas entre os
+participantes. Caso os modelos não satisfaçam suposições da regressão linear,
+serão exploradas abordagens não paramétricas, como métodos de permutação.
+
+A partir da análise dos dados, será elaborado um relatório com todos os
+resultados do experimento, com uma descrição detalhada do passo a passo seguido
+e da comparação entre o que se esperava e o que se obteve. O relatório será
+redigido por intermédio da ferramenta *Quarto*. Por fim, os resultados obtidos
+serão apresentados para os estudantes da classe e um vídeo informativo com os
+resultados deste e outros experimentos será produzido.
+
+# Embasamento teórico
+
+Murphy et al. @murphy_learning_2022 demonstram que velocidades
+moderadas, como 1.25x e 1.5x, não prejudicam significativamente o desempenho em
+testes imediatos de compreensão. Entretanto, VR superiores a 1.5x apresentam
+impacto negativo na retenção de conteúdo, especialmente quando avaliada após um
+intervalo de tempo. Resultados semelhantes são reportados pela meta-análise
+conduzida por Tharumalingam et al. @tharumalingam_increasing_2025 que
+indica que velocidades iguais ou superiores a 2x geram quedas consistentes de
+desempenho, associadas ao aumento da demanda cognitiva.
+    
+Esses fenômenos podem ser explicados pela Teoria da Carga Cognitiva, proposta
+por Sweller e colaboradores @leahy_cognitive_2011, segundo a qual a
+aprendizagem é limitada pela capacidade de processamento da memória de trabalho.
+O aumento excessivo da VR sobrecarrega esse sistema, elevando a carga extrínseca
+e reduzindo a capacidade do estudante de integrar novas informações ao
+conhecimento prévio. Estudos clássicos como os de Foulke e
+Sticht @foulke_review_1969 já apontavam que a compreensão auditiva diminui
+conforme a taxa de apresentação da fala aumenta, fundamentando teoricamente
+os prejuízos observados com VR elevadas.
+    
+Por outro lado, efeitos positivos do aumento moderado da VR também são apontados
+na literatura. Murphy et al. @murphy_effect_2023 argumentam que a apresentação
+levemente acelerada pode reduzir episódios de *mind wandering* (divagação
+mental), mantendo o engajamento e aumentando a eficiência do estudo. Além da VR,
+o interesse do participante no conteúdo do vídeo (CV) também tem papel relevante
+na retenção. McIntyre et al. @mcintyre_liking_2021 demonstram que tópicos
+percebidos como atraentes ou relevantes geram maior retenção e desempenho em
+avaliações posteriores, sugerindo que o fator motivacional influencia
+diretamente os resultados de aprendizagem.
+    
+Considerando essas evidências, o presente estudo investigará não apenas o efeito
+isolado da VR, mas também sua interação com o conteúdo dos vídeos. Além disso, a
+avaliação da memória será realizada imediatamente e após uma semana, conforme
+proposto por Murphy et al. @murphy_learning_2022, permitindo analisar tanto
+retenção da memória de prazo intermediário quanto de longo prazo, conforme o
+modelo de memória Atkinson-Shiffrin @atkinson_human_1968 e suas extensões
+@kaminski_intermediate-term_2017.
+
 
 # Tratamento de Dados
 
@@ -64,7 +265,7 @@ $$
 $$ {#eq-retencao}
 
 Disso, segue que uma retenção de $0$ indica que o participante acertou tudo na
-aplicação, e errou todas as questões na reaplicação, indiciando perda total do
+aplicação, e errou todas as questões na reaplicação, indicando perda total do
 que aprendeu com os vídeos. Por outro lado, uma retenção de 1 indica que o
 participante acertou o mesmo número de questões, enquanto uma retenção maior que
 1 indica que o participante teve um desempenho melhor na reaplicação, o que pode
@@ -87,7 +288,6 @@ df$meand <- (as.numeric(df$diag1) + as.numeric(df$diag2) + as.numeric(df$diag3) 
 
 df$Topico <- ifelse(df$Grupo %in% c("bio1", "bio2"), "Bio", "Mat")
 ```
-
 
 ```{r Transformação dos dados}
 #| output: false
@@ -254,9 +454,8 @@ Observamos destes gráficos que pode haver diferença entre os tratamentos, apes
 de, individualmente, o *boxplot* de velocidades apresenta pouca variação na
 retenção.
 
-Precisamos analisar o gráfico de perfis das notas da primeira e segunda
-aplicação por indivíduo para analisarmos a existência de heteroscedasticidade
-entre os participantes.
+Analisaremos os gráficos de perfis na @fig-grafico-perfis para observar
+variações entre os participantes ao longo das aplicações do teste.
 
 ```{r grafico de perfis com patchwork}
 #| label: fig-grafico-perfis
@@ -370,18 +569,256 @@ ggsave("imagens/aed/fig-correlacao-fatores.png",
 )
 ```
 
-# Modelagem da Retenção
+# Modelagem por Velocidade e Conteúdo
+
+Nesta seção, modelaremos os dados considerando os fatores separadamente: tópico
+e velocidade. Queremos investigar os efeitos principais e a interação entre
+esses fatores na retenção de informação dos participantes.
+
+## Modelagem da Retenção
 
 Temos como objetivo modelar a retenção de informação dos participantes a partir
-das variáveis explicativas disponíveis: idade, sexo, e grupo/tratamento (tópico
-e velocidade).
+das variáveis explicativas disponíveis: idade, sexo, desempenho no teste
+diagnóstico, velocidade e contéudo.
 
 Devido ao caráter discreto da variável resposta, provavelmente um modelo linear
 clássico não será adequado na modelagem. Ainda assim, tentaremos ajustar um
 modelo linear só com efeitos fixos, depois, prosseguirmos para métodos não
 paramétricos, se necessário.
 
-##  Modelo linear simples
+###  Modelo linear simples
+
+Ajustamos um modelo linear simples com efeitos fixos para a retenção da idade,
+tópico, velocidade da apresentação e a nota na aplicação diagnóstica.
+Incluiremos inicialmente interação entre idade e tópico, idade e velocidade,
+velocidade e tópico e idade e diagnóstico.
+
+```{r modelo linear simples fatores}
+#| label: tbl-modelo-linear-simples-fatores
+modelo_fixo_fatores <- lm(
+  Retencao ~ Diagn + Idade + Idade:Diagn + Velocidade + Velocidade:Idade +
+    Topico + Topico:Idade + Topico:Velocidade,
+  data = df
+)
+summary(modelo_fixo_fatores) |>
+  pander(caption = "Resumo do modelo linear simples")
+```
+
+Após seleção das variáveis por *stepwise* bidirecional, terminamos com fatores
+velocidade, nota no teste diagnóstico, idade, tópico, interação entre idade e
+diagnóstico, entre tópico e velocidade e entre velocidade e idade. Ou seja,
+removemos apenas a interação entre tópico e idade.
+
+```{r modelo linear simples fatores selecionado}
+#| label: tbl-modelo-linear-simples-fatores-selecionado
+modelo_fixo_fatores_selecionado <- lm(
+  Retencao ~ Diagn + Idade + Idade:Diagn + Velocidade + Velocidade:Idade +
+    Topico + Topico:Velocidade,
+  data = df
+)
+summary(modelo_fixo_fatores_selecionado) |>
+  pander(caption = "Resumo do modelo linear simples selecionado")
+```
+
+##### Diagnóstico do modelo linear simples
+
+Iniciamos com análise dos resíduos do modelo ajustado.
+
+```{r diagnostico modelo linear simples fatores com ggplot}
+#| label: fig-diagnostico-modelo-linear-simples-fatores
+#| fig-cap: "Diagnóstico do modelo linear simples selecionado"
+residuos_modelo_fixo_fatores <- residuals(modelo_fixo_fatores_selecionado)
+fitted_modelo_fixo_fatores <- fitted.values(modelo_fixo_fatores_selecionado)
+dfresiduos_fatores <- tibble(
+  Fitted = fitted_modelo_fixo_fatores,
+  Residuals = residuos_modelo_fixo_fatores
+)
+p1 <- ggplot(dfresiduos_fatores, aes(x = Fitted, y = Residuals)) +
+  geom_point() +
+  geom_hline(yintercept = 0, linetype = "dashed", color = "red") +
+  labs(
+    title = "A",
+    x = "Valores Ajustados",
+    y = "Resíduos"
+  ) +
+  theme_minimal()
+p2 <- ggplot(dfresiduos_fatores, aes(x = Residuals)) +
+  geom_histogram(aes(y = after_stat(density)), bins = 10, fill = "lightblue", color = "black") +
+  geom_density(color = "red", linewidth = 1) +
+  labs(
+    title = "B",
+    x = "Resíduos",
+    y = "Densidade"
+  ) +
+  theme_minimal()
+pjunto <- p1 + p2 + plot_layout(ncol = 2)
+pjunto
+```
+
+
+```{r salva diagnostico modelo linear simples fatores}
+#| output: false
+ggsave("imagens/linear/fig-diagnostico-modelo-linear-simples-fatores.png",
+  width = 8,
+  height = 4
+)
+```
+
+Os resíduos na @fig-diagnostico-modelo-linear-simples-fatores, gráfico A,
+apresentam certo padrão (linhas diagonais) no gráfico de resíduos vs valores
+ajustados, indicando possível violação da suposição de homocedasticidade. O
+histograma do gráfico B sugere uma distribuição quase unimodal, mas limitada
+pelo caráter discreto da variável resposta. 
+
+Primeiramente, aplicamos o teste de Levene para avaliar a homocedasticidade dos
+resíduos, agrupando pela interação entre tópico e velocidade.
+
+```{r teste levene modelo linear simples fatores}
+#| label: tbl-levene-modelo-linear-simples-fatores
+#| tbl-cap: "Teste de Levene dos resíduos do modelo linear simples selecionado"
+levene_test <- leveneTest(
+  residuos_modelo_fixo_fatores ~
+    interaction(df$Topico, df$Velocidade),
+  data = df
+)
+tibble_levene <- tibble(
+  Estatística = levene_test$`F value`[1],
+  "Valor-p" = levene_test$`Pr(>F)`[1]
+)
+tibble_levene |>
+  kable(digits = 4)
+```
+
+O valor $p$ elevado no teste de Levene na
+@tbl-levene-modelo-linear-simples-fatores indica que não rejeitamos a hipótese
+nula de homocedasticidade dos resíduos.
+
+Partimos para análise da normalidade por QQ-plot e o teste de Shapiro-Wilk.
+
+```{r qqplot modelo linear simples fatores ggplot2}
+#| label: fig-qqplot-modelo-linear-simples-fatores
+#| fig-cap: "QQ-Plot dos resíduos do modelo linear simples selecionado"
+ggplot(dfresiduos_fatores, aes(sample = Residuals)) +
+  stat_qq() +
+  stat_qq_line(color = "red") +
+  labs(
+    title = "QQ-Plot dos Resíduos",
+    x = "Quantis Teóricos",
+    y = "Quantis Amostrais"
+  ) +
+  theme_minimal()
+```
+
+O QQ-plot na @fig-qqplot-modelo-linear-simples-fatores apresenta um padrão que
+se repetirá ao longo dos modelos ajustados: os resíduos dificilmente seguiriam a
+linha de referência, já que não se tratam de uma variável contínua. Ainda assim,
+não há desvios extremos, e seguiremos com o teste numérico de normalidade.
+
+```{r shapiro wilk modelo linear simples fatores}
+#| label: tbl-shapiro-wilk-modelo-linear-simples-fatores
+#| tbl-cap: "Teste de Shapiro-Wilk dos resíduos do modelo linear simples selecionado"
+shapiro_result_fatores <- shapiro.test(residuos_modelo_fixo_fatores)
+tibble_shapiro <- tibble(
+  Estatística = shapiro_result_fatores$statistic,
+  Valor_p = shapiro_result_fatores$p.value
+)
+tibble_shapiro |>
+  kable(digits = 4)
+```
+
+O valor $p$ elevado no teste de Shapiro-Wilk na
+@tbl-shapiro-wilk-modelo-linear-simples-fatores indica que não rejeitamos a
+hipótese nula de normalidade dos resíduos ao nível de significância usual de
+5\%. Apesar disso, devemos ter cautela na interpretação, dado o tamanho reduzido
+da amostra e a natureza discreta da variável resposta.
+
+Com normalidade não rejeitada, seguimos para o teste de Bartlett.
+
+```{r teste bartlett modelo linear simples fatores}
+#| label: tbl-bartlett-modelo-linear-simples-fatores
+#| tbl-cap: "Teste de Bartlett dos resíduos do modelo linear simples selecionado"
+bartlett_test_fatores <- bartlett.test(
+  residuos_modelo_fixo_fatores ~
+    interaction(df$Topico, df$Velocidade),
+  data = df
+)
+tibble(
+  Estatística = bartlett_test_fatores$statistic,
+  "Valor-p" = bartlett_test_fatores$p.value
+) |>
+  kable(digits = 4)
+```
+
+Novamente, não rejeitamos a homocedasticidade dos resíduos. Portanto, podemos
+dizer que, de forma geral, as suposições do modelo linear clássico são
+satisfeitas, mas devemos manter ressalvas por conta da análise gráfica dos
+resíduos.
+
+
+##### Análise da diferença entre grupos
+
+Iniciamos a análise em busca da diferença entre os grupos com a ANOVA de Tipo I.
+
+```{r anova modelo linear simples fatores}
+#| label: tbl-anova-modelo-linear-simples-fatores
+anova(modelo_fixo_fatores_selecionado) |>
+  pander(caption = "ANOVA do modelo linear simples selecionado")
+```
+
+Pelo resultado da ANOVA de Tipo I na @tbl-anova-modelo-linear-simples-fatores,
+o Tópico, interação entre Idade e Velocidade e Idade e Diagnóstico são
+significativos, após controlarem pelas respectivas variáveis e covariáveis.
+
+Via Médias Marginais Ajustadas (EMMeans), do pacote `emmeans`, podemos
+investigar as comparações entre os níveis dos fatores Tópico e Velocidade.
+Iniciaremos pelo tópico, utilizando a média entre velocidades. Isso é feito
+atraveś de um teste $t$ para a diferença entre as médias ajustadas. Caso a
+interação fosse significativa, deveríamos considerar se há diferença por nível
+do fator velocidade. Como não é o caso, consideramos a média entre velocidades.
+
+```{r emmeans modelo linear simples fatores}
+#| label: tbl-emmeans-modelo-linear-simples-fatores
+#| tbl-cap: "Comparações por EMMeans do modelo linear simples selecionado"
+emm_topico <- emmeans(modelo_fixo_fatores_selecionado, ~Topico)
+# O ajuste é irrelevante para dois níveis.
+pairs(emm_topico, adjust = "none") |>
+  summary() |>
+  as_tibble() |>
+  rename(
+    Comparação = contrast,
+    Estimativa = estimate,
+    `EP` = SE,
+    `T-Ratio` = t.ratio,
+    `p-Valor` = p.value
+  ) |>
+  kable(digits = 4)
+```
+
+Para ambas velocidades (interação não significativa), o tópico de Matemática
+retenção menor ($-0.1867$) que o tópico de Biologia, com diferença significativa
+ao nível de 5\% ($p  = 0.0121$).
+
+# Modelagem por Tratamento
+
+Aqui, agruparemos os dados por tratamento, ou seja, combinando o tópico e a
+velocidade em uma única variável categórica com quatro níveis: "Mat-X1",
+"Mat-X2", "Bio-X1" e "Bio-X2". Queremos comparar esses grupos diretamente nas
+análises e contrastar os resultados com a seção anterior. Iremos também empregar
+métoods não paramétricos para as análises, além de analisarmos individualmente
+as notas na primeira e segunda aplicação do teste.
+
+## Modelagem da Retenção
+
+Temos como objetivo modelar a retenção de informação dos participantes a partir
+das variáveis explicativas disponíveis: idade, sexo, desempenho no teste
+diagnóstico e grupo/tratamento (tópico e velocidade).
+
+Devido ao caráter discreto da variável resposta, provavelmente um modelo linear
+clássico não será adequado na modelagem. Ainda assim, tentaremos ajustar um
+modelo linear só com efeitos fixos, depois, prosseguirmos para métodos não
+paramétricos, se necessário.
+
+###  Modelo linear simples
 
 Ajustamos um modelo linear simples com efeitos fixos para a retenção da idade,
 tópico, velocidade da apresentação e a nota na aplicação diagnóstica.
@@ -397,8 +834,12 @@ summary(modelo_fixo_grupos) |>
   pander(caption = "Resumo do modelo linear simples com grupos")
 ```
 
-Após seleção das variáveis por *stepwise*, terminamos com o modelo sem
+Após seleção das variáveis pelos testes $t$, terminamos com o modelo sem
 intercepto, com os efeitos fixos dos grupos e a interação entre idade e grupo.
+
+Precisamos tirar o intercepto e refazer o modelo para conseguirmos interpretar o
+efeito dos grupos, que não foram significativos quando analisamos com o
+intercepto.
 
 ```{r modelo linear simples selecionado}
 #| label: tbl-modelo-linear-simples-grupos-selecionado
@@ -431,10 +872,11 @@ summary(modelo_fixo_reduzido) |>
   pander(caption = "Resumo do modelo linear simples reduzido com grupos")
 ```
 
-Apesar de apresentar um grande valor de $\bar{R}^2$, precisamos realizar um
-diagnóstico do modelo para verificar as suposições do modelo linear clássico.
+O valor elevado de $\bar{R}^2$ não nos diz muito neste modelo sem intercepto.
+Precisamos realizar um diagnóstico do modelo para verificar as suposições do
+modelo linear clássico.
 
-### Diagnóstico do modelo linear simples
+##### Diagnóstico do modelo linear simples
 
 ```{r diagnostico modelo linear simples com ggplot}
 #| label: fig-diagnostico-modelo-linear-simples
@@ -486,9 +928,9 @@ ggsave("imagens/linear/fig-diagnostico-modelo-linear-simples-junto.png",
 )
 ```
 
-Os resíduos não mostram padrão claro no gráfico A da
-@fig-diagnostico-modelo-linear-simples, enquanto o histograma do gráfico B
-aponta certa irregularidade, partiremos para análise numérica.
+Os resíduos mostram-se demasiadamente positivos no gráfico A da
+@fig-diagnostico-modelo-linear-simples e um "funil reverso", enquanto o
+histograma do gráfico B aponta certa irregularidade.
 
 ```{r teste levene modelo linear simples}
 #| label: tbl-levene-modelo-linear-simples
@@ -543,15 +985,15 @@ kable(tibble_shapiro_simples, digits = 4)
 
 Curiosamente, não rejeitaríamos a uma confiança de $99\%$. Ainda assim, sob
 nossos critérios ($\alpha = 5\%$), e a análise da forma dos dados, rejeitamos a
-normalidade dos resíduos e descartamos este modelo.
+normalidade dos resíduos e descartamos esse modelo.
 
-## Modelo não paramétrico
+### Métodos não paramétricos
 
-Dado o diagnóstico do modelo linear simples, optamos por ajustar um modelo
-não paramétrico para os dados através da permutação, considerando que temos um
-modelo com delineamento completamente aleatorizado (pela querida professora),
-usaremos um teste de aleatorização (permutação) para testar a hipótese de que há
-efeito do grupo no valor médio da retenção
+Dado o diagnóstico do modelo linear simples, optamos por ajustar um modelo não
+paramétrico para os dados através da permutação, considerando que temos um
+modelo com delineamento completamente aleatorizado pela professora, usaremos um
+teste de aleatorização (permutação) para testar a hipótese de que há efeito do
+grupo no valor médio da retenção.
 
 ```{r modelo nao parametrico de permutacao}
 #| label: tbl-modelo-nao-parametrico-permutacao
@@ -568,8 +1010,8 @@ anova(modelo_permutacao)
 
 Vemos pelas @tbl-modelo-nao-parametrico-permutacao e
 @tbl-anova-modelo-nao-parametrico-permutacao que há efeito significativo do
-grupo na retenção dos participantes. Prosseguiremos com a análise pelo teste de
-Kruskal-Wallis para confirmar esse resultado.
+grupo na retenção dos participantes, pelo valor F. Prosseguiremos com a análise
+pelo teste de Kruskal-Wallis para detectar diferença entre o efeito desses grupos.
 
 ```{r teste kruskal wallis modelo nao parametrico}
 #| label: tbl-teste-kruskal-wallis-modelo-nao-parametr
@@ -585,11 +1027,11 @@ kable(tibble_kruskal, digits = 4)
 O teste de Kruskal-Wallis não rejeita a hipótese nula de que as amostras entre
 os grupos se originam da mesma distribuição. Dessa forma, pode ser que pela
 variabilidade distinta entre os grupos observadas na análise descritiva
-(@tbl-sumario-estatistico-trat), a análise do modelo com permutação seja
+(@tbl-sumario-estatistico-trat), a análise do método com permutação seja
 inválida. Pode ser também que o teste de KW tenha pouca adequação pela grande
-quantidade de empates na variável resposta.
+quantidade de empates na variável resposta. 
 
-Prosseguiremos mesmo assim com a análise post-hoc.
+Prosseguiremos mesmo assim com a análise post-hoc, por curiosidade.
 
 Usaremos o teste post-hoc de Dunn para identificar quais grupos diferem entre
 si.
@@ -599,7 +1041,7 @@ si.
 #| tbl-cap: "Teste de Dunn para comparações múltiplas entre os grupos do modelo não paramétrico de permutação"
 dunn_test <- dunnTest(Retencao ~ Grupo, data = df_grupos, method = "bonferroni")
 tibble_dunn <- tibble(
-  Comparação = rownames(dunn_test$res$Comparison),
+  Comparação = dunn_test$res$Comparison,
   Estatística = dunn_test$res$Z,
   "Valor-p ajustado" = dunn_test$res$P.adj
 )
@@ -608,16 +1050,674 @@ kable(tibble_dunn, digits = 4)
 
 Corroborando o resultado do teste KW, o teste de Dunn não aponta diferenças
 significativas entre os grupos, mas, como dito, a análise pode ser prejudicada
-pela grande quantidade de empates na variável resposta.
+pela grande quantidade de empates na variável resposta. Dessa forma, estamos
+podemos dizer que não há evidências suficientes para afirmar que há diferenças
+na retenção entre os tratamentos.
 
-## Conclusões da modelagem sobre a retenção
+### Conclusões da modelagem sobre a retenção
 
 A partir dos modelos ajustados, é inconclusivo se há diferenças significativas
 na retenção de informação entre os diferentes tratamentos com os métodos
 utilizados. Isso ocorre devido à forma discreta da variável resposta e a pequena
-amostra, que dificultam o ajuste de modelos adequados.
+amostra, que dificultam o ajuste de modelos adequados. Mas, há indícios de que
+não há diferenças entre os tratamentos.
 
-Nesse contexto, seguiriamos com a análise através de transformações, como a
+Nesse contexto, seguiríamos com a análise através de transformações, como a
 tranformação `Logit` com a probabilidade de retenção, ou o uso de modelos
 lineares generalizados, como o modelo logístico para uma outra forma da variável
-retenção, ou até mesmo modelos binomiais.
+retenção, ou até mesmo modelos binomiais, buscando uma análise mais robusta.
+
+## Modelagem das Notas na Aplicação Imediata
+
+Com um modelo inconclusivo para a retenção, partimos para a modelagem das notas
+na primeira avaliação. Com isso, buscamos levantar considerações sobre
+diferenças entre tratamentos na memória de prazo intermediário
+@kaminski_intermediate-term_2017. Vamos repetir o processo como feito com a
+análise interior, levando em consideração as mesmas limitações.
+
+### Modelo linear simples
+
+Ajustamos um modelo linear simples com efeitos fixos para a nota na aplicação
+diagnóstica, idade, tópico e velocidade da apresentação, assim como as
+interações entre idade e grupo e entre diagnóstico e idade.
+
+```{r modelo linear simples notas imed}
+#| label: tbl-modelo-linear-simples-notas-imed
+#| tbl-cap: "Resumo do modelo linear simples para as notas na aplicação imediata"
+modelo_fixo_notas_imed <- lm(
+  Media_Imed ~ Diagn + Idade + Grupo + Idade:Grupo +
+    Diagn:Idade,
+  data = df_grupos
+)
+tibble_modelo_fixo_notas_imed <- tibble(
+  Termo = names(coef(modelo_fixo_notas_imed)),
+  Estimativa = coef(modelo_fixo_notas_imed),
+  "Erro Padrão" = summary(modelo_fixo_notas_imed)$coefficients[, 2],
+  "Valor t" = summary(modelo_fixo_notas_imed)$coefficients[, 3],
+  "Valor-p" = summary(modelo_fixo_notas_imed)$coefficients[, 4]
+)
+kable(tibble_modelo_fixo_notas_imed, digits = 4)
+```
+
+Selecionamos as variáveis pelos testes $t$, restando o modelo com grupo, idade,
+interação idade-grupo e diagnóstico-idade. Dessa vez, não precisamos retirar o
+intercepto por exisitr efeitos significativos dos grupos. Isso facilitará a
+interpretação posteriormente.
+
+```{r modelo linear simples notas imed selecionado}
+#| label: tbl-modelo-linear-simples-notas-imed-selecionado
+#| tbl-cap: "Resumo do modelo linear simples selecionado para as notas na aplicação imediata"
+modelo_fixo_notas_imed_final <- lm(
+  Media_Imed ~ Grupo + Idade:Grupo + Diagn:Idade,
+  data = df_grupos
+)
+tibble_modelo_fixo_notas_imed_final <- tibble(
+  Termo = names(coef(modelo_fixo_notas_imed_final)),
+  Estimativa = coef(modelo_fixo_notas_imed_final),
+  "Erro Padrão" = summary(modelo_fixo_notas_imed_final)$coefficients[, 2],
+  "Valor t" = summary(modelo_fixo_notas_imed_final)$coefficients[, 3],
+  "Valor-p" = summary(modelo_fixo_notas_imed_final)$coefficients[, 4]
+)
+kable(tibble_modelo_fixo_notas_imed_final, digits = 4)
+```
+
+Comparamos via ANOVA com um modelos reduzidos.
+
+```{r anova modelo linear simples notas imed}
+#| label: tbl-anova-modelo-linear-simples-notas-imed-selecao
+modelo_fixo_notas_imed_reduzido1 <- lm(
+  Media_Imed ~ Grupo,
+  data = df_grupos
+)
+anova(
+  modelo_fixo_notas_imed_reduzido1,
+  modelo_fixo_notas_imed_final
+) |>
+  pander(caption = "Comparação entre o modelo sem interação com o modelo selecionado para as
+notas na aplicação imediata")
+```
+
+Pela @tbl-anova-modelo-linear-simples-notas-imed-selecao, permanecemos com o
+modelo com interações. Prosseguimos para o diagnóstico do modelo.
+
+#### Diagnóstico do modelo linear simples
+
+Primeiro, para análise dos resíduos.
+
+```{r diagnostico modelo linear simples notas imed com ggplot}
+#| label: fig-diagnostico-modelo-linear-simples-notas-imed
+#| fig-cap: "Diagnóstico do modelo linear simples selecionado para as notas na aplicação imediata"
+residuos_modelo_fixo_notas_imed <- residuals(modelo_fixo_notas_imed_final)
+fitted_modelo_fixo_notas_imed <- fitted.values(modelo_fixo_notas_imed_final)
+dfresiduos_notas_imed <- tibble(
+  Fitted = fitted_modelo_fixo_notas_imed,
+  Residuals = residuos_modelo_fixo_notas_imed
+)
+p1_notas_imed <- ggplot(dfresiduos_notas_imed, aes(x = Fitted, y = Residuals)) +
+  geom_point() +
+  geom_hline(yintercept = 0, linetype = "dashed", color = "red") +
+  labs(
+    title = "A",
+    x = "Valores Ajustados",
+    y = "Resíduos"
+  ) +
+  theme_minimal()
+p2_notas_imed <- ggplot(dfresiduos_notas_imed, aes(x = Residuals)) +
+  geom_histogram(aes(y = after_stat(density)), bins = 10, fill = "lightblue", color = "black") +
+  geom_density(color = "red", linewidth = 1) +
+  labs(
+    title = "B",
+    x = "Resíduos",
+    y = "Densidade"
+  ) +
+  theme_minimal()
+pjunto_notas_imed <- p1_notas_imed + p2_notas_imed + plot_layout(ncol = 2)
+pjunto_notas_imed
+```
+
+```{r salva diagnostico modelo linear simples notas imed}
+#| output: false
+ggsave("imagens/linear/fig-diagnostico-modelo-linear-simples-notas-imed.png",
+  p1_notas_imed,
+  width = 5,
+  height = 4
+)
+ggsave("imagens/linear/fig-histograma-residuos-modelo-linear-simples-notas-imed.png",
+  p2_notas_imed,
+  width = 5,
+  height = 4
+)
+ggsave("imagens/linear/fig-diagnostico-modelo-linear-simples-notas-imed-junto.png",
+  pjunto_notas_imed,
+  width = 10,
+  height = 4
+)
+```
+
+Os resíduos mostram-se demasiadamente positivos no gráfico A da
+@fig-diagnostico-modelo-linear-simples-notas-imed, enquanto o histograma do
+gráfico B aponta irregularidade.
+
+```{r teste levene modelo linear simples notas imed}
+#| label: tbl-levene-modelo-linear-simples-notas-imed
+#| tbl-cap: "Teste de Levene para homocedasticidade dos resíduos do modelo linear simples selecionado para as notas na aplicação imediata"
+levene_test_notas_imed <- leveneTest(resid(modelo_fixo_notas_imed_final) ~
+  factor(df_grupos$Grupo))
+tibble_levene_simples_notas_imed <- tibble(
+  Estatística = levene_test_notas_imed$`F value`[1],
+  "Valor-p" = levene_test_notas_imed$`Pr(>F)`[1]
+)
+kable(tibble_levene_simples_notas_imed, digits = 4)
+```
+
+Pela @tbl-levene-modelo-linear-simples-notas-imed, não rejeitamos a hipótese
+nula de homocedasticidade dos resíduos. Partimos para análise de normalidade.
+
+```{r qqplot modelo linear simples notas imed}
+#| label: fig-qqplot-modelo-linear-simples-notas-imed
+#| fig-cap: "QQ-Plot dos resíduos do modelo linear simples selecionado para as notas na aplicação imediata"
+p3_notas_imed <- ggplot(dfresiduos_notas_imed, aes(sample = Residuals)) +
+  stat_qq() +
+  stat_qq_line(color = "red") +
+  labs(
+    x = "Quantis Teóricos",
+    y = "Quantis Amostrais"
+  ) +
+  theme_minimal()
+p3_notas_imed
+```
+
+Como esperado pelo caráter discreto da variável resposta, os resíduos não se
+adequam muito bem à normalidade, mas parecem ter um comportamento melhor que o
+do modelo sobre retenção. Faremos o teste de Shapiro-Wilk para confirmar.
+
+```{r salva qqplot modelo linear simples notas imed}
+#| output: false
+ggsave("imagens/linear/fig-qqplot-modelo-linear-simples-notas-imed.png",
+  p3_notas_imed,
+  width = 5,
+  height = 4
+)
+```
+
+```{r teste shapiro modelo linear simples notas imed}
+#| label: tbl-shapiro-modelo-linear-simples-notas-imed
+#| tbl-cap: "Teste de Shapiro-Wilk para normalidade dos resíduos do modelo linear simples selecionado para as notas na aplicação imediata"
+shapiro_test_notas_imed <- shapiro.test(resid(modelo_fixo_notas_imed_final))
+tibble_shapiro_simples_notas_imed <- tibble(
+  Estatística = shapiro_test_notas_imed$statistic,
+  "Valor-p" = shapiro_test_notas_imed$p.value
+)
+kable(tibble_shapiro_simples_notas_imed, digits = 4)
+```
+
+Pelo valor $p$ na @tbl-shapiro-modelo-linear-simples-notas-imed, não
+rejeitamos a hipótese nula de normalidade dos resíduos a um nível de confiança
+de $5\%$. Assim, seguemos com teste de Bartlett para homocedasticidade entre os
+grupos.
+
+```{r teste bartlett modelo linear simples notas imed}
+#| label: tbl-bartlett-modelo-linear-simples-notas-imed
+#| tbl-cap: "Teste de Bartlett para homocedasticidade dos resíduos do modelo simples selecionado para as notas na aplicação imediata"
+bartlett_test_notas_imed <- bartlett.test(
+  resid(modelo_fixo_notas_imed_final) ~
+    factor(df_grupos$Grupo)
+)
+tibble_bartlett_simples_notas_imed <- tibble(
+  Estatística = bartlett_test_notas_imed$statistic,
+  "Valor-p" = bartlett_test_notas_imed$p.value
+)
+kable(tibble_bartlett_simples_notas_imed, digits = 4)
+```
+
+O teste de Bartlett não rejeita a homocedasticidade. Dessa forma, não rejeitamos
+as suposições do modelo linear clássico para essa modelagem, mas temos ressalvas
+sobre os resíduos.
+
+#### Análise de diferença entre grupos
+Para fim didáticos, aplicaremos o ANOVA para verificar diferenças entre os
+grupos.
+
+```{r anova modelo linear simples notas imed}
+#| label: tbl-anova-modelo-linear-simples-notas-imed
+#| tbl-cap: "ANOVA do modelo linear simples selecionado para as notas na aplicação imediata"
+anv_modelo_fixo_notas_imed <- anova(modelo_fixo_notas_imed_final)
+tibble_anova_modelo_fixo_notas_imed <- tibble(
+  Termo = rownames(anv_modelo_fixo_notas_imed),
+  "Soma de Quadrados" = anv_modelo_fixo_notas_imed$`Sum Sq`,
+  "Graus de Liberdade" = anv_modelo_fixo_notas_imed$Df,
+  "Quadrado Médio" = anv_modelo_fixo_notas_imed$`Mean Sq`,
+  "Valor F" = anv_modelo_fixo_notas_imed$`F value`,
+  "Valor-p" = anv_modelo_fixo_notas_imed$`Pr(>F)`
+)
+kable(tibble_anova_modelo_fixo_notas_imed, digits = 4)
+```
+
+```{r valor r2 modelo linear simples notas imed}
+#| label: tbl-r2-modelo-linear-simples-notas-imed
+#| tbl-cap: "R² e R² ajustado do modelo linear simples selecionado para as notas na aplicação imediata"
+r2_notas_imed <- summary(modelo_fixo_notas_imed_final)$r.squared
+r2_ajustado_notas_imed <- summary(modelo_fixo_notas_imed_final)$adj.r.squared
+tibble_r2_notas_imed <- tibble(
+  R2 = r2_notas_imed,
+  "R2 Ajustado" = r2_ajustado_notas_imed
+)
+kable(tibble_r2_notas_imed, digits = 4)
+```
+
+Pela @tbl-anova-modelo-linear-simples-notas-imed, não há diferença significativa
+entre os grupos no modelo para as notas na aplicação imediata. Pelo $\bar{R}^2$,
+o modelo explica apenas $56.18\%$ da variabilidade total das notas.
+
+### Métodos não paramétricos
+
+Apesar de não rejeitarmos as suposições do modelo linear clássico, dada a
+natureza dos dados, optamos por ajustar um modelo não paramétrico para as notas
+na aplicação imediata através da permutação. Usaremos os mesmos efeitos fixos do
+modelo reduzido.
+
+```{r modelo nao parametrico de permutacao notas imed}
+#| label: tbl-modelo-nao-parametrico-permutacao-notas-imed
+#| tbl-cap: "Resumo do modelo não paramétrico de permutação para as notas na aplicação imediata"
+modelo_permutacao_notas_imed <- lmp(
+  Media_Imed ~ Grupo + Idade:Grupo + Diagn:Idade,
+  data = df_grupos
+)
+summary(modelo_permutacao_notas_imed)
+```
+
+É interessante notar o baixíssimo valor de $\bar{R}^2$ em apenas $0.1584$, o que
+indica uma insuficência do modelo.
+
+```{r anova modelo nao parametrico de permutacao notas imed}
+#| label: tbl-anova-modelo-nao-parametrico-permutacao-notas
+#| tbl-cap: "ANOVA do modelo não paramétrico de permutação para as notas na aplicação imediata"
+anova(modelo_permutacao_notas_imed)
+```
+
+Pela @tbl-modelo-nao-parametrico-permutacao-notas-imed e
+@tbl-anova-modelo-nao-parametrico-permutacao-notas, observamos que não há efeito
+significativo do grupo na nota na aplicação imediata. Prosseguiremos com o teste
+de Kruskal-Wallis para confirmar esse resultado.
+
+```{r teste kruskal wallis modelo nao parametrico notas imed}
+#| label: tbl-teste-kruskal-wallis-modelo-nao-parametr-imed
+#| tbl-cap: "Teste de Kruskal-Wallis para o modelo não paramétrico de permutação para as notas na aplicação imediata"
+kruskal_test_notas_imed <- kruskal.test(Media_Imed ~ Grupo, data = df_grupos)
+tibble_kruskal_notas_imed <- tibble(
+  Estatística = kruskal_test_notas_imed$statistic,
+  "Valor-p" = kruskal_test_notas_imed$p.value
+)
+kable(tibble_kruskal_notas_imed, digits = 4)
+```
+
+Novamente, o teste de Kruskal-Wallis não rejeita a hipótese nula de que as
+amostras entre os grupos se originam da mesma distribuição. Logo, dizemos que
+não há diferenças significativas entre os grupos, mas, como dito, a análise pode
+ser prejudicada pela grande quantidade de empates na variável resposta. Dessa
+forma, estamos incertos sobre quais grupos diferem entre si, graças às
+limitações dos dados e técnicas de modelagem.
+
+### Conclusões da modelagem sobre as notas na aplicação imediata
+
+A partir dos modelos ajustados, há indícios de que há diferenças significativas
+nas notas na aplicação imediata entre os diferentes tratamentos com os métodos
+utilizados. Apesar disso, não conseguimos identificar quais grupos diferem entre
+si, devido às limitações dos dados e técnicas de modelagem.
+
+Prosseguríamos, como dito anteriormente, com a análise através de
+transformações ou o uso de modelos lineares generalizados que melhor se adequem
+à variável resposta discreta.
+
+## Modelagem das notas na Aplicação Tardia
+
+Com a modelagem inconclusiva para a retenção e as notas na aplicação imediata,
+partimos para a modelagem das notas na aplicação tardia. Com isso, buscamos
+levantar considerações sobre diferenças entre tratamentos na memória de prazo
+longo @kaminski_intermediate-term_2017. Vamos repetir o processo como feito com
+a análise interior, levando em consideração as mesmas limitações.
+
+### Modelo linear simples
+
+Ajustamos um modelo linear simples com efeitos fixos para a nota na aplicação
+tardia, idade, tópico e velocidade da apresentação, e interação entre idade e
+grupo, assim como diagnóstico e idade.
+
+```{r modelo linear simples notas tard}
+#| label: tbl-modelo-linear-simples-notas-tard
+#| tbl-cap: "Resumo do modelo linear simples para as notas na aplicação tardia"
+modelo_fixo_notas_tard <- lm(
+  Media_Semn ~ Diagn + Idade + Grupo + Idade:Grupo + Diagn:Idade,
+  data = df_grupos
+)
+tibble_modelo_fixo_notas_tard <- tibble(
+  Termo = names(coef(modelo_fixo_notas_tard)),
+  Estimativa = coef(modelo_fixo_notas_tard),
+  "Erro Padrão" = summary(modelo_fixo_notas_tard)$coefficients[, 2],
+  "Valor t" = summary(modelo_fixo_notas_tard)$coefficients[, 3],
+  "Valor-p" = summary(modelo_fixo_notas_tard)$coefficients[, 4]
+)
+kable(tibble_modelo_fixo_notas_tard, digits = 4)
+```
+
+Nenhum dos coeficientes do modelo apresenta valor $p$ significativo. Ainda
+assim, prosseguimos com a seleção das variáveis pelos testes $t$, restando o
+modelo com grupo, interação idade-grupo e interação diagnóstico-idade. Dessa
+vez, pudemos manter o intercepto também.
+
+```{r modelo linear simples notas tard selecionado}
+#| label: tbl-modelo-linear-simples-notas-tard-selecionado
+#| tbl-cap: "Resumo do modelo linear simples selecionado para as notas na aplicação tardia"
+modelo_fixo_notas_tard_final <- lm(
+  Media_Semn ~ Grupo + Idade:Grupo + Diagn:Idade,
+  data = df_grupos
+)
+tibble_modelo_fixo_notas_tard_final <- tibble(
+  Termo = names(coef(modelo_fixo_notas_tard_final)),
+  Estimativa = coef(modelo_fixo_notas_tard_final),
+  "Erro Padrão" = summary(modelo_fixo_notas_tard_final)$coefficients[, 2],
+  "Valor t" = summary(modelo_fixo_notas_tard_final)$coefficients[, 3],
+  "Valor-p" = summary(modelo_fixo_notas_tard_final)$coefficients[, 4]
+)
+kable(tibble_modelo_fixo_notas_tard_final, digits = 4)
+```
+
+Testaremos via ANOVA com um modelos reduzidos.
+```{r anova modelo linear simples notas tard}
+#| label: tbl-anova-modelo-linear-simples-notas-tard-selecao
+#| tbl-cap: "Comparação entre o modelo sem interação com o modelo selecionado para as notas na aplicação tardia"
+modelo_fixo_notas_tard_reduzido1 <- lm(
+  Media_Semn ~ Grupo,
+  data = df_grupos
+)
+anova(
+  modelo_fixo_notas_tard_reduzido1,
+  modelo_fixo_notas_tard_final
+) |>
+  pander(caption = "Comparação entre o modelo sem interação com o modelo selecionado para as
+notas na aplicação tardia")
+```
+
+O modelo com interações é preferível ao modelo sem interações pela
+@tbl-anova-modelo-linear-simples-notas-tard-selecao.
+
+Partimos para o diagnóstico do modelo.
+
+#### Diagnóstico do modelo linear simples
+
+Primeiro, para análise dos resíduos.
+
+```{r diagnostico modelo linear simples notas tard com ggplot}
+#| label: fig-diagnostico-modelo-linear-simples-notas-tard
+#| fig-cap: "Diagnóstico do modelo linear simples selecionado para as notas na aplicação tardia"
+residuos_modelo_fixo_notas_tard <- residuals(modelo_fixo_notas_tard_final)
+fitted_modelo_fixo_notas_tard <- fitted.values(modelo_fixo_notas_tard_final)
+dfresiduos_notas_tard <- tibble(
+  Fitted = fitted_modelo_fixo_notas_tard,
+  Residuals = residuos_modelo_fixo_notas_tard
+)
+p1_notas_tard <- ggplot(dfresiduos_notas_tard, aes(x = Fitted, y = Residuals)) +
+  geom_point() +
+  geom_hline(yintercept = 0, linetype = "dashed", color = "red") +
+  labs(
+    title = "A",
+    x = "Valores Ajustados",
+    y = "Resíduos"
+  ) +
+  theme_minimal()
+p2_notas_tard <- ggplot(dfresiduos_notas_tard, aes(x = Residuals)) +
+  geom_histogram(aes(y = after_stat(density)), bins = 10, fill = "lightblue", color = "black") +
+  geom_density(color = "red", linewidth = 1) +
+  labs(
+    title = "B",
+    x = "Resíduos",
+    y = "Densidade"
+  ) +
+  theme_minimal()
+pjunto_notas_tard <- p1_notas_tard + p2_notas_tard + plot_layout(ncol = 2)
+pjunto_notas_tard
+```
+
+```{r salva diagnostico modelo linear simples notas tard}
+#| output: false
+ggsave("imagens/linear/fig-diagnostico-modelo-linear-simples-notas-tard.png",
+  p1_notas_tard,
+  width = 5,
+  height = 4
+)
+ggsave("imagens/linear/fig-histograma-residuos-modelo-linear-simples-notas-tard.png",
+  p2_notas_tard,
+  width = 5,
+  height = 4
+)
+ggsave("imagens/linear/fig-diagnostico-modelo-linear-simples-notas-tard-junto.png",
+  pjunto_notas_tard,
+  width = 10,
+  height = 4
+)
+```
+
+Os resíduos mostram-se demasiadamente positivos no gráfico A da
+@fig-diagnostico-modelo-linear-simples-notas-tard, com alguns valores muito
+negativos. O histograma do gráfico B aponta irregularidade. Faremos o teste de
+Levene para homocedasticidade.
+
+```{r teste levene modelo linear simples notas tard}
+#| label: tbl-levene-modelo-linear-simples-notas-tard
+#| tbl-cap: "Teste de Levene para homocedasticidade dos resíduos do
+#| modelo linear simples selecionado para as notas na aplicação tardia"
+levene_test_notas_tard <- leveneTest(
+  resid(modelo_fixo_notas_tard_final) ~ factor(df_grupos$Grupo)
+)
+tibble_levene_simples_notas_tard <- tibble(
+  Estatística = levene_test_notas_tard$`F value`[1],
+  "Valor-p" = levene_test_notas_tard$`Pr(>F)`[1]
+)
+kable(tibble_levene_simples_notas_tard, digits = 4)
+```
+
+Pela @tbl-levene-modelo-linear-simples-notas-tard, não rejeitamos a hipótese
+nula de homocedasticidade dos resíduos. Partimos para análise de normalidade.
+
+```{r qqplot modelo linear simples notas tard}
+#| label: fig-qqplot-modelo-linear-simples-notas-tard
+#| fig-cap: "QQ-Plot dos resíduos do modelo linear simples selecionado para as notas na aplicação tardia"
+p3_notas_tard <- ggplot(dfresiduos_notas_tard, aes(sample = Residuals)) +
+  stat_qq() +
+  stat_qq_line(color = "red") +
+  labs(
+    x = "Quantis Teóricos",
+    y = "Quantis Amostrais"
+  ) +
+  theme_minimal()
+p3_notas_tard
+```
+
+```{r salva qqplot modelo linear simples notas tard}
+#| output: false
+ggsave("imagens/linear/fig-qqplot-modelo-linear-simples-notas-tard.png",
+  p3_notas_tard,
+  width = 5,
+  height = 4
+)
+```
+
+```{r teste shapiro modelo linear simples notas tard}
+#| label: tbl-shapiro-modelo-linear-simples-notas-tard
+#| tbl-cap: "Teste de Shapiro-Wilk para normalidade dos resíduos do modelo linear simples selecionado para as notas na aplicação tardia"
+shapiro_test_notas_tard <- shapiro.test(resid(modelo_fixo_notas_tard_final))
+tibble_shapiro_simples_notas_tard <- tibble(
+  Estatística = shapiro_test_notas_tard$statistic,
+  "Valor-p" = shapiro_test_notas_tard$p.value
+)
+kable(tibble_shapiro_simples_notas_tard, digits = 4)
+```
+
+Novamente, não rejeitamos a hipótese nula de normalidade dos resíduos a um nível
+de confiança de $5\%$. Assim, seguemos com teste de Bartlett para
+homocedasticidade entre os grupos.
+
+```{r teste bartlett modelo linear simples notas tard}
+#| label: tbl-bartlett-modelo-linear-simples-notas-tard
+#| tbl-cap: "Teste de Bartlett para homocedasticidade dos resíduos do modelo simples selecionado para as notas na aplicação tardia"
+bartlett_test_notas_tard <- bartlett.test(
+  resid(modelo_fixo_notas_tard_final) ~ factor(df_grupos$Grupo)
+)
+tibble_bartlett_simples_notas_tard <- tibble(
+  Estatística = bartlett_test_notas_tard$statistic,
+  "Valor-p" = bartlett_test_notas_tard$p.value
+)
+kable(tibble_bartlett_simples_notas_tard, digits = 4)
+```
+
+O teste de Bartlett não rejeita a homocedasticidade. Dessa forma, não rejeitamos
+as suposições do modelo linear clássico para essa modelagem. Seguimos com a
+análise.
+
+#### Análise de diferença entre grupos
+Aplicamos o ANOVA para verificar diferenças entre os grupos.
+
+```{r anova modelo linear simples notas tard}
+#| label: tbl-anova-modelo-linear-simples-notas-tard
+#| tbl-cap: "ANOVA do modelo linear simples selecionado para as notas na aplicação tardia"
+anv_modelo_fixo_notas_tard <- anova(modelo_fixo_notas_tard_final)
+tibble_anova_modelo_fixo_notas_tard <- tibble(
+  Termo = rownames(anv_modelo_fixo_notas_tard),
+  "Soma de Quadrados" = anv_modelo_fixo_notas_tard$`Sum Sq`,
+  "Graus de Liberdade" = anv_modelo_fixo_notas_tard$Df,
+  "Quadrado Médio" = anv_modelo_fixo_notas_tard$`Mean Sq`,
+  "Valor F" = anv_modelo_fixo_notas_tard$`F value`,
+  "Valor-p" = anv_modelo_fixo_notas_tard$`Pr(>F)`
+)
+kable(tibble_anova_modelo_fixo_notas_tard, digits = 4)
+```
+
+Pela @tbl-anova-modelo-linear-simples-notas-tard, não há diferença significativa
+entre os grupos no modelo para as notas na aplicação tardia. Partiremos para
+métodos não paramétricos por desconfiança dos resíduos.
+
+### Métodos não paramétricos
+
+Apesar de não rejeitarmos as suposições do modelo linear clássico, dada a
+natureza dos dados, optamos por ajustar um modelo não paramétrico para as notas
+na aplicação tardia através da permutação. Usaremos os mesmos efeitos fixos do
+modelo reduzido.
+
+```{r modelo nao parametrico de permutacao notas tard}
+#| label: tbl-modelo-nao-parametrico-permutacao-notas-tard
+#| tbl-cap: "Resumo do modelo não paramétrico de permutação para as notas na aplicação tardia"
+modelo_permutacao_notas_tard <- lmp(
+  Media_Semn ~ Grupo + Idade:Grupo + Diagn:Idade,
+  data = df_grupos
+)
+summary(modelo_permutacao_notas_tard)
+```
+
+```{r anova modelo nao parametrico de permutacao notas tard}
+#| label: tbl-anova-modelo-nao-parametrico-permutacao-notas-tard
+#| tbl-cap: "ANOVA do modelo não paramétrico de permutação para as notas na aplicação tardia"
+anova(modelo_permutacao_notas_tard)
+```
+
+Novamente, identificamos pela @tbl-modelo-nao-parametrico-permutacao-notas-tard
+e @tbl-anova-modelo-nao-parametrico-permutacao-notas-tard que há efeito
+significativo do grupo na nota na aplicação tardia. Prosseguiremos com o teste
+de Kruskal-Wallis para as diferenças entre grupos.
+
+```{r teste kruskal wallis modelo nao parametrico notas tard}
+#| label: tbl-teste-kruskal-wallis-modelo-nao-parametrico-tard
+#| tbl-cap: "Teste de Kruskal-Wallis para o modelo não paramétrico de permutação para as notas na aplicação tardia"
+kruskal_test_notas_tard <- kruskal.test(Media_Semn ~ Grupo, data = df_grupos)
+tibble_kruskal_notas_tard <- tibble(
+  Estatística = kruskal_test_notas_tard$statistic,
+  "Valor-p" = kruskal_test_notas_tard$p.value
+)
+kable(tibble_kruskal_notas_tard, digits = 4)
+```
+
+Mais uma vez, o teste de Kruskal-Wallis não rejeita a hipótese nula de que as
+amostras entre os grupos se originam da mesma distribuição. Assim como na
+modelagem da retenção e das notas na aplicação imediata, pode ser que pela
+variabilidade distinta entre os grupos observadas na análise descritiva
+(@tbl-sumario-estatistico-trat), a análise do método com permutação seja
+inválida. Pode ser também que o teste de KW tenha pouca adequação pela grande
+quantidade de empates na variável resposta. Acreditamos que, neste caso, o teste
+de Kruskal-Wallis é menos confiável que o ANOVA do método de permutação.
+
+Prosseguiremos mesmo assim com a análise post-hoc.
+Usaremos o teste post-hoc de Dunn para identificar quais grupos diferem entre
+si.
+
+```{r teste dunn modelo nao parametrico notas tard}
+#| label: tbl-teste-dunn-modelo-nao-parametrico-notas-t
+#| tbl-cap: "Teste de Dunn para comparações múltiplas entre os grupos do modelo não paramétrico de permutação para as notas na aplicação tardia"
+dunn_test_notas_tard <- dunnTest(Media_Semn ~ factor(Grupo),
+  data = df_grupos, method = "bonferroni"
+)
+tibble_dunn_notas_tard <- tibble(
+  Comparação = dunn_test_notas_tard$res$Comparison,
+  Estatística = dunn_test_notas_tard$res$Z,
+  "Valor-p ajustado" = dunn_test_notas_tard$res$P.adj
+)
+kable(tibble_dunn_notas_tard, digits = 4)
+```
+
+Pelo resultado do teste de Dunn na
+@tbl-teste-dunn-modelo-nao-parametrico-notas-t, não há diferenças significativas
+entre os grupos, mas, como dito, a análise pode ser prejudicada pela grande
+quantidade de empates na variável resposta. Dessa forma, estamos incertos sobre
+quais grupos diferem entre si, graças às limitações dos dados e técnicas de
+modelagem.
+
+### Conclusões da modelagem sobre as notas na aplicação tardia
+
+A partir dos modelos ajustados, há indícios de que há diferenças significativas
+nas notas na aplicação tardia entre os diferentes tratamentos com os métodos
+utilizados. Apesar disso, não conseguimos identificar quais grupos diferem entre
+si, devido às limitações dos dados e técnicas de modelagem.
+
+Prosseguríamos, como dito anteriormente, com a análise através de
+transformações ou o uso de modelos lineares generalizados que melhor se adequem
+à variável resposta discreta.
+
+# Conclusões Gerais
+
+A modelagem estatística realizada não permitiu conclusões definitivas sobre os
+efeitos dos diferentes tratamentos na retenção e nas notas em aplicações
+imediata e tardia. Embora algumas análises indiquem diferenças significativas
+entre os grupos, como a @tbl-anova-modelo-nao-parametrico-permutacao-notas-tard,
+as limitações inerentes aos dados e às técnicas de modelagem utilizadas
+impediram a identificação clara de quais grupos diferem entre si. Futuras
+análises poderiam explorar transformações dos dados ou a aplicação de modelos
+lineares generalizados para melhor capturar a natureza discreta das variáveis
+resposta.
+
+Outro fator importante a se considerar são limitações do próprio estudo, como
+tamanho amostral reduzido e possíveis vieses na coleta de dados, que podem ter
+influenciado os resultados obtidos.
+
+No geral, podemos concluir que, deste experimento, não há evidências robustas
+para afirmar que combinações específicas entre conteúdo e velocidade de
+reprodução tem efeito significativo na retenção de informação ou no desempenho
+em avaliações imediatas e tardias. Recomenda-se cautela na interpretação dos
+resultados e a realização de estudos adicionais com amostras maiores e
+metodologias aprimoradas para elucidar melhor os efeitos dos tratamentos
+avaliados.
+
+Também, enquanto a velocidade individualmente já foi analisada por diversos
+estudos, assim como a análise individual do "conteúdo do vídeo", poucos estudos
+foram feitos sobre a combinação desses dois fatores. Portanto, este é um
+primeiro passo importante para futuras pesquisas na área de aprendizagem através
+de vídeos educacionais.
+
+Se quiser levar uma conclusão divertida, pela
+@tbl-emmeans-modelo-linear-simples-fatores, matemática é mais difícil que
+biologia a uma significância de $5\%$.
+
+{{< pagebreak >}}
+
+# Referências
+
+:::{.refs}
+:::
+

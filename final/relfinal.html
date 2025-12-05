@@ -12,7 +12,7 @@
 <meta name="author" content="Ian B. Loures - 15459667">
 <meta name="author" content="João Victor G. de Sousa - 15463912">
 
-<title>Relatório Final do Projeto - Planejamento e Análise de Experimentos (MAE0316)</title>
+<title>Impacto do conteúdo e da velocidade de vídeos na retenção de informação a curto e a longo prazo - Planejamento e análise do experimento</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -25,7 +25,27 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-</style>
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="relfinal_files/libs/clipboard/clipboard.min.js"></script>
@@ -81,7 +101,7 @@ window.Quarto = {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Relatório Final do Projeto - Planejamento e Análise de Experimentos (MAE0316)</h1>
+<h1 class="title">Impacto do conteúdo e da velocidade de vídeos na retenção de informação a curto e a longo prazo - Planejamento e análise do experimento</h1>
 </div>
 
 
@@ -102,26 +122,86 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Data de Publicação</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">27 de novembro de 2025</p>
+      <p class="date">5 de dezembro de 2025</p>
     </div>
   </div>
   
     
   </div>
   
+<div>
+  <div class="abstract">
+    <div class="block-title">Resumo</div>
+    <p>Este projeto descreve um experimento randomizado para avaliar o efeito da velocidade de reprodução (VR) de vídeos educativos e do conteúdo do vídeo (CV) sobre a retenção imediata e tardia (memória de prazo intermediário e de longo prazo) de informação em estudantes de graduação da área de exatas. O delineamento combina dois fatores fixos (CV: Matemática ou Biologia; VR: 1x ou 2x) e prevê medidas repetidas (teste imediato e reteste após 1 semana). Apresentam-se neste documento os objetivos, justificativa teórica, desenho experimental, plano de coleta e procedimentos de análise estatística, além de considerações éticas e orçamento estimado.</p>
+  </div>
+</div>
 
 
 </header>
 
 
 <p></p>
+<section id="introdução" class="level1">
+<h1>Introdução</h1>
+<p>A educação mediada por vídeos (videoaulas) tornou-se uma prática central no ensino superior. Estudantes comumente recorrem ao aumento na velocidade de reprodução (VR) como estratégia para economizar tempo <span class="citation" data-cites="murphy_learning_2022"><a href="#ref-murphy_learning_2022" role="doc-biblioref">[1]</a></span>. A literatura sugere efeitos variados: enquanto aumentos moderados (e.g.&nbsp;até 1.5x) frequentemente não prejudicam a compreensão, velocidades mais altas (e.g.&nbsp;2x) podem reduzir o desempenho em testes imediatos e/ou retardados, possivelmente por aumentar a carga cognitiva ou comprometer a codificação profunda do material <span class="citation" data-cites="murphy_learning_2022 murphy_effect_2023 tharumalingam_increasing_2025"><a href="#ref-murphy_learning_2022" role="doc-biblioref">[1]</a>, <a href="#ref-murphy_effect_2023" role="doc-biblioref">[2]</a>, <a href="#ref-tharumalingam_increasing_2025" role="doc-biblioref">[3]</a></span>.</p>
+<p>Além da VR, o conteúdo do vídeo (CV) e o interesse do aprendiz pelo tópico podem modular a atenção e a retenção <span class="citation" data-cites="mcintyre_liking_2021"><a href="#ref-mcintyre_liking_2021" role="doc-biblioref">[4]</a></span>. Nosso estudo investiga se a interação entre VR e CV afeta a retenção imediata e tardia — isto é, retenção na memória de prazo intermediário e de longo prazo, respectivamente — em estudantes de exatas, com atenção especial ao fato de que conteúdos mais alinhados ao interesse dos estudantes (conteúdos voltados a ciências exatas) podem mitigar os efeitos negativos da aceleração.</p>
+<section id="objetivo-geral" class="level2">
+<h2 class="anchored" data-anchor-id="objetivo-geral">Objetivo Geral</h2>
+<p>Avaliar o efeito da velocidade de reprodução (1x ou 2x) e do conteúdo do vídeo (Matemática ou Biologia) na retenção imediata e tardia (após uma semana) de informações em estudantes de graduação da área de ciências exatas.</p>
+</section>
+<section id="objetivos-específicos" class="level2">
+<h2 class="anchored" data-anchor-id="objetivos-específicos">Objetivos Específicos</h2>
+<ul>
+<li>Avaliar o efeito da velocidade de reprodução elevada (2x) na retenção, comparando-o com a velocidade normal (1x).</li>
+<li>Investigar a influência do conteúdo do vídeo (Matemática ou Biologia) na retenção da informação.</li>
+<li>Verificar a existência de efeito de interação entre o conteúdo do vídeo e a velocidade de reprodução sobre a retenção.</li>
+<li>Testar a hipótese de que o conteúdo de Matemática (mais alinhado ao perfil dos participantes) atenua o eventual efeito negativo da velocidade de reprodução acelerada (2x) na retenção.</li>
+</ul>
+</section>
+</section>
+<section id="metodologia" class="level1">
+<h1>Metodologia</h1>
+<p>Optamos por um delineamento experimental inteiramente causalizado e fatorial completo: <span class="math inline">\(2\times 2\)</span> com medidas repetidas no tempo (teste imediato e reteste uma semana depois). As unidades experimentais são participantes individuais, cada participante é alocado a uma única combinação (tratamento) dos fatores CV e VR e realiza o teste em dois tempos. Será utilizada como variável resposta o desempenho em um teste, medido como pontuação de 0 até 5 acertos, aplicado nos estudantes sobre o CV, e uma medida da retenção, calculada a partir da diferença entre as pontuações no teste imediato e no reteste. Dois formulários serão utilizados para cada CV, totalizando quatro formulários. Covariáveis como idade, sexo e nota em uma avaliação diagnóstica preliminar serão coletadas para enriquecer a análise.</p>
+<p>Os indivíduos selecionados para o experimento são todos os estudantes matriculados na disciplina MAE0316 - Planejamento e Análise de Experimentos, oferecida no segundo semestre de 2025 no Instituto de Matemática e Estatística da Universidade de São Paulo (IME-USP) que não são autores ou estiveram envolvidos no planejamento deste experimento. Por estarem matriculados na matéria, não será necessário que assinem um termo de consentimento ou um aval do Comitê de Ética em Pesquisa (CEP), como acordado em sala.</p>
+<p>A coleta ocorrerá em sala de aula para o primeiro formulário e via e-mail para o segundo formulário, uma semana depois.</p>
+<section id="formulário-1" class="level2">
+<h2 class="anchored" data-anchor-id="formulário-1">Formulário 1</h2>
+<p>O primeiro formulário consistirá de três seções: triagem, vídeo e teste.</p>
+<p>Na primeira seção, será perguntado a idade, sexo, curso do participante e e-mail para identificação e contato durante todo o experimento. Os participantes serão orientados a anotarem o e-mail inserido. Ademais, será apresentado o tópico do vídeo, escolhido aleatoriamente entre “Matemática: Potência de Ponto” e “Biologia: Transcrição e Tradução”. Será mensurado o grau de conhecimento prévio do participante com um pré-teste, contendo duas questões relacionadas ao tema do vídeo e outras duas questões distratoras.</p>
+<p>A segunda seção é composta pelo vídeo e instruções de como assisti-lo (sem realizar anotações, evitando pausas, sem assisti-lo novamente e na velocidade indicada). O vídeo será passado em sala por projetor e sobre supervisão dos coletores.</p>
+<p>A terceira seção consiste num teste de múltipla escolha (5 (cinco) alternativas) e 5 (cinco) questões em ordem aleatorizada para cada respondente para avaliar a proporção de acertos. Os participantes são informados que um segundo teste será aplicado em uma semana, é solicitado que não busquem mais informações sobre o assunto no meio tempo. Não será informado que se tratará do mesmo teste.</p>
+</section>
+<section id="formulário-2" class="level2">
+<h2 class="anchored" data-anchor-id="formulário-2">Formulário 2</h2>
+<p>O segundo formulário consistirá apenas de duas seções: triagem e teste. Será enviado aos participantes via e-mail uma semana após a aplicação do primeiro.</p>
+<p>Na primeira seção, será perguntando o e-mail usado no primeiro formulário para identificação das respostas. Também será perguntado se o participante viu algum material sobre o vídeo assistido desde então.</p>
+<p>A segunda seção consistirá do mesmo teste aplicado no formulário 1, com questões em ordem mais uma vez aleatorizada. O participante será orientado a não buscar manter consistência entre as respostas dos formulários, apenas a marcar o que acredita ser verdade.</p>
+</section>
+<section id="técnicas-e-procedimentos" class="level2">
+<h2 class="anchored" data-anchor-id="técnicas-e-procedimentos">Técnicas e procedimentos</h2>
+<p>As questões dos testes e dos pré-testes serão retiradas dos vestibulares de ingresso em universidades públicas estaduais e federais que mantiveram o sistema de ingresso com vestibular próprio (e.g.&nbsp;Universidade Estadual do Rio de Janeiro, Universidade Federal do Rio Grande do Sul, Universidade Federal de Santa Catarina, Universidade Estadual do Ceará) ou produzidas conforme os moldes das questões dos vestibulares supracitados. Cada pergunta possui apenas uma alternativa correta.</p>
+<p>Os vídeos foram selecionados, pois apresentam tempo de duração semelhantes (8 minutos e 32 segundos para o vídeo de Matemática e 9 minutos e 58 segundos para o vídeo de Biologia) e tiveram avaliações muito positivas nos comentários e no sistema de avaliação nativo da plataforma de vídeos <em>Youtube</em>, os <em>likes</em>.</p>
+<p>Serão excluídas as observações dos participantes que relatarem pausa ou consulta externa durante o vídeo, os que foram expostos a conteúdos relacionados ao teste no período entre testes ou não completarem o reteste no prazo de 48h.</p>
+<p>Levando-se em consideração que todos os participantes do experimento são voluntários e os softwares usados para aplicar o formulário e a análise de dados (<em>software estatístico R</em>) são gratuitos, não se prevê custo associado à realização do experimento. Preliminarmente, será realizada uma análise exploratória e descritiva dos dados, com a construção de <em>boxplots</em> das variáveis envolvidas e outros gráficos pertinentes, como o gráfico de perfis de médias, e o cálculo de medidas de dispersão e de tendência central.</p>
+<p>Analisaremos a retenção, definida a partir da diferença entre as notas na primeira e segunda aplicação. Também, analisaremos individualmente o desempenho na primeira e na segunda aplicação por tratamento).</p>
+<p>Para cada uma das três análises (retenção, nota na primeira aplicação e nota na segunda aplicação), será ajustado um modelo linear simples com efeitos fixos para fatores CV e VR, além de variáveis como idade, sexo e nota na avaliação diagnóstica. Com nossas variáveis respostas, não será possível que ajustemos modelos de efeito misto para considerar variações intrínsecas entre os participantes. Caso os modelos não satisfaçam suposições da regressão linear, serão exploradas abordagens não paramétricas, como métodos de permutação.</p>
+<p>A partir da análise dos dados, será elaborado um relatório com todos os resultados do experimento, com uma descrição detalhada do passo a passo seguido e da comparação entre o que se esperava e o que se obteve. O relatório será redigido por intermédio da ferramenta <em>Quarto</em>. Por fim, os resultados obtidos serão apresentados para os estudantes da classe e um vídeo informativo com os resultados deste e outros experimentos será produzido.</p>
+</section>
+</section>
+<section id="embasamento-teórico" class="level1">
+<h1>Embasamento teórico</h1>
+<p>Murphy et al. <span class="citation" data-cites="murphy_learning_2022"><a href="#ref-murphy_learning_2022" role="doc-biblioref">[1]</a></span> demonstram que velocidades moderadas, como 1.25x e 1.5x, não prejudicam significativamente o desempenho em testes imediatos de compreensão. Entretanto, VR superiores a 1.5x apresentam impacto negativo na retenção de conteúdo, especialmente quando avaliada após um intervalo de tempo. Resultados semelhantes são reportados pela meta-análise conduzida por Tharumalingam et al. <span class="citation" data-cites="tharumalingam_increasing_2025"><a href="#ref-tharumalingam_increasing_2025" role="doc-biblioref">[3]</a></span> que indica que velocidades iguais ou superiores a 2x geram quedas consistentes de desempenho, associadas ao aumento da demanda cognitiva.</p>
+<p>Esses fenômenos podem ser explicados pela Teoria da Carga Cognitiva, proposta por Sweller e colaboradores <span class="citation" data-cites="leahy_cognitive_2011"><a href="#ref-leahy_cognitive_2011" role="doc-biblioref">[5]</a></span>, segundo a qual a aprendizagem é limitada pela capacidade de processamento da memória de trabalho. O aumento excessivo da VR sobrecarrega esse sistema, elevando a carga extrínseca e reduzindo a capacidade do estudante de integrar novas informações ao conhecimento prévio. Estudos clássicos como os de Foulke e Sticht <span class="citation" data-cites="foulke_review_1969"><a href="#ref-foulke_review_1969" role="doc-biblioref">[6]</a></span> já apontavam que a compreensão auditiva diminui conforme a taxa de apresentação da fala aumenta, fundamentando teoricamente os prejuízos observados com VR elevadas.</p>
+<p>Por outro lado, efeitos positivos do aumento moderado da VR também são apontados na literatura. Murphy et al. <span class="citation" data-cites="murphy_effect_2023"><a href="#ref-murphy_effect_2023" role="doc-biblioref">[2]</a></span> argumentam que a apresentação levemente acelerada pode reduzir episódios de <em>mind wandering</em> (divagação mental), mantendo o engajamento e aumentando a eficiência do estudo. Além da VR, o interesse do participante no conteúdo do vídeo (CV) também tem papel relevante na retenção. McIntyre et al. <span class="citation" data-cites="mcintyre_liking_2021"><a href="#ref-mcintyre_liking_2021" role="doc-biblioref">[4]</a></span> demonstram que tópicos percebidos como atraentes ou relevantes geram maior retenção e desempenho em avaliações posteriores, sugerindo que o fator motivacional influencia diretamente os resultados de aprendizagem.</p>
+<p>Considerando essas evidências, o presente estudo investigará não apenas o efeito isolado da VR, mas também sua interação com o conteúdo dos vídeos. Além disso, a avaliação da memória será realizada imediatamente e após uma semana, conforme proposto por Murphy et al. <span class="citation" data-cites="murphy_learning_2022"><a href="#ref-murphy_learning_2022" role="doc-biblioref">[1]</a></span>, permitindo analisar tanto retenção da memória de prazo intermediário quanto de longo prazo, conforme o modelo de memória Atkinson-Shiffrin <span class="citation" data-cites="atkinson_human_1968"><a href="#ref-atkinson_human_1968" role="doc-biblioref">[7]</a></span> e suas extensões <span class="citation" data-cites="kaminski_intermediate-term_2017"><a href="#ref-kaminski_intermediate-term_2017" role="doc-biblioref">[8]</a></span>.</p>
+</section>
 <section id="tratamento-de-dados" class="level1">
 <h1>Tratamento de Dados</h1>
 <p>Transformamos nossos dados em uma tabela longa para facilitar a análise longitudinal. Criamos a variável “Retenção”, que mede relativamente a retenção de informação dos participantes entre a primeira e segunda aplicação do teste. Sua forma está dada na <a href="#eq-retencao" class="quarto-xref">Equação&nbsp;1</a>.</p>
 <p><span id="eq-retencao"><span class="math display">\[
 \mathrm{Retenção} = 1 + \frac{\text{Nota na reaplicação} - \text{Nota na aplicação}}{5}
 \tag{1}\]</span></span></p>
-<p>Disso, segue que uma retenção de <span class="math inline">\(0\)</span> indica que o participante acertou tudo na aplicação, e errou todas as questões na reaplicação, indiciando perda total do que aprendeu com os vídeos. Por outro lado, uma retenção de 1 indica que o participante acertou o mesmo número de questões, enquanto uma retenção maior que 1 indica que o participante teve um desempenho melhor na reaplicação, o que pode indicar efeito de aprendizagem tardio, exposição ao conteúdo fora do experimento, ou acaso.</p>
+<p>Disso, segue que uma retenção de <span class="math inline">\(0\)</span> indica que o participante acertou tudo na aplicação, e errou todas as questões na reaplicação, indicando perda total do que aprendeu com os vídeos. Por outro lado, uma retenção de 1 indica que o participante acertou o mesmo número de questões, enquanto uma retenção maior que 1 indica que o participante teve um desempenho melhor na reaplicação, o que pode indicar efeito de aprendizagem tardio, exposição ao conteúdo fora do experimento, ou acaso.</p>
 <div class="cell">
 <div id="tbl-dados" class="cell quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
@@ -1086,7 +1166,7 @@ Figura&nbsp;4: Violin plots da retenção por tratamento
 </div>
 </div>
 <p>Observamos destes gráficos que pode haver diferença entre os tratamentos, apesar de, individualmente, o <em>boxplot</em> de velocidades apresenta pouca variação na retenção.</p>
-<p>Precisamos analisar o gráfico de perfis das notas da primeira e segunda aplicação por indivíduo para analisarmos a existência de heteroscedasticidade entre os participantes.</p>
+<p>Analisaremos os gráficos de perfis na <a href="#fig-grafico-perfis" class="quarto-xref">Figura&nbsp;5</a> para observar variações entre os participantes ao longo das aplicações do teste.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div id="fig-grafico-perfis" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -1132,18 +1212,533 @@ Figura&nbsp;7: Correlação entre as variáveis com fatores separados
 </div>
 </div>
 </section>
-<section id="modelagem-da-retenção" class="level1">
-<h1>Modelagem da Retenção</h1>
-<p>Temos como objetivo modelar a retenção de informação dos participantes a partir das variáveis explicativas disponíveis: idade, sexo, e grupo/tratamento (tópico e velocidade).</p>
+<section id="modelagem-por-velocidade-e-conteúdo" class="level1">
+<h1>Modelagem por Velocidade e Conteúdo</h1>
+<p>Nesta seção, modelaremos os dados considerando os fatores separadamente: tópico e velocidade. Queremos investigar os efeitos principais e a interação entre esses fatores na retenção de informação dos participantes.</p>
+<section id="modelagem-da-retenção" class="level2">
+<h2 class="anchored" data-anchor-id="modelagem-da-retenção">Modelagem da Retenção</h2>
+<p>Temos como objetivo modelar a retenção de informação dos participantes a partir das variáveis explicativas disponíveis: idade, sexo, desempenho no teste diagnóstico, velocidade e contéudo.</p>
 <p>Devido ao caráter discreto da variável resposta, provavelmente um modelo linear clássico não será adequado na modelagem. Ainda assim, tentaremos ajustar um modelo linear só com efeitos fixos, depois, prosseguirmos para métodos não paramétricos, se necessário.</p>
-<section id="modelo-linear-simples" class="level2">
-<h2 class="anchored" data-anchor-id="modelo-linear-simples">Modelo linear simples</h2>
+<section id="modelo-linear-simples" class="level3">
+<h3 class="anchored" data-anchor-id="modelo-linear-simples">Modelo linear simples</h3>
+<p>Ajustamos um modelo linear simples com efeitos fixos para a retenção da idade, tópico, velocidade da apresentação e a nota na aplicação diagnóstica. Incluiremos inicialmente interação entre idade e tópico, idade e velocidade, velocidade e tópico e idade e diagnóstico.</p>
+<div class="cell">
+<div id="tbl-modelo-linear-simples-fatores" class="cell quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-modelo-linear-simples-fatores-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Tabela&nbsp;5: Resumo do modelo linear simples
+</figcaption>
+<div aria-describedby="tbl-modelo-linear-simples-fatores-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output-display">
+<table class="do-not-create-environment cell caption-top table table-sm table-striped small">
+<colgroup>
+<col style="width: 39%">
+<col style="width: 14%">
+<col style="width: 17%">
+<col style="width: 13%">
+<col style="width: 14%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;">&nbsp;</th>
+<th style="text-align: center;">Estimate</th>
+<th style="text-align: center;">Std. Error</th>
+<th style="text-align: center;">t value</th>
+<th style="text-align: center;">Pr(&gt;|t|)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><strong>(Intercept)</strong></td>
+<td style="text-align: center;">2.176</td>
+<td style="text-align: center;">0.9457</td>
+<td style="text-align: center;">2.301</td>
+<td style="text-align: center;">0.03859</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><strong>Diagn</strong></td>
+<td style="text-align: center;">-0.6012</td>
+<td style="text-align: center;">0.4376</td>
+<td style="text-align: center;">-1.374</td>
+<td style="text-align: center;">0.1928</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><strong>Idade</strong></td>
+<td style="text-align: center;">-0.0601</td>
+<td style="text-align: center;">0.04468</td>
+<td style="text-align: center;">-1.345</td>
+<td style="text-align: center;">0.2016</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><strong>VelocidadeX2</strong></td>
+<td style="text-align: center;">-2.222</td>
+<td style="text-align: center;">0.6813</td>
+<td style="text-align: center;">-3.262</td>
+<td style="text-align: center;">0.006187</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><strong>TopicoMat</strong></td>
+<td style="text-align: center;">0.5437</td>
+<td style="text-align: center;">0.7893</td>
+<td style="text-align: center;">0.6888</td>
+<td style="text-align: center;">0.503</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><strong>Diagn:Idade</strong></td>
+<td style="text-align: center;">0.03106</td>
+<td style="text-align: center;">0.02035</td>
+<td style="text-align: center;">1.527</td>
+<td style="text-align: center;">0.1508</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><strong>Idade:VelocidadeX2</strong></td>
+<td style="text-align: center;">0.1017</td>
+<td style="text-align: center;">0.03268</td>
+<td style="text-align: center;">3.113</td>
+<td style="text-align: center;">0.008244</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><strong>Idade:TopicoMat</strong></td>
+<td style="text-align: center;">-0.02109</td>
+<td style="text-align: center;">0.03615</td>
+<td style="text-align: center;">-0.5835</td>
+<td style="text-align: center;">0.5696</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><strong>VelocidadeX2:TopicoMat</strong></td>
+<td style="text-align: center;">0.1887</td>
+<td style="text-align: center;">0.1197</td>
+<td style="text-align: center;">1.577</td>
+<td style="text-align: center;">0.1389</td>
+</tr>
+</tbody>
+</table>
+<table class="do-not-create-environment cell caption-top table table-sm table-striped small">
+<colgroup>
+<col style="width: 20%">
+<col style="width: 30%">
+<col style="width: 11%">
+<col style="width: 23%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;">Observations</th>
+<th style="text-align: center;">Residual Std. Error</th>
+<th style="text-align: center;"><span class="math inline">\(R^2\)</span></th>
+<th style="text-align: center;">Adjusted <span class="math inline">\(R^2\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">22</td>
+<td style="text-align: center;">0.1073</td>
+<td style="text-align: center;">0.711</td>
+<td style="text-align: center;">0.5331</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</figure>
+</div>
+</div>
+<p>Após seleção das variáveis por <em>stepwise</em> bidirecional, terminamos com fatores velocidade, nota no teste diagnóstico, idade, tópico, interação entre idade e diagnóstico, entre tópico e velocidade e entre velocidade e idade. Ou seja, removemos apenas a interação entre tópico e idade.</p>
+<div class="cell">
+<div id="tbl-modelo-linear-simples-fatores-selecionado" class="cell quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-modelo-linear-simples-fatores-selecionado-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Tabela&nbsp;6: Resumo do modelo linear simples selecionado
+</figcaption>
+<div aria-describedby="tbl-modelo-linear-simples-fatores-selecionado-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output-display">
+<table class="do-not-create-environment cell caption-top table table-sm table-striped small">
+<colgroup>
+<col style="width: 39%">
+<col style="width: 14%">
+<col style="width: 17%">
+<col style="width: 13%">
+<col style="width: 14%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;">&nbsp;</th>
+<th style="text-align: center;">Estimate</th>
+<th style="text-align: center;">Std. Error</th>
+<th style="text-align: center;">t value</th>
+<th style="text-align: center;">Pr(&gt;|t|)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><strong>(Intercept)</strong></td>
+<td style="text-align: center;">2.555</td>
+<td style="text-align: center;">0.6714</td>
+<td style="text-align: center;">3.805</td>
+<td style="text-align: center;">0.00193</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><strong>Diagn</strong></td>
+<td style="text-align: center;">-0.6571</td>
+<td style="text-align: center;">0.4168</td>
+<td style="text-align: center;">-1.577</td>
+<td style="text-align: center;">0.1372</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><strong>Idade</strong></td>
+<td style="text-align: center;">-0.07786</td>
+<td style="text-align: center;">0.03192</td>
+<td style="text-align: center;">-2.439</td>
+<td style="text-align: center;">0.02865</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><strong>VelocidadeX2</strong></td>
+<td style="text-align: center;">-2.291</td>
+<td style="text-align: center;">0.655</td>
+<td style="text-align: center;">-3.498</td>
+<td style="text-align: center;">0.003551</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><strong>TopicoMat</strong></td>
+<td style="text-align: center;">0.0871</td>
+<td style="text-align: center;">0.1008</td>
+<td style="text-align: center;">0.8645</td>
+<td style="text-align: center;">0.4019</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><strong>Diagn:Idade</strong></td>
+<td style="text-align: center;">0.03325</td>
+<td style="text-align: center;">0.01952</td>
+<td style="text-align: center;">1.703</td>
+<td style="text-align: center;">0.1106</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><strong>Idade:VelocidadeX2</strong></td>
+<td style="text-align: center;">0.1055</td>
+<td style="text-align: center;">0.03127</td>
+<td style="text-align: center;">3.373</td>
+<td style="text-align: center;">0.00455</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><strong>VelocidadeX2:TopicoMat</strong></td>
+<td style="text-align: center;">0.1992</td>
+<td style="text-align: center;">0.1155</td>
+<td style="text-align: center;">1.725</td>
+<td style="text-align: center;">0.1066</td>
+</tr>
+</tbody>
+</table>
+<table class="do-not-create-environment cell caption-top table table-sm table-striped small">
+<colgroup>
+<col style="width: 20%">
+<col style="width: 30%">
+<col style="width: 12%">
+<col style="width: 23%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;">Observations</th>
+<th style="text-align: center;">Residual Std. Error</th>
+<th style="text-align: center;"><span class="math inline">\(R^2\)</span></th>
+<th style="text-align: center;">Adjusted <span class="math inline">\(R^2\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">22</td>
+<td style="text-align: center;">0.1048</td>
+<td style="text-align: center;">0.7034</td>
+<td style="text-align: center;">0.5551</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</figure>
+</div>
+</div>
+<section id="diagnóstico-do-modelo-linear-simples" class="level5">
+<h5 class="anchored" data-anchor-id="diagnóstico-do-modelo-linear-simples">Diagnóstico do modelo linear simples</h5>
+<p>Iniciamos com análise dos resíduos do modelo ajustado.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-diagnostico-modelo-linear-simples-fatores" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-fig" id="fig-diagnostico-modelo-linear-simples-fatores-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;8: Diagnóstico do modelo linear simples selecionado
+</figcaption>
+<div aria-describedby="fig-diagnostico-modelo-linear-simples-fatores-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="relfinal_files/figure-html/fig-diagnostico-modelo-linear-simples-fatores-1.png" class="img-fluid figure-img" width="672">
+</div>
+</figure>
+</div>
+</div>
+</div>
+<p>Os resíduos na <a href="#fig-diagnostico-modelo-linear-simples-fatores" class="quarto-xref">Figura&nbsp;8</a>, gráfico A, apresentam certo padrão (linhas diagonais) no gráfico de resíduos vs valores ajustados, indicando possível violação da suposição de homocedasticidade. O histograma do gráfico B sugere uma distribuição quase unimodal, mas limitada pelo caráter discreto da variável resposta.</p>
+<p>Primeiramente, aplicamos o teste de Levene para avaliar a homocedasticidade dos resíduos, agrupando pela interação entre tópico e velocidade.</p>
+<div class="cell">
+<div id="tbl-levene-modelo-linear-simples-fatores" class="cell quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-levene-modelo-linear-simples-fatores-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Tabela&nbsp;7: Teste de Levene dos resíduos do modelo linear simples selecionado
+</figcaption>
+<div aria-describedby="tbl-levene-modelo-linear-simples-fatores-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output-display">
+<table class="do-not-create-environment cell caption-top table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: right;">Estatística</th>
+<th style="text-align: right;">Valor-p</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">1.0457</td>
+<td style="text-align: right;">0.3964</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</figure>
+</div>
+</div>
+<p>O valor <span class="math inline">\(p\)</span> elevado no teste de Levene na <a href="#tbl-levene-modelo-linear-simples-fatores" class="quarto-xref">Tabela&nbsp;7</a> indica que não rejeitamos a hipótese nula de homocedasticidade dos resíduos.</p>
+<p>Partimos para análise da normalidade por QQ-plot e o teste de Shapiro-Wilk.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-qqplot-modelo-linear-simples-fatores" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-fig" id="fig-qqplot-modelo-linear-simples-fatores-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;9: QQ-Plot dos resíduos do modelo linear simples selecionado
+</figcaption>
+<div aria-describedby="fig-qqplot-modelo-linear-simples-fatores-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="relfinal_files/figure-html/fig-qqplot-modelo-linear-simples-fatores-1.png" class="img-fluid figure-img" width="672">
+</div>
+</figure>
+</div>
+</div>
+</div>
+<p>O QQ-plot na <a href="#fig-qqplot-modelo-linear-simples-fatores" class="quarto-xref">Figura&nbsp;9</a> apresenta um padrão que se repetirá ao longo dos modelos ajustados: os resíduos dificilmente seguiriam a linha de referência, já que não se tratam de uma variável contínua. Ainda assim, não há desvios extremos, e seguiremos com o teste numérico de normalidade.</p>
+<div class="cell">
+<div id="tbl-shapiro-wilk-modelo-linear-simples-fatores" class="cell quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-shapiro-wilk-modelo-linear-simples-fatores-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Tabela&nbsp;8: Teste de Shapiro-Wilk dos resíduos do modelo linear simples selecionado
+</figcaption>
+<div aria-describedby="tbl-shapiro-wilk-modelo-linear-simples-fatores-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output-display">
+<table class="do-not-create-environment cell caption-top table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: right;">Estatística</th>
+<th style="text-align: right;">Valor_p</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">0.9413</td>
+<td style="text-align: right;">0.2107</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</figure>
+</div>
+</div>
+<p>O valor <span class="math inline">\(p\)</span> elevado no teste de Shapiro-Wilk na <a href="#tbl-shapiro-wilk-modelo-linear-simples-fatores" class="quarto-xref">Tabela&nbsp;8</a> indica que não rejeitamos a hipótese nula de normalidade dos resíduos ao nível de significância usual de 5%. Apesar disso, devemos ter cautela na interpretação, dado o tamanho reduzido da amostra e a natureza discreta da variável resposta.</p>
+<p>Com normalidade não rejeitada, seguimos para o teste de Bartlett.</p>
+<div class="cell">
+<div id="tbl-bartlett-modelo-linear-simples-fatores" class="cell quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-bartlett-modelo-linear-simples-fatores-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Tabela&nbsp;9: Teste de Bartlett dos resíduos do modelo linear simples selecionado
+</figcaption>
+<div aria-describedby="tbl-bartlett-modelo-linear-simples-fatores-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output-display">
+<table class="do-not-create-environment cell caption-top table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: right;">Estatística</th>
+<th style="text-align: right;">Valor-p</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">4.7794</td>
+<td style="text-align: right;">0.1887</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</figure>
+</div>
+</div>
+<p>Novamente, não rejeitamos a homocedasticidade dos resíduos. Portanto, podemos dizer que, de forma geral, as suposições do modelo linear clássico são satisfeitas, mas devemos manter ressalvas por conta da análise gráfica dos resíduos.</p>
+</section>
+<section id="análise-da-diferença-entre-grupos" class="level5">
+<h5 class="anchored" data-anchor-id="análise-da-diferença-entre-grupos">Análise da diferença entre grupos</h5>
+<p>Iniciamos a análise em busca da diferença entre os grupos com a ANOVA de Tipo I.</p>
+<div class="cell">
+<div id="tbl-anova-modelo-linear-simples-fatores" class="cell quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-anova-modelo-linear-simples-fatores-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Tabela&nbsp;10: ANOVA do modelo linear simples selecionado
+</figcaption>
+<div aria-describedby="tbl-anova-modelo-linear-simples-fatores-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output-display">
+<table class="do-not-create-environment cell caption-top table table-sm table-striped small">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 6%">
+<col style="width: 15%">
+<col style="width: 15%">
+<col style="width: 13%">
+<col style="width: 15%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;">&nbsp;</th>
+<th style="text-align: center;">Df</th>
+<th style="text-align: center;">Sum Sq</th>
+<th style="text-align: center;">Mean Sq</th>
+<th style="text-align: center;">F value</th>
+<th style="text-align: center;">Pr(&gt;F)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><strong>Diagn</strong></td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">0.009067</td>
+<td style="text-align: center;">0.009067</td>
+<td style="text-align: center;">0.826</td>
+<td style="text-align: center;">0.3788</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><strong>Idade</strong></td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">0.002257</td>
+<td style="text-align: center;">0.002257</td>
+<td style="text-align: center;">0.2056</td>
+<td style="text-align: center;">0.6572</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><strong>Velocidade</strong></td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">0.01698</td>
+<td style="text-align: center;">0.01698</td>
+<td style="text-align: center;">1.547</td>
+<td style="text-align: center;">0.234</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><strong>Topico</strong></td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">0.1116</td>
+<td style="text-align: center;">0.1116</td>
+<td style="text-align: center;">10.16</td>
+<td style="text-align: center;">0.006577</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><strong>Diagn:Idade</strong></td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">0.04788</td>
+<td style="text-align: center;">0.04788</td>
+<td style="text-align: center;">4.362</td>
+<td style="text-align: center;">0.05549</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><strong>Idade:Velocidade</strong></td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">0.1441</td>
+<td style="text-align: center;">0.1441</td>
+<td style="text-align: center;">13.13</td>
+<td style="text-align: center;">0.002768</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;"><strong>Velocidade:Topico</strong></td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">0.03265</td>
+<td style="text-align: center;">0.03265</td>
+<td style="text-align: center;">2.975</td>
+<td style="text-align: center;">0.1066</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;"><strong>Residuals</strong></td>
+<td style="text-align: center;">14</td>
+<td style="text-align: center;">0.1537</td>
+<td style="text-align: center;">0.01098</td>
+<td style="text-align: center;">NA</td>
+<td style="text-align: center;">NA</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</figure>
+</div>
+</div>
+<p>Pelo resultado da ANOVA de Tipo I na <a href="#tbl-anova-modelo-linear-simples-fatores" class="quarto-xref">Tabela&nbsp;10</a>, o Tópico, interação entre Idade e Velocidade e Idade e Diagnóstico são significativos, após controlarem pelas respectivas variáveis e covariáveis.</p>
+<p>Via Médias Marginais Ajustadas (EMMeans), do pacote <code>emmeans</code>, podemos investigar as comparações entre os níveis dos fatores Tópico e Velocidade. Iniciaremos pelo tópico, utilizando a média entre velocidades. Isso é feito atraveś de um teste <span class="math inline">\(t\)</span> para a diferença entre as médias ajustadas. Caso a interação fosse significativa, deveríamos considerar se há diferença por nível do fator velocidade. Como não é o caso, consideramos a média entre velocidades.</p>
+<div class="cell">
+<div class="cell-output cell-output-stderr">
+<pre><code>NOTE: Results may be misleading due to involvement in interactions</code></pre>
+</div>
+<div id="tbl-emmeans-modelo-linear-simples-fatores" class="cell quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-emmeans-modelo-linear-simples-fatores-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Tabela&nbsp;11: Comparações por EMMeans do modelo linear simples selecionado
+</figcaption>
+<div aria-describedby="tbl-emmeans-modelo-linear-simples-fatores-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output-display">
+<table class="do-not-create-environment cell caption-top table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Comparação</th>
+<th style="text-align: right;">Estimativa</th>
+<th style="text-align: right;">EP</th>
+<th style="text-align: right;">df</th>
+<th style="text-align: right;">T-Ratio</th>
+<th style="text-align: right;">p-Valor</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Bio - Mat</td>
+<td style="text-align: right;">-0.1867</td>
+<td style="text-align: right;">0.0648</td>
+<td style="text-align: right;">14</td>
+<td style="text-align: right;">-2.8817</td>
+<td style="text-align: right;">0.0121</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</figure>
+</div>
+</div>
+<p>Para ambas velocidades (interação não significativa), o tópico de Matemática retenção menor (<span class="math inline">\(-0.1867\)</span>) que o tópico de Biologia, com diferença significativa ao nível de 5% (<span class="math inline">\(p  = 0.0121\)</span>).</p>
+</section>
+</section>
+</section>
+</section>
+<section id="modelagem-por-tratamento" class="level1">
+<h1>Modelagem por Tratamento</h1>
+<p>Aqui, agruparemos os dados por tratamento, ou seja, combinando o tópico e a velocidade em uma única variável categórica com quatro níveis: “Mat-X1”, “Mat-X2”, “Bio-X1” e “Bio-X2”. Queremos comparar esses grupos diretamente nas análises e contrastar os resultados com a seção anterior. Iremos também empregar métoods não paramétricos para as análises, além de analisarmos individualmente as notas na primeira e segunda aplicação do teste.</p>
+<section id="modelagem-da-retenção-1" class="level2">
+<h2 class="anchored" data-anchor-id="modelagem-da-retenção-1">Modelagem da Retenção</h2>
+<p>Temos como objetivo modelar a retenção de informação dos participantes a partir das variáveis explicativas disponíveis: idade, sexo, desempenho no teste diagnóstico e grupo/tratamento (tópico e velocidade).</p>
+<p>Devido ao caráter discreto da variável resposta, provavelmente um modelo linear clássico não será adequado na modelagem. Ainda assim, tentaremos ajustar um modelo linear só com efeitos fixos, depois, prosseguirmos para métodos não paramétricos, se necessário.</p>
+<section id="modelo-linear-simples-1" class="level3">
+<h3 class="anchored" data-anchor-id="modelo-linear-simples-1">Modelo linear simples</h3>
 <p>Ajustamos um modelo linear simples com efeitos fixos para a retenção da idade, tópico, velocidade da apresentação e a nota na aplicação diagnóstica. Iniciaremos por um modelo envolvendo idade, nota na avaliação diagnóstica e o tratamento (grupo), assim como a interação entre idade e grupo e entre diagnóstico e idade.</p>
 <div class="cell">
 <div id="tbl-modelo-linear-simples-grupos" class="cell quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-modelo-linear-simples-grupos-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Tabela&nbsp;5: Resumo do modelo linear simples com grupos
+Tabela&nbsp;12: Resumo do modelo linear simples com grupos
 </figcaption>
 <div aria-describedby="tbl-modelo-linear-simples-grupos-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
@@ -1266,12 +1861,13 @@ Tabela&nbsp;5: Resumo do modelo linear simples com grupos
 </figure>
 </div>
 </div>
-<p>Após seleção das variáveis por <em>stepwise</em>, terminamos com o modelo sem intercepto, com os efeitos fixos dos grupos e a interação entre idade e grupo.</p>
+<p>Após seleção das variáveis pelos testes <span class="math inline">\(t\)</span>, terminamos com o modelo sem intercepto, com os efeitos fixos dos grupos e a interação entre idade e grupo.</p>
+<p>Precisamos tirar o intercepto e refazer o modelo para conseguirmos interpretar o efeito dos grupos, que não foram significativos quando analisamos com o intercepto.</p>
 <div class="cell">
 <div id="tbl-modelo-linear-simples-grupos-selecionado" class="cell quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-modelo-linear-simples-grupos-selecionado-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Tabela&nbsp;6: Resumo do modelo linear simples selecionado com grupos
+Tabela&nbsp;13: Resumo do modelo linear simples selecionado com grupos
 </figcaption>
 <div aria-describedby="tbl-modelo-linear-simples-grupos-selecionado-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
@@ -1385,7 +1981,7 @@ Tabela&nbsp;6: Resumo do modelo linear simples selecionado com grupos
 <div id="tbl-anova-modelo-linear-simples" class="cell quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-anova-modelo-linear-simples-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Tabela&nbsp;7: Comparação entre modelos lineares simples com e sem interação
+Tabela&nbsp;14: Comparação entre modelos lineares simples com e sem interação
 </figcaption>
 <div aria-describedby="tbl-anova-modelo-linear-simples-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
@@ -1432,12 +2028,12 @@ Tabela&nbsp;7: Comparação entre modelos lineares simples com e sem interação
 </figure>
 </div>
 </div>
-<p>Com diferença não significativa entre os modelos, optamos por seguir com o modelo reduzido pelo princípio da parcimônia. Dessa forma, nos resta o modelo apenas com os efeitos fixos dos grupos. Apresentamos um sumário na <a href="#tbl-modelo-linear-simples-grupos-reduzido" class="quarto-xref">Tabela&nbsp;8</a>.</p>
+<p>Com diferença não significativa entre os modelos, optamos por seguir com o modelo reduzido pelo princípio da parcimônia. Dessa forma, nos resta o modelo apenas com os efeitos fixos dos grupos. Apresentamos um sumário na <a href="#tbl-modelo-linear-simples-grupos-reduzido" class="quarto-xref">Tabela&nbsp;15</a>.</p>
 <div class="cell">
 <div id="tbl-modelo-linear-simples-grupos-reduzido" class="cell quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-modelo-linear-simples-grupos-reduzido-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Tabela&nbsp;8: Resumo do modelo linear simples reduzido com grupos
+Tabela&nbsp;15: Resumo do modelo linear simples reduzido com grupos
 </figcaption>
 <div aria-describedby="tbl-modelo-linear-simples-grupos-reduzido-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
@@ -1518,15 +2114,15 @@ Tabela&nbsp;8: Resumo do modelo linear simples reduzido com grupos
 </figure>
 </div>
 </div>
-<p>Apesar de apresentar um grande valor de <span class="math inline">\(\bar{R}^2\)</span>, precisamos realizar um diagnóstico do modelo para verificar as suposições do modelo linear clássico.</p>
-<section id="diagnóstico-do-modelo-linear-simples" class="level3">
-<h3 class="anchored" data-anchor-id="diagnóstico-do-modelo-linear-simples">Diagnóstico do modelo linear simples</h3>
+<p>O valor elevado de <span class="math inline">\(\bar{R}^2\)</span> não nos diz muito neste modelo sem intercepto. Precisamos realizar um diagnóstico do modelo para verificar as suposições do modelo linear clássico.</p>
+<section id="diagnóstico-do-modelo-linear-simples-1" class="level5">
+<h5 class="anchored" data-anchor-id="diagnóstico-do-modelo-linear-simples-1">Diagnóstico do modelo linear simples</h5>
 <div class="cell">
 <div class="cell-output-display">
 <div id="fig-diagnostico-modelo-linear-simples" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-fig" id="fig-diagnostico-modelo-linear-simples-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figura&nbsp;8: Diagnóstico do modelo linear simples reduzido com grupos
+Figura&nbsp;10: Diagnóstico do modelo linear simples reduzido com grupos
 </figcaption>
 <div aria-describedby="fig-diagnostico-modelo-linear-simples-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="relfinal_files/figure-html/fig-diagnostico-modelo-linear-simples-1.png" class="img-fluid figure-img" width="672">
@@ -1535,12 +2131,12 @@ Figura&nbsp;8: Diagnóstico do modelo linear simples reduzido com grupos
 </div>
 </div>
 </div>
-<p>Os resíduos não mostram padrão claro no gráfico A da <a href="#fig-diagnostico-modelo-linear-simples" class="quarto-xref">Figura&nbsp;8</a>, enquanto o histograma do gráfico B aponta certa irregularidade, partiremos para análise numérica.</p>
+<p>Os resíduos mostram-se demasiadamente positivos no gráfico A da <a href="#fig-diagnostico-modelo-linear-simples" class="quarto-xref">Figura&nbsp;10</a> e um “funil reverso”, enquanto o histograma do gráfico B aponta certa irregularidade.</p>
 <div class="cell">
 <div id="tbl-levene-modelo-linear-simples" class="cell quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-levene-modelo-linear-simples-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Tabela&nbsp;9: Teste de Levene para homocedasticidade dos resíduos do modelo linear simples reduzido com grupos
+Tabela&nbsp;16: Teste de Levene para homocedasticidade dos resíduos do modelo linear simples reduzido com grupos
 </figcaption>
 <div aria-describedby="tbl-levene-modelo-linear-simples-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
@@ -1568,7 +2164,7 @@ Tabela&nbsp;9: Teste de Levene para homocedasticidade dos resíduos do modelo li
 <div id="fig-qqplot-modelo-linear-simples" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-fig" id="fig-qqplot-modelo-linear-simples-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figura&nbsp;9: QQ-Plot dos resíduos do modelo linear simples reduzido com grupos
+Figura&nbsp;11: QQ-Plot dos resíduos do modelo linear simples reduzido com grupos
 </figcaption>
 <div aria-describedby="fig-qqplot-modelo-linear-simples-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <img src="relfinal_files/figure-html/fig-qqplot-modelo-linear-simples-1.png" class="img-fluid figure-img" width="672">
@@ -1577,12 +2173,12 @@ Figura&nbsp;9: QQ-Plot dos resíduos do modelo linear simples reduzido com grupo
 </div>
 </div>
 </div>
-<p>Pelo gráfico na <a href="#fig-qqplot-modelo-linear-simples" class="quarto-xref">Figura&nbsp;9</a>, os resíduos, claramente, não seguem distribuição normal. Isso é esperado pela natureza discreta da variável resposta somado a uma amostra pequena. Vamos, ainda assim, realizar o teste de Shapiro-Wilk para fins exploratórios.</p>
+<p>Pelo gráfico na <a href="#fig-qqplot-modelo-linear-simples" class="quarto-xref">Figura&nbsp;11</a>, os resíduos, claramente, não seguem distribuição normal. Isso é esperado pela natureza discreta da variável resposta somado a uma amostra pequena. Vamos, ainda assim, realizar o teste de Shapiro-Wilk para fins exploratórios.</p>
 <div class="cell">
 <div id="tbl-shapiro-modelo-linear-simples" class="cell quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-shapiro-modelo-linear-simples-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Tabela&nbsp;10: Teste de Shapiro-Wilk para normalidade dos resíduos do modelo linear simples reduzido com grupos
+Tabela&nbsp;17: Teste de Shapiro-Wilk para normalidade dos resíduos do modelo linear simples reduzido com grupos
 </figcaption>
 <div aria-describedby="tbl-shapiro-modelo-linear-simples-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
@@ -1605,16 +2201,16 @@ Tabela&nbsp;10: Teste de Shapiro-Wilk para normalidade dos resíduos do modelo l
 </figure>
 </div>
 </div>
-<p>Curiosamente, não rejeitaríamos a uma confiança de <span class="math inline">\(99\%\)</span>. Ainda assim, sob nossos critérios (<span class="math inline">\(\alpha = 5\%\)</span>), e a análise da forma dos dados, rejeitamos a normalidade dos resíduos e descartamos este modelo.</p>
+<p>Curiosamente, não rejeitaríamos a uma confiança de <span class="math inline">\(99\%\)</span>. Ainda assim, sob nossos critérios (<span class="math inline">\(\alpha = 5\%\)</span>), e a análise da forma dos dados, rejeitamos a normalidade dos resíduos e descartamos esse modelo.</p>
 </section>
 </section>
-<section id="modelo-não-paramétrico" class="level2">
-<h2 class="anchored" data-anchor-id="modelo-não-paramétrico">Modelo não paramétrico</h2>
-<p>Dado o diagnóstico do modelo linear simples, optamos por ajustar um modelo não paramétrico para os dados através da permutação, considerando que temos um modelo com delineamento completamente aleatorizado (pela querida professora), usaremos um teste de aleatorização (permutação) para testar a hipótese de que há efeito do grupo no valor médio da retenção</p>
+<section id="métodos-não-paramétricos" class="level3">
+<h3 class="anchored" data-anchor-id="métodos-não-paramétricos">Métodos não paramétricos</h3>
+<p>Dado o diagnóstico do modelo linear simples, optamos por ajustar um modelo não paramétrico para os dados através da permutação, considerando que temos um modelo com delineamento completamente aleatorizado pela professora, usaremos um teste de aleatorização (permutação) para testar a hipótese de que há efeito do grupo no valor médio da retenção.</p>
 <div id="tbl-modelo-nao-parametrico-permutacao" class="cell quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-modelo-nao-parametrico-permutacao-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Tabela&nbsp;11: Resumo do modelo não paramétrico de permutação com grupos
+Tabela&nbsp;18: Resumo do modelo não paramétrico de permutação com grupos
 </figcaption>
 <div aria-describedby="tbl-modelo-nao-parametrico-permutacao-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output cell-output-stdout">
@@ -1631,10 +2227,10 @@ Residuals:
 
 Coefficients:
             Estimate Iter Pr(Prob)    
-GrupoBio-X1     1.00 5000   0.0066 ** 
-GrupoBio-X2     0.92 5000   0.0088 ** 
-GrupoMat-X1     0.96  177   0.3616    
-GrupoMat-X2     1.16 5000   0.0010 ***
+GrupoBio-X1     1.00 5000   0.0046 ** 
+GrupoBio-X2     0.92  314   0.2420    
+GrupoMat-X1     0.96 5000   0.0118 *  
+GrupoMat-X2     1.16 5000   0.0008 ***
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
@@ -1648,28 +2244,28 @@ F-statistic: 288.5 on 4 and 18 DF,  p-value: 4.687e-16 </code></pre>
 <div id="tbl-anova-modelo-nao-parametrico-permutacao" class="cell quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-anova-modelo-nao-parametrico-permutacao-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Tabela&nbsp;12: ANOVA do modelo não paramétrico de permutação com grupos
+Tabela&nbsp;19: ANOVA do modelo não paramétrico de permutação com grupos
 </figcaption>
 <div aria-describedby="tbl-anova-modelo-nao-parametrico-permutacao-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output cell-output-stdout">
 <pre><code>Analysis of Variance Table
 
 Response: Retencao
-            Df R Sum Sq R Mean Sq Iter Pr(Prob)   
-(Intercept)  4   22.568    5.6420 5000   0.0044 **
-Residuals   18    0.352    0.0196                 
+            Df R Sum Sq R Mean Sq Iter Pr(Prob)    
+(Intercept)  4   22.568    5.6420 5000    0.001 ***
+Residuals   18    0.352    0.0196                  
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 </div>
 </div>
 </figure>
 </div>
-<p>Vemos pelas <a href="#tbl-modelo-nao-parametrico-permutacao" class="quarto-xref">Tabela&nbsp;11</a> e <a href="#tbl-anova-modelo-nao-parametrico-permutacao" class="quarto-xref">Tabela&nbsp;12</a> que há efeito significativo do grupo na retenção dos participantes. Prosseguiremos com a análise pelo teste de Kruskal-Wallis para confirmar esse resultado.</p>
+<p>Vemos pelas <a href="#tbl-modelo-nao-parametrico-permutacao" class="quarto-xref">Tabela&nbsp;18</a> e <a href="#tbl-anova-modelo-nao-parametrico-permutacao" class="quarto-xref">Tabela&nbsp;19</a> que há efeito significativo do grupo na retenção dos participantes, pelo valor F. Prosseguiremos com a análise pelo teste de Kruskal-Wallis para detectar diferença entre o efeito desses grupos.</p>
 <div class="cell">
 <div id="tbl-teste-kruskal-wallis-modelo-nao-parametr" class="cell quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-teste-kruskal-wallis-modelo-nao-parametr-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Tabela&nbsp;13: Teste de Kruskal-Wallis para o modelo não paramétrico de permutação com grupos
+Tabela&nbsp;20: Teste de Kruskal-Wallis para o modelo não paramétrico de permutação com grupos
 </figcaption>
 <div aria-describedby="tbl-teste-kruskal-wallis-modelo-nao-parametr-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
@@ -1692,46 +2288,53 @@ Tabela&nbsp;13: Teste de Kruskal-Wallis para o modelo não paramétrico de permu
 </figure>
 </div>
 </div>
-<p>O teste de Kruskal-Wallis não rejeita a hipótese nula de que as amostras entre os grupos se originam da mesma distribuição. Dessa forma, pode ser que pela variabilidade distinta entre os grupos observadas na análise descritiva (<a href="#tbl-sumario-estatistico-trat" class="quarto-xref">Tabela&nbsp;3</a>), a análise do modelo com permutação seja inválida. Pode ser também que o teste de KW tenha pouca adequação pela grande quantidade de empates na variável resposta.</p>
-<p>Prosseguiremos mesmo assim com a análise post-hoc.</p>
+<p>O teste de Kruskal-Wallis não rejeita a hipótese nula de que as amostras entre os grupos se originam da mesma distribuição. Dessa forma, pode ser que pela variabilidade distinta entre os grupos observadas na análise descritiva (<a href="#tbl-sumario-estatistico-trat" class="quarto-xref">Tabela&nbsp;3</a>), a análise do método com permutação seja inválida. Pode ser também que o teste de KW tenha pouca adequação pela grande quantidade de empates na variável resposta.</p>
+<p>Prosseguiremos mesmo assim com a análise post-hoc, por curiosidade.</p>
 <p>Usaremos o teste post-hoc de Dunn para identificar quais grupos diferem entre si.</p>
 <div class="cell">
 <div id="tbl-teste-dunn-modelo-nao-parametrico" class="cell quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-tbl figure">
 <figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-teste-dunn-modelo-nao-parametrico-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Tabela&nbsp;14: Teste de Dunn para comparações múltiplas entre os grupos do modelo não paramétrico de permutação
+Tabela&nbsp;21: Teste de Dunn para comparações múltiplas entre os grupos do modelo não paramétrico de permutação
 </figcaption>
 <div aria-describedby="tbl-teste-dunn-modelo-nao-parametrico-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <div class="cell-output-display">
 <table class="do-not-create-environment cell caption-top table table-sm table-striped small">
 <thead>
 <tr class="header">
+<th style="text-align: left;">Comparação</th>
 <th style="text-align: right;">Estatística</th>
 <th style="text-align: right;">Valor-p ajustado</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
+<td style="text-align: left;">Bio-X1 - Bio-X2</td>
 <td style="text-align: right;">1.0156</td>
 <td style="text-align: right;">1.0000</td>
 </tr>
 <tr class="even">
+<td style="text-align: left;">Bio-X1 - Mat-X1</td>
 <td style="text-align: right;">0.5223</td>
 <td style="text-align: right;">1.0000</td>
 </tr>
 <tr class="odd">
+<td style="text-align: left;">Bio-X2 - Mat-X1</td>
 <td style="text-align: right;">-0.4567</td>
 <td style="text-align: right;">1.0000</td>
 </tr>
 <tr class="even">
+<td style="text-align: left;">Bio-X1 - Mat-X2</td>
 <td style="text-align: right;">-1.5378</td>
 <td style="text-align: right;">0.7445</td>
 </tr>
 <tr class="odd">
+<td style="text-align: left;">Bio-X2 - Mat-X2</td>
 <td style="text-align: right;">-2.3640</td>
 <td style="text-align: right;">0.1085</td>
 </tr>
 <tr class="even">
+<td style="text-align: left;">Mat-X1 - Mat-X2</td>
 <td style="text-align: right;">-1.9073</td>
 <td style="text-align: right;">0.3389</td>
 </tr>
@@ -1742,16 +2345,1213 @@ Tabela&nbsp;14: Teste de Dunn para comparações múltiplas entre os grupos do m
 </figure>
 </div>
 </div>
-<p>Corroborando o resultado do teste KW, o teste de Dunn não aponta diferenças significativas entre os grupos, mas, como dito, a análise pode ser prejudicada pela grande quantidade de empates na variável resposta.</p>
+<p>Corroborando o resultado do teste KW, o teste de Dunn não aponta diferenças significativas entre os grupos, mas, como dito, a análise pode ser prejudicada pela grande quantidade de empates na variável resposta. Dessa forma, estamos podemos dizer que não há evidências suficientes para afirmar que há diferenças na retenção entre os tratamentos.</p>
 </section>
-<section id="conclusões-da-modelagem-sobre-a-retenção" class="level2">
-<h2 class="anchored" data-anchor-id="conclusões-da-modelagem-sobre-a-retenção">Conclusões da modelagem sobre a retenção</h2>
-<p>A partir dos modelos ajustados, é inconclusivo se há diferenças significativas na retenção de informação entre os diferentes tratamentos com os métodos utilizados. Isso ocorre devido à forma discreta da variável resposta e a pequena amostra, que dificultam o ajuste de modelos adequados.</p>
-<p>Nesse contexto, seguiriamos com a análise através de transformações, como a tranformação <code>Logit</code> com a probabilidade de retenção, ou o uso de modelos lineares generalizados, como o modelo logístico para uma outra forma da variável retenção, ou até mesmo modelos binomiais.</p>
+<section id="conclusões-da-modelagem-sobre-a-retenção" class="level3">
+<h3 class="anchored" data-anchor-id="conclusões-da-modelagem-sobre-a-retenção">Conclusões da modelagem sobre a retenção</h3>
+<p>A partir dos modelos ajustados, é inconclusivo se há diferenças significativas na retenção de informação entre os diferentes tratamentos com os métodos utilizados. Isso ocorre devido à forma discreta da variável resposta e a pequena amostra, que dificultam o ajuste de modelos adequados. Mas, há indícios de que não há diferenças entre os tratamentos.</p>
+<p>Nesse contexto, seguiríamos com a análise através de transformações, como a tranformação <code>Logit</code> com a probabilidade de retenção, ou o uso de modelos lineares generalizados, como o modelo logístico para uma outra forma da variável retenção, ou até mesmo modelos binomiais, buscando uma análise mais robusta.</p>
 </section>
+</section>
+<section id="modelagem-das-notas-na-aplicação-imediata" class="level2">
+<h2 class="anchored" data-anchor-id="modelagem-das-notas-na-aplicação-imediata">Modelagem das Notas na Aplicação Imediata</h2>
+<p>Com um modelo inconclusivo para a retenção, partimos para a modelagem das notas na primeira avaliação. Com isso, buscamos levantar considerações sobre diferenças entre tratamentos na memória de prazo intermediário <span class="citation" data-cites="kaminski_intermediate-term_2017"><a href="#ref-kaminski_intermediate-term_2017" role="doc-biblioref">[8]</a></span>. Vamos repetir o processo como feito com a análise interior, levando em consideração as mesmas limitações.</p>
+<section id="modelo-linear-simples-2" class="level3">
+<h3 class="anchored" data-anchor-id="modelo-linear-simples-2">Modelo linear simples</h3>
+<p>Ajustamos um modelo linear simples com efeitos fixos para a nota na aplicação diagnóstica, idade, tópico e velocidade da apresentação, assim como as interações entre idade e grupo e entre diagnóstico e idade.</p>
+<div class="cell">
+<div id="tbl-modelo-linear-simples-notas-imed" class="cell quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-modelo-linear-simples-notas-imed-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Tabela&nbsp;22: Resumo do modelo linear simples para as notas na aplicação imediata
+</figcaption>
+<div aria-describedby="tbl-modelo-linear-simples-notas-imed-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output-display">
+<table class="do-not-create-environment cell caption-top table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Termo</th>
+<th style="text-align: right;">Estimativa</th>
+<th style="text-align: right;">Erro Padrão</th>
+<th style="text-align: right;">Valor t</th>
+<th style="text-align: right;">Valor-p</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">(Intercept)</td>
+<td style="text-align: right;">7.3198</td>
+<td style="text-align: right;">6.8796</td>
+<td style="text-align: right;">1.0640</td>
+<td style="text-align: right;">0.3083</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Diagn</td>
+<td style="text-align: right;">-2.4897</td>
+<td style="text-align: right;">2.8746</td>
+<td style="text-align: right;">-0.8661</td>
+<td style="text-align: right;">0.4034</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Idade</td>
+<td style="text-align: right;">-0.2165</td>
+<td style="text-align: right;">0.3258</td>
+<td style="text-align: right;">-0.6644</td>
+<td style="text-align: right;">0.5190</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">GrupoBio-X2</td>
+<td style="text-align: right;">11.4862</td>
+<td style="text-align: right;">7.6360</td>
+<td style="text-align: right;">1.5042</td>
+<td style="text-align: right;">0.1584</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">GrupoMat-X1</td>
+<td style="text-align: right;">8.6277</td>
+<td style="text-align: right;">6.5179</td>
+<td style="text-align: right;">1.3237</td>
+<td style="text-align: right;">0.2103</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">GrupoMat-X2</td>
+<td style="text-align: right;">19.0322</td>
+<td style="text-align: right;">7.2333</td>
+<td style="text-align: right;">2.6312</td>
+<td style="text-align: right;">0.0219</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Idade:GrupoBio-X2</td>
+<td style="text-align: right;">-0.5563</td>
+<td style="text-align: right;">0.3669</td>
+<td style="text-align: right;">-1.5163</td>
+<td style="text-align: right;">0.1553</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Idade:GrupoMat-X1</td>
+<td style="text-align: right;">-0.3525</td>
+<td style="text-align: right;">0.3011</td>
+<td style="text-align: right;">-1.1705</td>
+<td style="text-align: right;">0.2645</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Idade:GrupoMat-X2</td>
+<td style="text-align: right;">-0.9529</td>
+<td style="text-align: right;">0.3506</td>
+<td style="text-align: right;">-2.7179</td>
+<td style="text-align: right;">0.0187</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Diagn:Idade</td>
+<td style="text-align: right;">0.1632</td>
+<td style="text-align: right;">0.1335</td>
+<td style="text-align: right;">1.2220</td>
+<td style="text-align: right;">0.2452</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</figure>
+</div>
+</div>
+<p>Selecionamos as variáveis pelos testes <span class="math inline">\(t\)</span>, restando o modelo com grupo, idade, interação idade-grupo e diagnóstico-idade. Dessa vez, não precisamos retirar o intercepto por exisitr efeitos significativos dos grupos. Isso facilitará a interpretação posteriormente.</p>
+<div class="cell">
+<div id="tbl-modelo-linear-simples-notas-imed-selecionado" class="cell quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-modelo-linear-simples-notas-imed-selecionado-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Tabela&nbsp;23: Resumo do modelo linear simples selecionado para as notas na aplicação imediata
+</figcaption>
+<div aria-describedby="tbl-modelo-linear-simples-notas-imed-selecionado-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output-display">
+<table class="do-not-create-environment cell caption-top table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Termo</th>
+<th style="text-align: right;">Estimativa</th>
+<th style="text-align: right;">Erro Padrão</th>
+<th style="text-align: right;">Valor t</th>
+<th style="text-align: right;">Valor-p</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">(Intercept)</td>
+<td style="text-align: right;">3.1277</td>
+<td style="text-align: right;">4.8417</td>
+<td style="text-align: right;">0.6460</td>
+<td style="text-align: right;">0.5295</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">GrupoBio-X2</td>
+<td style="text-align: right;">11.5946</td>
+<td style="text-align: right;">7.5612</td>
+<td style="text-align: right;">1.5334</td>
+<td style="text-align: right;">0.1491</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">GrupoMat-X1</td>
+<td style="text-align: right;">9.9352</td>
+<td style="text-align: right;">6.2794</td>
+<td style="text-align: right;">1.5822</td>
+<td style="text-align: right;">0.1376</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">GrupoMat-X2</td>
+<td style="text-align: right;">19.8656</td>
+<td style="text-align: right;">7.0997</td>
+<td style="text-align: right;">2.7981</td>
+<td style="text-align: right;">0.0151</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">GrupoBio-X1:Idade</td>
+<td style="text-align: right;">-0.0243</td>
+<td style="text-align: right;">0.2363</td>
+<td style="text-align: right;">-0.1028</td>
+<td style="text-align: right;">0.9197</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">GrupoBio-X2:Idade</td>
+<td style="text-align: right;">-0.5827</td>
+<td style="text-align: right;">0.2709</td>
+<td style="text-align: right;">-2.1510</td>
+<td style="text-align: right;">0.0509</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">GrupoMat-X1:Idade</td>
+<td style="text-align: right;">-0.4316</td>
+<td style="text-align: right;">0.1537</td>
+<td style="text-align: right;">-2.8087</td>
+<td style="text-align: right;">0.0148</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">GrupoMat-X2:Idade</td>
+<td style="text-align: right;">-1.0098</td>
+<td style="text-align: right;">0.2420</td>
+<td style="text-align: right;">-4.1727</td>
+<td style="text-align: right;">0.0011</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Idade:Diagn</td>
+<td style="text-align: right;">0.0480</td>
+<td style="text-align: right;">0.0125</td>
+<td style="text-align: right;">3.8468</td>
+<td style="text-align: right;">0.0020</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</figure>
+</div>
+</div>
+<p>Comparamos via ANOVA com um modelos reduzidos.</p>
+<div class="cell">
+<div id="tbl-anova-modelo-linear-simples-notas-imed-selecao" class="cell quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-anova-modelo-linear-simples-notas-imed-selecao-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Tabela&nbsp;24: Comparação entre o modelo sem interação com o modelo selecionado para as notas na aplicação imediata
+</figcaption>
+<div aria-describedby="tbl-anova-modelo-linear-simples-notas-imed-selecao-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output-display">
+<table class="do-not-create-environment cell caption-top table table-sm table-striped small">
+<colgroup>
+<col style="width: 12%">
+<col style="width: 11%">
+<col style="width: 6%">
+<col style="width: 16%">
+<col style="width: 11%">
+<col style="width: 15%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;">Res.Df</th>
+<th style="text-align: center;">RSS</th>
+<th style="text-align: center;">Df</th>
+<th style="text-align: center;">Sum of Sq</th>
+<th style="text-align: center;">F</th>
+<th style="text-align: center;">Pr(&gt;F)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">18</td>
+<td style="text-align: center;">19.83</td>
+<td style="text-align: center;">NA</td>
+<td style="text-align: center;">NA</td>
+<td style="text-align: center;">NA</td>
+<td style="text-align: center;">NA</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">13</td>
+<td style="text-align: center;">6.313</td>
+<td style="text-align: center;">5</td>
+<td style="text-align: center;">13.52</td>
+<td style="text-align: center;">5.566</td>
+<td style="text-align: center;">0.005876</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</figure>
+</div>
+</div>
+<p>Pela <a href="#tbl-anova-modelo-linear-simples-notas-imed-selecao" class="quarto-xref">Tabela&nbsp;24</a>, permanecemos com o modelo com interações. Prosseguimos para o diagnóstico do modelo.</p>
+<section id="diagnóstico-do-modelo-linear-simples-2" class="level4">
+<h4 class="anchored" data-anchor-id="diagnóstico-do-modelo-linear-simples-2">Diagnóstico do modelo linear simples</h4>
+<p>Primeiro, para análise dos resíduos.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-diagnostico-modelo-linear-simples-notas-imed" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-fig" id="fig-diagnostico-modelo-linear-simples-notas-imed-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;12: Diagnóstico do modelo linear simples selecionado para as notas na aplicação imediata
+</figcaption>
+<div aria-describedby="fig-diagnostico-modelo-linear-simples-notas-imed-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="relfinal_files/figure-html/fig-diagnostico-modelo-linear-simples-notas-imed-1.png" class="img-fluid figure-img" width="672">
+</div>
+</figure>
+</div>
+</div>
+</div>
+<p>Os resíduos mostram-se demasiadamente positivos no gráfico A da <a href="#fig-diagnostico-modelo-linear-simples-notas-imed" class="quarto-xref">Figura&nbsp;12</a>, enquanto o histograma do gráfico B aponta irregularidade.</p>
+<div class="cell">
+<div id="tbl-levene-modelo-linear-simples-notas-imed" class="cell quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-levene-modelo-linear-simples-notas-imed-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Tabela&nbsp;25: Teste de Levene para homocedasticidade dos resíduos do modelo linear simples selecionado para as notas na aplicação imediata
+</figcaption>
+<div aria-describedby="tbl-levene-modelo-linear-simples-notas-imed-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output-display">
+<table class="do-not-create-environment cell caption-top table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: right;">Estatística</th>
+<th style="text-align: right;">Valor-p</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">0.6042</td>
+<td style="text-align: right;">0.6207</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</figure>
+</div>
+</div>
+<p>Pela <a href="#tbl-levene-modelo-linear-simples-notas-imed" class="quarto-xref">Tabela&nbsp;25</a>, não rejeitamos a hipótese nula de homocedasticidade dos resíduos. Partimos para análise de normalidade.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-qqplot-modelo-linear-simples-notas-imed" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-fig" id="fig-qqplot-modelo-linear-simples-notas-imed-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;13: QQ-Plot dos resíduos do modelo linear simples selecionado para as notas na aplicação imediata
+</figcaption>
+<div aria-describedby="fig-qqplot-modelo-linear-simples-notas-imed-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="relfinal_files/figure-html/fig-qqplot-modelo-linear-simples-notas-imed-1.png" class="img-fluid figure-img" width="672">
+</div>
+</figure>
+</div>
+</div>
+</div>
+<p>Como esperado pelo caráter discreto da variável resposta, os resíduos não se adequam muito bem à normalidade, mas parecem ter um comportamento melhor que o do modelo sobre retenção. Faremos o teste de Shapiro-Wilk para confirmar.</p>
+<div class="cell">
+<div id="tbl-shapiro-modelo-linear-simples-notas-imed" class="cell quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-shapiro-modelo-linear-simples-notas-imed-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Tabela&nbsp;26: Teste de Shapiro-Wilk para normalidade dos resíduos do modelo linear simples selecionado para as notas na aplicação imediata
+</figcaption>
+<div aria-describedby="tbl-shapiro-modelo-linear-simples-notas-imed-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output-display">
+<table class="do-not-create-environment cell caption-top table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: right;">Estatística</th>
+<th style="text-align: right;">Valor-p</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">0.9387</td>
+<td style="text-align: right;">0.1864</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</figure>
+</div>
+</div>
+<p>Pelo valor <span class="math inline">\(p\)</span> na <a href="#tbl-shapiro-modelo-linear-simples-notas-imed" class="quarto-xref">Tabela&nbsp;26</a>, não rejeitamos a hipótese nula de normalidade dos resíduos a um nível de confiança de <span class="math inline">\(5\%\)</span>. Assim, seguemos com teste de Bartlett para homocedasticidade entre os grupos.</p>
+<div class="cell">
+<div id="tbl-bartlett-modelo-linear-simples-notas-imed" class="cell quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-bartlett-modelo-linear-simples-notas-imed-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Tabela&nbsp;27: Teste de Bartlett para homocedasticidade dos resíduos do modelo simples selecionado para as notas na aplicação imediata
+</figcaption>
+<div aria-describedby="tbl-bartlett-modelo-linear-simples-notas-imed-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output-display">
+<table class="do-not-create-environment cell caption-top table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: right;">Estatística</th>
+<th style="text-align: right;">Valor-p</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">1.5706</td>
+<td style="text-align: right;">0.6661</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</figure>
+</div>
+</div>
+<p>O teste de Bartlett não rejeita a homocedasticidade. Dessa forma, não rejeitamos as suposições do modelo linear clássico para essa modelagem, mas temos ressalvas sobre os resíduos.</p>
+</section>
+<section id="análise-de-diferença-entre-grupos" class="level4">
+<h4 class="anchored" data-anchor-id="análise-de-diferença-entre-grupos">Análise de diferença entre grupos</h4>
+<p>Para fim didáticos, aplicaremos o ANOVA para verificar diferenças entre os grupos.</p>
+<div class="cell">
+<div id="tbl-anova-modelo-linear-simples-notas-imed" class="cell quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-anova-modelo-linear-simples-notas-imed-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Tabela&nbsp;28: ANOVA do modelo linear simples selecionado para as notas na aplicação imediata
+</figcaption>
+<div aria-describedby="tbl-anova-modelo-linear-simples-notas-imed-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output-display">
+<table class="do-not-create-environment cell caption-top table table-sm table-striped small">
+<colgroup>
+<col style="width: 15%">
+<col style="width: 22%">
+<col style="width: 23%">
+<col style="width: 18%">
+<col style="width: 10%">
+<col style="width: 10%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Termo</th>
+<th style="text-align: right;">Soma de Quadrados</th>
+<th style="text-align: right;">Graus de Liberdade</th>
+<th style="text-align: right;">Quadrado Médio</th>
+<th style="text-align: right;">Valor F</th>
+<th style="text-align: right;">Valor-p</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Grupo</td>
+<td style="text-align: right;">3.4442</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">1.1481</td>
+<td style="text-align: right;">2.3640</td>
+<td style="text-align: right;">0.1185</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Grupo:Idade</td>
+<td style="text-align: right;">6.3289</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">1.5822</td>
+<td style="text-align: right;">3.2580</td>
+<td style="text-align: right;">0.0466</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Idade:Diagn</td>
+<td style="text-align: right;">7.1863</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">7.1863</td>
+<td style="text-align: right;">14.7977</td>
+<td style="text-align: right;">0.0020</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Residuals</td>
+<td style="text-align: right;">6.3133</td>
+<td style="text-align: right;">13</td>
+<td style="text-align: right;">0.4856</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</figure>
+</div>
+</div>
+<div class="cell">
+<div id="tbl-r2-modelo-linear-simples-notas-imed" class="cell quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-r2-modelo-linear-simples-notas-imed-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Tabela&nbsp;29: R² e R² ajustado do modelo linear simples selecionado para as notas na aplicação imediata
+</figcaption>
+<div aria-describedby="tbl-r2-modelo-linear-simples-notas-imed-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output-display">
+<table class="do-not-create-environment cell caption-top table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: right;">R2</th>
+<th style="text-align: right;">R2 Ajustado</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">0.7287</td>
+<td style="text-align: right;">0.5618</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</figure>
+</div>
+</div>
+<p>Pela <a href="#tbl-anova-modelo-linear-simples-notas-imed" class="quarto-xref">Tabela&nbsp;28</a>, não há diferença significativa entre os grupos no modelo para as notas na aplicação imediata. Pelo <span class="math inline">\(\bar{R}^2\)</span>, o modelo explica apenas <span class="math inline">\(56.18\%\)</span> da variabilidade total das notas.</p>
+</section>
+</section>
+<section id="métodos-não-paramétricos-1" class="level3">
+<h3 class="anchored" data-anchor-id="métodos-não-paramétricos-1">Métodos não paramétricos</h3>
+<p>Apesar de não rejeitarmos as suposições do modelo linear clássico, dada a natureza dos dados, optamos por ajustar um modelo não paramétrico para as notas na aplicação imediata através da permutação. Usaremos os mesmos efeitos fixos do modelo reduzido.</p>
+<div id="tbl-modelo-nao-parametrico-permutacao-notas-imed" class="cell quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-modelo-nao-parametrico-permutacao-notas-imed-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Tabela&nbsp;30: Resumo do modelo não paramétrico de permutação para as notas na aplicação imediata
+</figcaption>
+<div aria-describedby="tbl-modelo-nao-parametrico-permutacao-notas-imed-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Settings:  unique SS : numeric variables centered"</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lmp(formula = Media_Imed ~ Grupo + Idade:Grupo + Diagn:Idade, 
+    data = df_grupos)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-1.32059 -0.56670  0.06026  0.73793  0.97917 
+
+Coefficients:
+                  Estimate Iter Pr(Prob)    
+Grupo1              0.5779 5000   0.0018 ** 
+Grupo2              0.1411 5000   0.0038 ** 
+Grupo3              0.2897 5000   0.0024 ** 
+GrupoBio-X1:Idade  -0.2239   69   0.5942    
+GrupoBio-X2:Idade  -0.5139 5000   0.0064 ** 
+GrupoMat-X1:Idade  -0.1101 5000   0.0078 ** 
+GrupoMat-X2:Idade  -0.7737 5000   &lt;2e-16 ***
+Idade:Diagn         0.2209 5000   0.0034 ** 
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 0.9657 on 13 degrees of freedom
+Multiple R-Squared: 0.479,  Adjusted R-squared: 0.1584 
+F-statistic: 1.494 on 8 and 13 DF,  p-value: 0.2496 </code></pre>
+</div>
+</div>
+</figure>
+</div>
+<p>É interessante notar o baixíssimo valor de <span class="math inline">\(\bar{R}^2\)</span> em apenas <span class="math inline">\(0.1584\)</span>, o que indica uma insuficência do modelo.</p>
+<div id="tbl-anova-modelo-nao-parametrico-permutacao-notas" class="cell quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-anova-modelo-nao-parametrico-permutacao-notas-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Tabela&nbsp;31: ANOVA do modelo não paramétrico de permutação para as notas na aplicação imediata
+</figcaption>
+<div aria-describedby="tbl-anova-modelo-nao-parametrico-permutacao-notas-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output cell-output-stdout">
+<pre><code>Analysis of Variance Table
+
+Response: Media_Imed
+                  Df R Sum Sq R Mean Sq Iter Pr(Prob)   
+Grupo              3   5.5258   1.84193 5000   0.0018 **
+GrupoBio-X1:Idade  4   7.4987   1.87468 5000   0.0044 **
+Idade:Diagn        1   1.3753   1.37527 5000   0.0034 **
+Residuals         13  12.1244   0.93265                 
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+</div>
+</figure>
+</div>
+<p>Pela <a href="#tbl-modelo-nao-parametrico-permutacao-notas-imed" class="quarto-xref">Tabela&nbsp;30</a> e <a href="#tbl-anova-modelo-nao-parametrico-permutacao-notas" class="quarto-xref">Tabela&nbsp;31</a>, observamos que não há efeito significativo do grupo na nota na aplicação imediata. Prosseguiremos com o teste de Kruskal-Wallis para confirmar esse resultado.</p>
+<div class="cell">
+<div id="tbl-teste-kruskal-wallis-modelo-nao-parametr-imed" class="cell quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-teste-kruskal-wallis-modelo-nao-parametr-imed-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Tabela&nbsp;32: Teste de Kruskal-Wallis para o modelo não paramétrico de permutação para as notas na aplicação imediata
+</figcaption>
+<div aria-describedby="tbl-teste-kruskal-wallis-modelo-nao-parametr-imed-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output-display">
+<table class="do-not-create-environment cell caption-top table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: right;">Estatística</th>
+<th style="text-align: right;">Valor-p</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">2.6354</td>
+<td style="text-align: right;">0.4513</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</figure>
+</div>
+</div>
+<p>Novamente, o teste de Kruskal-Wallis não rejeita a hipótese nula de que as amostras entre os grupos se originam da mesma distribuição. Logo, dizemos que não há diferenças significativas entre os grupos, mas, como dito, a análise pode ser prejudicada pela grande quantidade de empates na variável resposta. Dessa forma, estamos incertos sobre quais grupos diferem entre si, graças às limitações dos dados e técnicas de modelagem.</p>
+</section>
+<section id="conclusões-da-modelagem-sobre-as-notas-na-aplicação-imediata" class="level3">
+<h3 class="anchored" data-anchor-id="conclusões-da-modelagem-sobre-as-notas-na-aplicação-imediata">Conclusões da modelagem sobre as notas na aplicação imediata</h3>
+<p>A partir dos modelos ajustados, há indícios de que há diferenças significativas nas notas na aplicação imediata entre os diferentes tratamentos com os métodos utilizados. Apesar disso, não conseguimos identificar quais grupos diferem entre si, devido às limitações dos dados e técnicas de modelagem.</p>
+<p>Prosseguríamos, como dito anteriormente, com a análise através de transformações ou o uso de modelos lineares generalizados que melhor se adequem à variável resposta discreta.</p>
+</section>
+</section>
+<section id="modelagem-das-notas-na-aplicação-tardia" class="level2">
+<h2 class="anchored" data-anchor-id="modelagem-das-notas-na-aplicação-tardia">Modelagem das notas na Aplicação Tardia</h2>
+<p>Com a modelagem inconclusiva para a retenção e as notas na aplicação imediata, partimos para a modelagem das notas na aplicação tardia. Com isso, buscamos levantar considerações sobre diferenças entre tratamentos na memória de prazo longo <span class="citation" data-cites="kaminski_intermediate-term_2017"><a href="#ref-kaminski_intermediate-term_2017" role="doc-biblioref">[8]</a></span>. Vamos repetir o processo como feito com a análise interior, levando em consideração as mesmas limitações.</p>
+<section id="modelo-linear-simples-3" class="level3">
+<h3 class="anchored" data-anchor-id="modelo-linear-simples-3">Modelo linear simples</h3>
+<p>Ajustamos um modelo linear simples com efeitos fixos para a nota na aplicação tardia, idade, tópico e velocidade da apresentação, e interação entre idade e grupo, assim como diagnóstico e idade.</p>
+<div class="cell">
+<div id="tbl-modelo-linear-simples-notas-tard" class="cell quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-modelo-linear-simples-notas-tard-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Tabela&nbsp;33: Resumo do modelo linear simples para as notas na aplicação tardia
+</figcaption>
+<div aria-describedby="tbl-modelo-linear-simples-notas-tard-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output-display">
+<table class="do-not-create-environment cell caption-top table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Termo</th>
+<th style="text-align: right;">Estimativa</th>
+<th style="text-align: right;">Erro Padrão</th>
+<th style="text-align: right;">Valor t</th>
+<th style="text-align: right;">Valor-p</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">(Intercept)</td>
+<td style="text-align: right;">10.5402</td>
+<td style="text-align: right;">9.6959</td>
+<td style="text-align: right;">1.0871</td>
+<td style="text-align: right;">0.2984</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Diagn</td>
+<td style="text-align: right;">-5.3373</td>
+<td style="text-align: right;">4.0513</td>
+<td style="text-align: right;">-1.3174</td>
+<td style="text-align: right;">0.2123</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Idade</td>
+<td style="text-align: right;">-0.3897</td>
+<td style="text-align: right;">0.4592</td>
+<td style="text-align: right;">-0.8486</td>
+<td style="text-align: right;">0.4127</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">GrupoBio-X2</td>
+<td style="text-align: right;">5.9001</td>
+<td style="text-align: right;">10.7618</td>
+<td style="text-align: right;">0.5482</td>
+<td style="text-align: right;">0.5936</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">GrupoMat-X1</td>
+<td style="text-align: right;">14.8815</td>
+<td style="text-align: right;">9.1861</td>
+<td style="text-align: right;">1.6200</td>
+<td style="text-align: right;">0.1312</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">GrupoMat-X2</td>
+<td style="text-align: right;">12.0877</td>
+<td style="text-align: right;">10.1943</td>
+<td style="text-align: right;">1.1857</td>
+<td style="text-align: right;">0.2587</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Idade:GrupoBio-X2</td>
+<td style="text-align: right;">-0.3135</td>
+<td style="text-align: right;">0.5171</td>
+<td style="text-align: right;">-0.6063</td>
+<td style="text-align: right;">0.5556</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Idade:GrupoMat-X1</td>
+<td style="text-align: right;">-0.6236</td>
+<td style="text-align: right;">0.4244</td>
+<td style="text-align: right;">-1.4695</td>
+<td style="text-align: right;">0.1674</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Idade:GrupoMat-X2</td>
+<td style="text-align: right;">-0.5750</td>
+<td style="text-align: right;">0.4941</td>
+<td style="text-align: right;">-1.1636</td>
+<td style="text-align: right;">0.2672</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Diagn:Idade</td>
+<td style="text-align: right;">0.3134</td>
+<td style="text-align: right;">0.1882</td>
+<td style="text-align: right;">1.6653</td>
+<td style="text-align: right;">0.1217</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</figure>
+</div>
+</div>
+<p>Nenhum dos coeficientes do modelo apresenta valor <span class="math inline">\(p\)</span> significativo. Ainda assim, prosseguimos com a seleção das variáveis pelos testes <span class="math inline">\(t\)</span>, restando o modelo com grupo, interação idade-grupo e interação diagnóstico-idade. Dessa vez, pudemos manter o intercepto também.</p>
+<div class="cell">
+<div id="tbl-modelo-linear-simples-notas-tard-selecionado" class="cell quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-modelo-linear-simples-notas-tard-selecionado-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Tabela&nbsp;34: Resumo do modelo linear simples selecionado para as notas na aplicação tardia
+</figcaption>
+<div aria-describedby="tbl-modelo-linear-simples-notas-tard-selecionado-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output-display">
+<table class="do-not-create-environment cell caption-top table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Termo</th>
+<th style="text-align: right;">Estimativa</th>
+<th style="text-align: right;">Erro Padrão</th>
+<th style="text-align: right;">Valor t</th>
+<th style="text-align: right;">Valor-p</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">(Intercept)</td>
+<td style="text-align: right;">1.5533</td>
+<td style="text-align: right;">7.0825</td>
+<td style="text-align: right;">0.2193</td>
+<td style="text-align: right;">0.8298</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">GrupoBio-X2</td>
+<td style="text-align: right;">6.1325</td>
+<td style="text-align: right;">11.0606</td>
+<td style="text-align: right;">0.5544</td>
+<td style="text-align: right;">0.5887</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">GrupoMat-X1</td>
+<td style="text-align: right;">17.6844</td>
+<td style="text-align: right;">9.1856</td>
+<td style="text-align: right;">1.9252</td>
+<td style="text-align: right;">0.0764</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">GrupoMat-X2</td>
+<td style="text-align: right;">13.8744</td>
+<td style="text-align: right;">10.3856</td>
+<td style="text-align: right;">1.3359</td>
+<td style="text-align: right;">0.2045</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">GrupoBio-X1:Idade</td>
+<td style="text-align: right;">0.0223</td>
+<td style="text-align: right;">0.3456</td>
+<td style="text-align: right;">0.0646</td>
+<td style="text-align: right;">0.9494</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">GrupoBio-X2:Idade</td>
+<td style="text-align: right;">-0.2957</td>
+<td style="text-align: right;">0.3963</td>
+<td style="text-align: right;">-0.7463</td>
+<td style="text-align: right;">0.4688</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">GrupoMat-X1:Idade</td>
+<td style="text-align: right;">-0.7188</td>
+<td style="text-align: right;">0.2248</td>
+<td style="text-align: right;">-3.1980</td>
+<td style="text-align: right;">0.0070</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">GrupoMat-X2:Idade</td>
+<td style="text-align: right;">-0.6226</td>
+<td style="text-align: right;">0.3540</td>
+<td style="text-align: right;">-1.7587</td>
+<td style="text-align: right;">0.1021</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Idade:Diagn</td>
+<td style="text-align: right;">0.0666</td>
+<td style="text-align: right;">0.0183</td>
+<td style="text-align: right;">3.6440</td>
+<td style="text-align: right;">0.0030</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</figure>
+</div>
+</div>
+<p>Testaremos via ANOVA com um modelos reduzidos.</p>
+<div class="cell">
+<div id="tbl-anova-modelo-linear-simples-notas-tard-selecao" class="cell quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-anova-modelo-linear-simples-notas-tard-selecao-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Tabela&nbsp;35: Comparação entre o modelo sem interação com o modelo selecionado para as notas na aplicação tardia
+</figcaption>
+<div aria-describedby="tbl-anova-modelo-linear-simples-notas-tard-selecao-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output-display">
+<table class="do-not-create-environment cell caption-top table table-sm table-striped small">
+<caption>Comparação entre o modelo sem interação com o modelo selecionado para as notas na aplicação tardia</caption>
+<colgroup>
+<col style="width: 12%">
+<col style="width: 11%">
+<col style="width: 6%">
+<col style="width: 16%">
+<col style="width: 11%">
+<col style="width: 12%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;">Res.Df</th>
+<th style="text-align: center;">RSS</th>
+<th style="text-align: center;">Df</th>
+<th style="text-align: center;">Sum of Sq</th>
+<th style="text-align: center;">F</th>
+<th style="text-align: center;">Pr(&gt;F)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">18</td>
+<td style="text-align: center;">29.83</td>
+<td style="text-align: center;">NA</td>
+<td style="text-align: center;">NA</td>
+<td style="text-align: center;">NA</td>
+<td style="text-align: center;">NA</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">13</td>
+<td style="text-align: center;">13.51</td>
+<td style="text-align: center;">5</td>
+<td style="text-align: center;">16.32</td>
+<td style="text-align: center;">3.141</td>
+<td style="text-align: center;">0.0447</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</figure>
+</div>
+</div>
+<p>O modelo com interações é preferível ao modelo sem interações pela <a href="#tbl-anova-modelo-linear-simples-notas-tard-selecao" class="quarto-xref">Tabela&nbsp;35</a>.</p>
+<p>Partimos para o diagnóstico do modelo.</p>
+<section id="diagnóstico-do-modelo-linear-simples-3" class="level4">
+<h4 class="anchored" data-anchor-id="diagnóstico-do-modelo-linear-simples-3">Diagnóstico do modelo linear simples</h4>
+<p>Primeiro, para análise dos resíduos.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-diagnostico-modelo-linear-simples-notas-tard" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-fig" id="fig-diagnostico-modelo-linear-simples-notas-tard-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;14: Diagnóstico do modelo linear simples selecionado para as notas na aplicação tardia
+</figcaption>
+<div aria-describedby="fig-diagnostico-modelo-linear-simples-notas-tard-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="relfinal_files/figure-html/fig-diagnostico-modelo-linear-simples-notas-tard-1.png" class="img-fluid figure-img" width="672">
+</div>
+</figure>
+</div>
+</div>
+</div>
+<p>Os resíduos mostram-se demasiadamente positivos no gráfico A da <a href="#fig-diagnostico-modelo-linear-simples-notas-tard" class="quarto-xref">Figura&nbsp;14</a>, com alguns valores muito negativos. O histograma do gráfico B aponta irregularidade. Faremos o teste de Levene para homocedasticidade.</p>
+<div class="cell">
+<div id="tbl-levene-modelo-linear-simples-notas-tard" class="cell quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-levene-modelo-linear-simples-notas-tard-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Tabela&nbsp;36: Teste de Levene para homocedasticidade dos resíduos do modelo linear simples selecionado para as notas na aplicação tardia
+</figcaption>
+<div aria-describedby="tbl-levene-modelo-linear-simples-notas-tard-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output-display">
+<table class="do-not-create-environment cell caption-top table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: right;">Estatística</th>
+<th style="text-align: right;">Valor-p</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">0.2798</td>
+<td style="text-align: right;">0.8392</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</figure>
+</div>
+</div>
+<p>Pela <a href="#tbl-levene-modelo-linear-simples-notas-tard" class="quarto-xref">Tabela&nbsp;36</a>, não rejeitamos a hipótese nula de homocedasticidade dos resíduos. Partimos para análise de normalidade.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-qqplot-modelo-linear-simples-notas-tard" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-fig" id="fig-qqplot-modelo-linear-simples-notas-tard-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura&nbsp;15: QQ-Plot dos resíduos do modelo linear simples selecionado para as notas na aplicação tardia
+</figcaption>
+<div aria-describedby="fig-qqplot-modelo-linear-simples-notas-tard-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="relfinal_files/figure-html/fig-qqplot-modelo-linear-simples-notas-tard-1.png" class="img-fluid figure-img" width="672">
+</div>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div id="tbl-shapiro-modelo-linear-simples-notas-tard" class="cell quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-shapiro-modelo-linear-simples-notas-tard-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Tabela&nbsp;37: Teste de Shapiro-Wilk para normalidade dos resíduos do modelo linear simples selecionado para as notas na aplicação tardia
+</figcaption>
+<div aria-describedby="tbl-shapiro-modelo-linear-simples-notas-tard-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output-display">
+<table class="do-not-create-environment cell caption-top table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: right;">Estatística</th>
+<th style="text-align: right;">Valor-p</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">0.9277</td>
+<td style="text-align: right;">0.11</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</figure>
+</div>
+</div>
+<p>Novamente, não rejeitamos a hipótese nula de normalidade dos resíduos a um nível de confiança de <span class="math inline">\(5\%\)</span>. Assim, seguemos com teste de Bartlett para homocedasticidade entre os grupos.</p>
+<div class="cell">
+<div id="tbl-bartlett-modelo-linear-simples-notas-tard" class="cell quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-bartlett-modelo-linear-simples-notas-tard-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Tabela&nbsp;38: Teste de Bartlett para homocedasticidade dos resíduos do modelo simples selecionado para as notas na aplicação tardia
+</figcaption>
+<div aria-describedby="tbl-bartlett-modelo-linear-simples-notas-tard-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output-display">
+<table class="do-not-create-environment cell caption-top table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: right;">Estatística</th>
+<th style="text-align: right;">Valor-p</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">1.2423</td>
+<td style="text-align: right;">0.7429</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</figure>
+</div>
+</div>
+<p>O teste de Bartlett não rejeita a homocedasticidade. Dessa forma, não rejeitamos as suposições do modelo linear clássico para essa modelagem. Seguimos com a análise.</p>
+</section>
+<section id="análise-de-diferença-entre-grupos-1" class="level4">
+<h4 class="anchored" data-anchor-id="análise-de-diferença-entre-grupos-1">Análise de diferença entre grupos</h4>
+<p>Aplicamos o ANOVA para verificar diferenças entre os grupos.</p>
+<div class="cell">
+<div id="tbl-anova-modelo-linear-simples-notas-tard" class="cell quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-anova-modelo-linear-simples-notas-tard-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Tabela&nbsp;39: ANOVA do modelo linear simples selecionado para as notas na aplicação tardia
+</figcaption>
+<div aria-describedby="tbl-anova-modelo-linear-simples-notas-tard-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output-display">
+<table class="do-not-create-environment cell caption-top table table-sm table-striped small">
+<colgroup>
+<col style="width: 15%">
+<col style="width: 22%">
+<col style="width: 23%">
+<col style="width: 18%">
+<col style="width: 10%">
+<col style="width: 10%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Termo</th>
+<th style="text-align: right;">Soma de Quadrados</th>
+<th style="text-align: right;">Graus de Liberdade</th>
+<th style="text-align: right;">Quadrado Médio</th>
+<th style="text-align: right;">Valor F</th>
+<th style="text-align: right;">Valor-p</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Grupo</td>
+<td style="text-align: right;">2.7623</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">0.9208</td>
+<td style="text-align: right;">0.8861</td>
+<td style="text-align: right;">0.4740</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Grupo:Idade</td>
+<td style="text-align: right;">2.5203</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">0.6301</td>
+<td style="text-align: right;">0.6063</td>
+<td style="text-align: right;">0.6651</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Idade:Diagn</td>
+<td style="text-align: right;">13.7989</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">13.7989</td>
+<td style="text-align: right;">13.2786</td>
+<td style="text-align: right;">0.0030</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Residuals</td>
+<td style="text-align: right;">13.5094</td>
+<td style="text-align: right;">13</td>
+<td style="text-align: right;">1.0392</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: right;">NA</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</figure>
+</div>
+</div>
+<p>Pela <a href="#tbl-anova-modelo-linear-simples-notas-tard" class="quarto-xref">Tabela&nbsp;39</a>, não há diferença significativa entre os grupos no modelo para as notas na aplicação tardia. Partiremos para métodos não paramétricos por desconfiança dos resíduos.</p>
+</section>
+</section>
+<section id="métodos-não-paramétricos-2" class="level3">
+<h3 class="anchored" data-anchor-id="métodos-não-paramétricos-2">Métodos não paramétricos</h3>
+<p>Apesar de não rejeitarmos as suposições do modelo linear clássico, dada a natureza dos dados, optamos por ajustar um modelo não paramétrico para as notas na aplicação tardia através da permutação. Usaremos os mesmos efeitos fixos do modelo reduzido.</p>
+<div id="tbl-modelo-nao-parametrico-permutacao-notas-tard" class="cell quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-modelo-nao-parametrico-permutacao-notas-tard-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Tabela&nbsp;40: Resumo do modelo não paramétrico de permutação para as notas na aplicação tardia
+</figcaption>
+<div aria-describedby="tbl-modelo-nao-parametrico-permutacao-notas-tard-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Settings:  unique SS : numeric variables centered"</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lmp(formula = Media_Semn ~ Grupo + Idade:Grupo + Diagn:Idade, 
+    data = df_grupos)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-2.0874 -0.8656  0.2000  0.8316  1.7176 
+
+Coefficients:
+                  Estimate Iter Pr(Prob)   
+Grupo1              0.4708 5000   0.0016 **
+Grupo2             -0.4568 5000   0.0020 **
+Grupo3              0.1916   51   0.8627   
+GrupoBio-X1:Idade  -0.2845 5000   0.0060 **
+GrupoBio-X2:Idade  -0.2397 5000   0.0048 **
+GrupoMat-X1:Idade  -0.2807 5000   0.0028 **
+GrupoMat-X2:Idade  -0.3171 5000   0.0028 **
+Idade:Diagn         0.3910 5000   0.0022 **
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 1.33 on 13 degrees of freedom
+Multiple R-Squared: 0.2944, Adjusted R-squared: -0.1399 
+F-statistic: 0.6778 on 8 and 13 DF,  p-value: 0.7038 </code></pre>
+</div>
+</div>
+</figure>
+</div>
+<div id="tbl-anova-modelo-nao-parametrico-permutacao-notas-tard" class="cell quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-anova-modelo-nao-parametrico-permutacao-notas-tard-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Tabela&nbsp;41: ANOVA do modelo não paramétrico de permutação para as notas na aplicação tardia
+</figcaption>
+<div aria-describedby="tbl-anova-modelo-nao-parametrico-permutacao-notas-tard-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output cell-output-stdout">
+<pre><code>Analysis of Variance Table
+
+Response: Media_Semn
+                  Df R Sum Sq R Mean Sq Iter Pr(Prob)   
+Grupo              3   2.0777    0.6926 5000   0.0068 **
+GrupoBio-X1:Idade  4   4.1458    1.0365 5000   0.0048 **
+Idade:Diagn        1   4.3106    4.3106 5000   0.0022 **
+Residuals         13  22.9977    1.7691                 
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+</div>
+</figure>
+</div>
+<p>Novamente, identificamos pela <a href="#tbl-modelo-nao-parametrico-permutacao-notas-tard" class="quarto-xref">Tabela&nbsp;40</a> e <a href="#tbl-anova-modelo-nao-parametrico-permutacao-notas-tard" class="quarto-xref">Tabela&nbsp;41</a> que há efeito significativo do grupo na nota na aplicação tardia. Prosseguiremos com o teste de Kruskal-Wallis para as diferenças entre grupos.</p>
+<div class="cell">
+<div id="tbl-teste-kruskal-wallis-modelo-nao-parametrico-tard" class="cell quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-teste-kruskal-wallis-modelo-nao-parametrico-tard-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Tabela&nbsp;42: Teste de Kruskal-Wallis para o modelo não paramétrico de permutação para as notas na aplicação tardia
+</figcaption>
+<div aria-describedby="tbl-teste-kruskal-wallis-modelo-nao-parametrico-tard-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output-display">
+<table class="do-not-create-environment cell caption-top table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: right;">Estatística</th>
+<th style="text-align: right;">Valor-p</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">1.0341</td>
+<td style="text-align: right;">0.793</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</figure>
+</div>
+</div>
+<p>Mais uma vez, o teste de Kruskal-Wallis não rejeita a hipótese nula de que as amostras entre os grupos se originam da mesma distribuição. Assim como na modelagem da retenção e das notas na aplicação imediata, pode ser que pela variabilidade distinta entre os grupos observadas na análise descritiva (<a href="#tbl-sumario-estatistico-trat" class="quarto-xref">Tabela&nbsp;3</a>), a análise do método com permutação seja inválida. Pode ser também que o teste de KW tenha pouca adequação pela grande quantidade de empates na variável resposta. Acreditamos que, neste caso, o teste de Kruskal-Wallis é menos confiável que o ANOVA do método de permutação.</p>
+<p>Prosseguiremos mesmo assim com a análise post-hoc. Usaremos o teste post-hoc de Dunn para identificar quais grupos diferem entre si.</p>
+<div class="cell">
+<div id="tbl-teste-dunn-modelo-nao-parametrico-notas-t" class="cell quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-teste-dunn-modelo-nao-parametrico-notas-t-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Tabela&nbsp;43: Teste de Dunn para comparações múltiplas entre os grupos do modelo não paramétrico de permutação para as notas na aplicação tardia
+</figcaption>
+<div aria-describedby="tbl-teste-dunn-modelo-nao-parametrico-notas-t-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="cell-output-display">
+<table class="do-not-create-environment cell caption-top table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Comparação</th>
+<th style="text-align: right;">Estatística</th>
+<th style="text-align: right;">Valor-p ajustado</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Bio-X1 - Bio-X2</td>
+<td style="text-align: right;">0.9739</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Bio-X1 - Mat-X1</td>
+<td style="text-align: right;">0.6691</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Bio-X2 - Mat-X1</td>
+<td style="text-align: right;">-0.2822</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Bio-X1 - Mat-X2</td>
+<td style="text-align: right;">0.4474</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Bio-X2 - Mat-X2</td>
+<td style="text-align: right;">-0.4875</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Mat-X1 - Mat-X2</td>
+<td style="text-align: right;">-0.2053</td>
+<td style="text-align: right;">1</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</figure>
+</div>
+</div>
+<p>Pelo resultado do teste de Dunn na <a href="#tbl-teste-dunn-modelo-nao-parametrico-notas-t" class="quarto-xref">Tabela&nbsp;43</a>, não há diferenças significativas entre os grupos, mas, como dito, a análise pode ser prejudicada pela grande quantidade de empates na variável resposta. Dessa forma, estamos incertos sobre quais grupos diferem entre si, graças às limitações dos dados e técnicas de modelagem.</p>
+</section>
+<section id="conclusões-da-modelagem-sobre-as-notas-na-aplicação-tardia" class="level3">
+<h3 class="anchored" data-anchor-id="conclusões-da-modelagem-sobre-as-notas-na-aplicação-tardia">Conclusões da modelagem sobre as notas na aplicação tardia</h3>
+<p>A partir dos modelos ajustados, há indícios de que há diferenças significativas nas notas na aplicação tardia entre os diferentes tratamentos com os métodos utilizados. Apesar disso, não conseguimos identificar quais grupos diferem entre si, devido às limitações dos dados e técnicas de modelagem.</p>
+<p>Prosseguríamos, como dito anteriormente, com a análise através de transformações ou o uso de modelos lineares generalizados que melhor se adequem à variável resposta discreta.</p>
+</section>
+</section>
+</section>
+<section id="conclusões-gerais" class="level1">
+<h1>Conclusões Gerais</h1>
+<p>A modelagem estatística realizada não permitiu conclusões definitivas sobre os efeitos dos diferentes tratamentos na retenção e nas notas em aplicações imediata e tardia. Embora algumas análises indiquem diferenças significativas entre os grupos, como a <a href="#tbl-anova-modelo-nao-parametrico-permutacao-notas-tard" class="quarto-xref">Tabela&nbsp;41</a>, as limitações inerentes aos dados e às técnicas de modelagem utilizadas impediram a identificação clara de quais grupos diferem entre si. Futuras análises poderiam explorar transformações dos dados ou a aplicação de modelos lineares generalizados para melhor capturar a natureza discreta das variáveis resposta.</p>
+<p>Outro fator importante a se considerar são limitações do próprio estudo, como tamanho amostral reduzido e possíveis vieses na coleta de dados, que podem ter influenciado os resultados obtidos.</p>
+<p>No geral, podemos concluir que, deste experimento, não há evidências robustas para afirmar que combinações específicas entre conteúdo e velocidade de reprodução tem efeito significativo na retenção de informação ou no desempenho em avaliações imediatas e tardias. Recomenda-se cautela na interpretação dos resultados e a realização de estudos adicionais com amostras maiores e metodologias aprimoradas para elucidar melhor os efeitos dos tratamentos avaliados.</p>
+<p>Também, enquanto a velocidade individualmente já foi analisada por diversos estudos, assim como a análise individual do “conteúdo do vídeo”, poucos estudos foram feitos sobre a combinação desses dois fatores. Portanto, este é um primeiro passo importante para futuras pesquisas na área de aprendizagem através de vídeos educacionais.</p>
+<p>Se quiser levar uma conclusão divertida, pela <a href="#tbl-emmeans-modelo-linear-simples-fatores" class="quarto-xref">Tabela&nbsp;11</a>, matemática é mais difícil que biologia a uma significância de <span class="math inline">\(5\%\)</span>.</p>
+<div style="page-break-after: always;"></div>
+</section>
+<section id="referências" class="level1">
+<h1>Referências</h1>
+<div class="refs">
+
+</div>
+
 </section>
 
-</main>
+<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">Referências</h2><div id="refs" class="references csl-bib-body" data-entry-spacing="0" role="list">
+<div id="ref-murphy_learning_2022" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[1] </div><div class="csl-right-inline">D. H. Murphy, K. M. Hoover, K. Agadzhanyan, J. C. Kuehn, e A. D. Castel, <span>“Learning in double time: <span>The</span> effect of lecture video speed on immediate and delayed comprehension”</span>, <em>Applied Cognitive Psychology</em>, vol. 36, nº 1, p. 69–82, 2022, doi: <a href="https://doi.org/10.1002/acp.3899">10.1002/acp.3899</a>. Disponível em: <a href="https://onlinelibrary.wiley.com/doi/abs/10.1002/acp.3899">https://onlinelibrary.wiley.com/doi/abs/10.1002/acp.3899</a>. [Acessado: 27 de outubro de 2025]</div>
+</div>
+<div id="ref-murphy_effect_2023" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[2] </div><div class="csl-right-inline">D. H. Murphy, K. M. Hoover, e A. D. Castel, <span>“The <span>Effect</span> of <span>Video</span> <span>Playback</span> <span>Speed</span> on <span>Learning</span> and <span>Mind</span>-<span>Wandering</span> in <span>Younger</span> and <span>Older</span> <span>Adults</span>”</span>, <em>Memory (Hove, England)</em>, vol. 31, nº 6, p. 802–817, jul. 2023, doi: <a href="https://doi.org/10.1080/09658211.2023.2198326">10.1080/09658211.2023.2198326</a>. Disponível em: <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC10330257/">https://pmc.ncbi.nlm.nih.gov/articles/PMC10330257/</a>. [Acessado: 27 de outubro de 2025]</div>
+</div>
+<div id="ref-tharumalingam_increasing_2025" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[3] </div><div class="csl-right-inline">T. Tharumalingam, B. R. T. Roberts, J. M. Fawcett, e E. F. Risko, <span>“Increasing <span>Video</span> <span>Lecture</span> <span>Playback</span> <span>Speed</span> <span>Can</span> <span>Impair</span> <span>Test</span> <span>Performance</span> – a <span>Meta</span>-<span>Analysis</span>”</span>, <em>Educational Psychology Review</em>, vol. 37, nº 2, p. 35, abr. 2025, doi: <a href="https://doi.org/10.1007/s10648-025-10003-9">10.1007/s10648-025-10003-9</a>. Disponível em: <a href="https://doi.org/10.1007/s10648-025-10003-9">https://doi.org/10.1007/s10648-025-10003-9</a>. [Acessado: 27 de outubro de 2025]</div>
+</div>
+<div id="ref-mcintyre_liking_2021" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[4] </div><div class="csl-right-inline">M. M. McIntyre, J. L. Gundlach, e W. G. Graziano, <span>“Liking guides learning: <span>The</span> role of interest in memory for <span>STEM</span> topics”</span>, <em>Learning and Individual Differences</em>, vol. 85, p. 101960, jan. 2021, doi: <a href="https://doi.org/10.1016/j.lindif.2020.101960">10.1016/j.lindif.2020.101960</a>. Disponível em: <a href="https://www.sciencedirect.com/science/article/pii/S1041608020301400">https://www.sciencedirect.com/science/article/pii/S1041608020301400</a>. [Acessado: 28 de outubro de 2025]</div>
+</div>
+<div id="ref-leahy_cognitive_2011" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[5] </div><div class="csl-right-inline">W. Leahy e J. Sweller, <span>“Cognitive load theory, modality of presentation and the transient information effect”</span>, <em>Applied Cognitive Psychology</em>, vol. 25, nº 6, p. 943–951, 2011, doi: <a href="https://doi.org/10.1002/acp.1787">10.1002/acp.1787</a>. Disponível em: <a href="https://onlinelibrary.wiley.com/doi/abs/10.1002/acp.1787">https://onlinelibrary.wiley.com/doi/abs/10.1002/acp.1787</a>. [Acessado: 28 de outubro de 2025]</div>
+</div>
+<div id="ref-foulke_review_1969" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[6] </div><div class="csl-right-inline">E. Foulke e T. G. Sticht, <span>“Review of research on the intelligibility and comprehension of accelerated speech”</span>, <em>Psychological Bulletin</em>, vol. 72, nº 1, p. 50–62, jul. 1969, doi: <a href="https://doi.org/10.1037/h0027575">10.1037/h0027575</a></div>
+</div>
+<div id="ref-atkinson_human_1968" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[7] </div><div class="csl-right-inline">R. C. Atkinson e R. M. Shiffrin, <span>“Human <span>Memory</span>: <span>A</span> <span>Proposed</span> <span>System</span> and its <span>Control</span> <span>Processes</span>”</span>, em <em>Psychology of <span>Learning</span> and <span>Motivation</span></em>, K. W. Spence e J. T. Spence, Orgs., Academic Press, 1968, p. 89–195. doi: <a href="https://doi.org/10.1016/S0079-7421(08)60422-3">10.1016/S0079-7421(08)60422-3</a>. Disponível em: <a href="https://www.sciencedirect.com/science/article/pii/S0079742108604223">https://www.sciencedirect.com/science/article/pii/S0079742108604223</a>. [Acessado: 29 de outubro de 2025]</div>
+</div>
+<div id="ref-kaminski_intermediate-term_2017" class="csl-entry" role="listitem">
+<div class="csl-left-margin">[8] </div><div class="csl-right-inline">J. Kamiński, <span>“Intermediate-<span>Term</span> <span>Memory</span> as a <span>Bridge</span> between <span>Working</span> and <span>Long</span>-<span>Term</span> <span>Memory</span>”</span>, <em>The Journal of Neuroscience</em>, vol. 37, nº 20, p. 5045–5047, 2017, doi: <a href="https://doi.org/10.1523/JNEUROSCI.0604-17.2017">10.1523/JNEUROSCI.0604-17.2017</a>. Disponível em: <a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC6596466/">https://pmc.ncbi.nlm.nih.gov/articles/PMC6596466/</a>. [Acessado: 29 de outubro de 2025]</div>
+</div>
+</div></section></div></main>
 <!-- /main column -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
