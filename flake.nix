@@ -48,6 +48,8 @@
           rPackages.vegan
           rPackages.devtools
           rPackages.lava
+          rPackages.StepReg
+          rPackages.emmeans
           rPackages.lmPerm
           rPackages.FSA
           # radonis
