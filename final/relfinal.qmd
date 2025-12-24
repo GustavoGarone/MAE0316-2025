@@ -107,7 +107,7 @@ de informações em estudantes de graduação da área de ciências exatas.
 
 # Metodologia
 
-Optamos por um delineamento experimental inteiramente causalizado e fatorial
+Optamos por um delineamento experimental inteiramente casualizado e fatorial
 completo: $2\times 2$ com medidas repetidas no tempo (teste imediato e reteste
 uma semana depois). As unidades experimentais são participantes individuais,
 cada participante é alocado a uma única combinação (tratamento) dos fatores CV e
@@ -143,7 +143,7 @@ ao tema do vídeo e outras duas questões distratoras.
 
 A segunda seção é composta pelo vídeo e instruções de como assisti-lo (sem
 realizar anotações, evitando pausas, sem assisti-lo novamente e na velocidade
-indicada). O vídeo será passado em sala por projetor e sobre supervisão dos
+indicada). O vídeo será passado em sala por projetor e sob supervisão dos
 coletores.
         
 A terceira seção consiste num teste de múltipla escolha (5 (cinco) alternativas)
@@ -195,8 +195,8 @@ variáveis envolvidas e outros gráficos pertinentes, como o gráfico de perfis 
 médias, e o cálculo de medidas de dispersão e de tendência central.
 
 Analisaremos a retenção, definida a partir da diferença entre as notas na
-primeira e segunda aplicação. Também, analisaremos individualmente o
-desempenho na primeira e na segunda aplicação por tratamento).
+primeira e na segunda aplicação. Também, analisaremos individualmente o
+desempenho na primeira e na segunda aplicação por tratamento.
         
 Para cada uma das três análises (retenção, nota na primeira aplicação e nota na
 segunda aplicação), será ajustado um modelo linear simples com efeitos fixos
@@ -451,7 +451,7 @@ ggsave("imagens/aed/fig-violin-retencao-tratamento.png", width = 6, height = 4)
 ```
 
 Observamos destes gráficos que pode haver diferença entre os tratamentos, apesar
-de, individualmente, o *boxplot* de velocidades apresenta pouca variação na
+de, individualmente, o *boxplot* de velocidades apresentar pouca variação na
 retenção.
 
 Analisaremos os gráficos de perfis na @fig-grafico-perfis para observar
@@ -579,11 +579,11 @@ esses fatores na retenção de informação dos participantes.
 
 Temos como objetivo modelar a retenção de informação dos participantes a partir
 das variáveis explicativas disponíveis: idade, sexo, desempenho no teste
-diagnóstico, velocidade e contéudo.
+diagnóstico, velocidade e conteúdo.
 
 Devido ao caráter discreto da variável resposta, provavelmente um modelo linear
 clássico não será adequado na modelagem. Ainda assim, tentaremos ajustar um
-modelo linear só com efeitos fixos, depois, prosseguirmos para métodos não
+modelo linear só com efeitos fixos, depois, prosseguiremos para métodos não
 paramétricos, se necessário.
 
 ###  Modelo linear simples
@@ -690,8 +690,9 @@ tibble_levene |>
 ```
 
 O valor $p$ elevado no teste de Levene na
-@tbl-levene-modelo-linear-simples-fatores indica que não rejeitamos a hipótese
-nula de homocedasticidade dos resíduos.
+@tbl-levene-modelo-linear-simples-fatores indica que não há evidências para
+rejeitarmos a hipótese nula de homocedasticidade dos resíduos a $5\%$ de
+significância estatística.
 
 Partimos para análise da normalidade por QQ-plot e o teste de Shapiro-Wilk.
 
@@ -720,7 +721,7 @@ não há desvios extremos, e seguiremos com o teste numérico de normalidade.
 shapiro_result_fatores <- shapiro.test(residuos_modelo_fixo_fatores)
 tibble_shapiro <- tibble(
   Estatística = shapiro_result_fatores$statistic,
-  Valor_p = shapiro_result_fatores$p.value
+  "Valor-p" = shapiro_result_fatores$p.value
 )
 tibble_shapiro |>
   kable(digits = 4)
@@ -765,20 +766,21 @@ anova(modelo_fixo_fatores_selecionado) |>
   pander(caption = "ANOVA do modelo linear simples selecionado")
 ```
 
-Pelo resultado da ANOVA de Tipo I na @tbl-anova-modelo-linear-simples-fatores,
-o Tópico, interação entre Idade e Velocidade e Idade e Diagnóstico são
-significativos, após controlarem pelas respectivas variáveis e covariáveis.
+Pelo resultado da ANOVA de Tipo I na @tbl-anova-modelo-linear-simples-fatores, o
+Tópico e interação entre Idade e Velocidade são significativos, após controlarem
+pelas respectivas variáveis e covariáveis.
 
 Via Médias Marginais Ajustadas (EMMeans), do pacote `emmeans`, podemos
 investigar as comparações entre os níveis dos fatores Tópico e Velocidade.
 Iniciaremos pelo tópico, utilizando a média entre velocidades. Isso é feito
-atraveś de um teste $t$ para a diferença entre as médias ajustadas. Caso a
+através de um teste $t$ para a diferença entre as médias ajustadas. Caso a
 interação fosse significativa, deveríamos considerar se há diferença por nível
 do fator velocidade. Como não é o caso, consideramos a média entre velocidades.
 
 ```{r emmeans modelo linear simples fatores}
 #| label: tbl-emmeans-modelo-linear-simples-fatores
 #| tbl-cap: "Comparações por EMMeans do modelo linear simples selecionado"
+#| warning: false
 emm_topico <- emmeans(modelo_fixo_fatores_selecionado, ~Topico)
 # O ajuste é irrelevante para dois níveis.
 pairs(emm_topico, adjust = "none") |>
@@ -794,9 +796,9 @@ pairs(emm_topico, adjust = "none") |>
   kable(digits = 4)
 ```
 
-Para ambas velocidades (interação não significativa), o tópico de Matemática
-retenção menor ($-0.1867$) que o tópico de Biologia, com diferença significativa
-ao nível de 5\% ($p  = 0.0121$).
+Para ambas velocidades (interação não significativa), o tópico de Biologia
+apresenta retenção menor ($-0.1867$) que o tópico de Matemática, com diferença
+significativa ao nível de 5\% ($p  = 0.0121$).
 
 # Modelagem por Tratamento
 
@@ -804,7 +806,7 @@ Aqui, agruparemos os dados por tratamento, ou seja, combinando o tópico e a
 velocidade em uma única variável categórica com quatro níveis: "Mat-X1",
 "Mat-X2", "Bio-X1" e "Bio-X2". Queremos comparar esses grupos diretamente nas
 análises e contrastar os resultados com a seção anterior. Iremos também empregar
-métoods não paramétricos para as análises, além de analisarmos individualmente
+métodos não paramétricos para as análises, além de analisarmos individualmente
 as notas na primeira e segunda aplicação do teste.
 
 ## Modelagem da Retenção
@@ -1025,15 +1027,15 @@ kable(tibble_kruskal, digits = 4)
 ```
 
 O teste de Kruskal-Wallis não rejeita a hipótese nula de que as amostras entre
-os grupos se originam da mesma distribuição. Dessa forma, pode ser que pela
-variabilidade distinta entre os grupos observadas na análise descritiva
-(@tbl-sumario-estatistico-trat), a análise do método com permutação seja
-inválida. Pode ser também que o teste de KW tenha pouca adequação pela grande
-quantidade de empates na variável resposta. 
+os grupos se originam da mesma distribuição. Pode ser também que o teste de KW
+tenha pouca adequação pela grande quantidade de empates na variável resposta.
+Dessa forma, pode ser que pela variabilidade distinta entre os grupos observadas
+na análise descritiva (@tbl-sumario-estatistico-trat), a análise do método com
+permutação seja inválida.  
 
-Prosseguiremos mesmo assim com a análise post-hoc, por curiosidade.
+Prosseguiremos mesmo assim com a análise *post-hoc*, por curiosidade.
 
-Usaremos o teste post-hoc de Dunn para identificar quais grupos diferem entre
+Usaremos o teste *post-hoc* de Dunn para identificar quais grupos diferem entre
 si.
 
 ```{r teste dunn analiase nao parametrica}
@@ -1194,7 +1196,7 @@ ggsave("imagens/linear/fig-diagnostico-modelo-linear-simples-notas-imed-junto.pn
 )
 ```
 
-Os resíduos mostram-se demasiadamente positivos no gráfico A da
+Os resíduos mostram-se demasiadamente, em quantidade, positivos no gráfico A da
 @fig-diagnostico-modelo-linear-simples-notas-imed, enquanto o histograma do
 gráfico B aponta irregularidade.
 
@@ -1326,8 +1328,9 @@ modelo_permutacao_notas_imed <- lmp(
 summary(modelo_permutacao_notas_imed)
 ```
 
-É interessante notar o baixíssimo valor de $\bar{R}^2$ em apenas $0.1584$, o que
-indica uma insuficência do modelo.
+É interessante notar o baixíssimo valor de $\bar{R}^2$ em apenas $0.1584$ na
+@tbl-modelo-nao-parametrico-permutacao-notas-imed, o que indica uma insuficiência
+do modelo.
 
 ```{r anova modelo nao parametrico de permutacao notas imed}
 #| label: tbl-anova-modelo-nao-parametrico-permutacao-notas
@@ -1425,7 +1428,6 @@ kable(tibble_modelo_fixo_notas_tard_final, digits = 4)
 Testaremos via ANOVA com um modelos reduzidos.
 ```{r anova modelo linear simples notas tard}
 #| label: tbl-anova-modelo-linear-simples-notas-tard-selecao
-#| tbl-cap: "Comparação entre o modelo sem interação com o modelo selecionado para as notas na aplicação tardia"
 modelo_fixo_notas_tard_reduzido1 <- lm(
   Media_Semn ~ Grupo,
   data = df_grupos
@@ -1636,17 +1638,15 @@ kable(tibble_kruskal_notas_tard, digits = 4)
 ```
 
 Mais uma vez, o teste de Kruskal-Wallis não rejeita a hipótese nula de que as
-amostras entre os grupos se originam da mesma distribuição. Assim como na
-modelagem da retenção e das notas na aplicação imediata, pode ser que pela
-variabilidade distinta entre os grupos observadas na análise descritiva
-(@tbl-sumario-estatistico-trat), a análise do método com permutação seja
-inválida. Pode ser também que o teste de KW tenha pouca adequação pela grande
-quantidade de empates na variável resposta. Acreditamos que, neste caso, o teste
-de Kruskal-Wallis é menos confiável que o ANOVA do método de permutação.
-
-Prosseguiremos mesmo assim com a análise post-hoc.
-Usaremos o teste post-hoc de Dunn para identificar quais grupos diferem entre
-si.
+amostras entre os grupos se originam da mesma distribuição. Acreditamos que,
+nesse caso, o teste de Kruskal-Wallis é menos confiável que o ANOVA do método de
+permutação. Assim como na modelagem da retenção e das notas na aplicação
+imediata, pode ser que pela variabilidade distinta entre os grupos observadas na
+análise descritiva (@tbl-sumario-estatistico-trat), a análise do método com
+permutação seja inválida. Pode ser também que o teste de KW tenha pouca
+adequação pela grande quantidade de empates na variável resposta. Prosseguiremos
+mesmo assim com a análise *post-hoc*. Usaremos o teste *post-hoc* de Dunn para
+identificar quais grupos diferem entre si.
 
 ```{r teste dunn modelo nao parametrico notas tard}
 #| label: tbl-teste-dunn-modelo-nao-parametrico-notas-t
@@ -1696,7 +1696,7 @@ Outro fator importante a se considerar são limitações do próprio estudo, com
 tamanho amostral reduzido e possíveis vieses na coleta de dados, que podem ter
 influenciado os resultados obtidos.
 
-No geral, podemos concluir que, deste experimento, não há evidências robustas
+No geral, podemos concluir que, desse experimento, não há evidências robustas
 para afirmar que combinações específicas entre conteúdo e velocidade de
 reprodução tem efeito significativo na retenção de informação ou no desempenho
 em avaliações imediatas e tardias. Recomenda-se cautela na interpretação dos
@@ -1711,8 +1711,8 @@ primeiro passo importante para futuras pesquisas na área de aprendizagem atrav�
 de vídeos educacionais.
 
 Se quiser levar uma conclusão divertida, pela
-@tbl-emmeans-modelo-linear-simples-fatores, matemática é mais difícil que
-biologia a uma significância de $5\%$.
+@tbl-emmeans-modelo-linear-simples-fatores, matemática é mais fácil para alunos
+de exatas que biologia a uma significância de $5\%$.
 
 {{< pagebreak >}}
 
